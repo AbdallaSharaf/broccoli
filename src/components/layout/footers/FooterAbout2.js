@@ -18,10 +18,10 @@ const FooterAbout2 = () => {
             />
           </div>
         </div>
-        <p>
+        {/* <p>
           Lorem Ipsum is simply dummy text of the and typesetting industry.
           Lorem Ipsum is dummy text of the printing.
-        </p>
+        </p> */}
         <div className="footer-address">
           <ul>
             <li>

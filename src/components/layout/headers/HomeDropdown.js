@@ -3,7 +3,8 @@ import DropdownItem from "./DropdownItem";
 
 const HomeDropdown = ({ itmes }) => {
   return (
-    <ul className={`sub-menu menu-pages-img-show  ${itmes[0]?.title?"ltn__sub-menu-col-2":""}`}>
+    // <ul className={`sub-menu menu-pages-img-show  ${itmes[0]?.title?"ltn__sub-menu-col-2":""}`}>
+    <ul className={`sub-menu menu-pages-img-show`}>
       {itmes?.map(({ title, path, dropdownItems }, idx) => (
        
           dropdownItems?.map((dropdownItem, idx) => (

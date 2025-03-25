@@ -15,7 +15,7 @@ const Copyright2 = () => {
           <div className="col-md-6 col-12">
             <div className="ltn__copyright-design clearfix">
               <p>
-                All Rights Reserved @ Company{" "}
+                All Rights Reserved @ {" AM Software developers "}
                 <span className="current-year"></span>
               </p>
             </div>

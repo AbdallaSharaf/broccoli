@@ -11,20 +11,23 @@ const FooterCompany = () => {
             <li>
               <Link href="/about">About</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/blogs">Blog</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/shop">All Products</Link>
             </li>
             <li>
               <Link href="/locations">Locations Map</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/faq">FAQ</Link>
             </li>
             <li>
               <Link href="/contact">Contact us</Link>
+            </li> */}
+            <li>
+              <Link href="/about">Terms & Conditions</Link>
             </li>
           </ul>
         </div>

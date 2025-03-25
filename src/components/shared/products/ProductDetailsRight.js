@@ -176,7 +176,7 @@ const ProductDetailsRight = ({ product }) => {
               <i className="far fa-heart"></i> <span>Add to Wishlist</span>
             </Link>
           </li>{" "}
-          <li>
+          {/* <li>
             <Link
               href="#"
               className=""
@@ -186,7 +186,7 @@ const ProductDetailsRight = ({ product }) => {
             >
               <i className="fas fa-exchange-alt"></i> <span>Compare</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
       <hr />

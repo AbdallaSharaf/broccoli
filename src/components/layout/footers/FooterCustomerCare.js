@@ -8,18 +8,18 @@ const FooterCustomerCare = () => {
         <h4 className="footer-title">Customer Care</h4>
         <div className="footer-menu">
           <ul>
-            <li>
+            {/* <li>
               <Link href="/login">Login</Link>
             </li>
             <li>
               <Link href="/account">My account</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href="/wishlist">Wish List</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href="/order-tracking">Order tracking</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/faq">FAQ</Link>
             </li>

@@ -16,7 +16,7 @@ const Testimonials3 = ({ pt }) => {
           <div className="col-lg-12">
             <div className="section-title-area ltn__section-title-2 text-center">
               <h6 className="section-subtitle ltn__secondary-color">
-                {"//"} Testimonials
+                {"//"} Reviews
               </h6>
               <h1 className="section-title">
                 Clients Feedbacks<span>.</span>

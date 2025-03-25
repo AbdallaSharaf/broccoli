@@ -19,8 +19,8 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata = {
-  title: "Broccoli - Organic Food React Template",
-  description: "Broccoli - Organic Food React Template",
+  title: "Fruits heaven",
+  description: "Fruits heaven",
 };
 
 export default function RootLayout({ children }) {
