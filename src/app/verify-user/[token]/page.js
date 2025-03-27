@@ -17,12 +17,11 @@ export default function VerifyUserPage({ params }) {
 
     const verifyUser = async () => {
       try {
-        const response = await fetch(`/api/auth/verify-user`, {
-          method: "POST",
+        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/auth/verify/${token}`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ token }),
         });
 
         const data = await response.json();
