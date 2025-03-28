@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
+import PageWrapper from "@/components/shared/wrappers/PageWrapper";
+import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
+import NavItem from "@/components/layout/headers/NavItem";
+import Link from "next/link";
 
 export default function VerifyUserPage({ params }) {
   const router = useRouter();
   const { token } = params;
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (!token) {
-      router.push("/"); // Redirect if token is missing
-      return;
+      notFound();
     }
 
     const verifyUser = async () => {
@@ -27,7 +31,7 @@ export default function VerifyUserPage({ params }) {
         const data = await response.json();
 
         if (response.ok) {
-          router.push("/"); // Redirect to home on success
+          setSuccess(true); // Show success message and button
         } else {
           setError(data.message || "Verification failed.");
         }
@@ -39,21 +43,38 @@ export default function VerifyUserPage({ params }) {
     };
 
     verifyUser();
-  }, [token, router]);
+  }, [token]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      {loading ? (
-        <>
-          <h1 className="text-2xl font-bold">Verifying Your Account...</h1>
-          <p>Please wait while we verify your account.</p>
-        </>
-      ) : error ? (
-        <>
-          <h1 className="text-2xl font-bold text-red-500">Verification Failed</h1>
-          <p>{error}</p>
-        </>
-      ) : null}
-    </div>
+    <PageWrapper
+      isNotHeaderTop={true}
+      isHeaderRight={true}
+      isTextWhite={true}
+      isNavbarAppointmentBtn={true}
+    >
+      <HeroPrimary
+        title={
+          loading
+            ? "Verifying Your Account..."
+            : success
+            ? "Account Verified!"
+            : "Verification Failed"
+        }
+        text={
+          loading
+            ? "Please wait while we verify your account."
+            : success
+            ? "Your account has been successfully verified. You can now proceed."
+            : error || "Something went wrong. Please try again later."
+        }
+        type={2}
+      />
+
+      {!loading && success && (
+        <div className="special-link text-uppercase">
+          <Link className="special-link" href="/">Go to homepage</Link>
+        </div>
+      )}
+    </PageWrapper>
   );
 }
