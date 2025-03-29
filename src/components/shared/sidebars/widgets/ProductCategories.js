@@ -20,11 +20,11 @@ const ProductCategories = () => {
           <li key={idx}>
             <Link
               href={`${currentPath ? currentPath : "/shop"}?category=${makePath(
-                category.name["en"]
+                category.name["en"] ?? category.name["ar"] ??'N/A'
               )}`}
               className={currentCategory === makePath(category.name["en"]) ? "active" : ""}
             >
-              {category.name["en"]}{" "}
+              {category.name["en"] ?? category.name["ar"] ??'N/A'}{" "}
               <span>
                 <i className="fas fa-long-arrow-alt-right"></i>
               </span>
