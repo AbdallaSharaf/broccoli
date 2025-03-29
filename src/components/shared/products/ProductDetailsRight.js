@@ -52,10 +52,10 @@ const ProductDetailsRight = ({ product }) => {
     setTimeout(() => {
       const increament = inputParent.querySelector(".inc");
       const decreament = inputParent.querySelector(".dec");
-      increament.addEventListener("click", () => {
+      increament?.addEventListener("click", () => {
         setQuantity(parseInt(input.value));
       });
-      decreament.addEventListener("click", () => {
+      decreament?.addEventListener("click", () => {
         setQuantity(parseInt(input.value));
       });
     }, 500);

@@ -1,7 +1,8 @@
 import ShopMain from "@/components/layout/main/ShopMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
+import React from "react";
 
-const Shop = () => {
+const ShopLeftSidebar = () => {
   return (
     <PageWrapper
       isNotHeaderTop={true}
@@ -9,9 +10,9 @@ const Shop = () => {
       isTextWhite={true}
       isNavbarAppointmentBtn={true}
     >
-      <ShopMain isSidebar="primary" />
+      <ShopMain isSidebar="left" title={"Shop"} />
     </PageWrapper>
   );
 };
 
-export default Shop;
+export default ShopLeftSidebar;

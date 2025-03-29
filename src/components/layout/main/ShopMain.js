@@ -4,15 +4,15 @@ import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import ProductsPrimary from "@/components/sections/products/ProductsPrimary";
 import useSearch from "@/hooks/useSearch";
 import filterItems from "@/libs/filterItems";
-import getAllProducts from "@/libs/getAllProducts";
 import getRangeValue from "@/libs/getRangeValue";
 import makeText from "@/libs/makeText";
 import CommonContext from "@/providers/CommonContext";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useProductContext } from "@/providers/ProductContext";
 
 const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
-  const allProducts = getAllProducts();
+  const { products: allProducts } = useProductContext();
   const category = useSearchParams()?.get("category");
   const brand = useSearchParams()?.get("brand");
   const tag = useSearchParams()?.get("tag");

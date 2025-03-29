@@ -10,6 +10,7 @@ import Preloader from "../others/Preloader";
 import main from "@/libs/main";
 import WishlistContextProvider from "@/providers/WshlistContext";
 import ProductContext from "@/providers/ProductContext";
+import CategoryContext from "@/providers/CategoryContext";
 
 const PageWrapper = ({
   children,
@@ -59,7 +60,12 @@ const PageWrapper = ({
               <Header />
             </HeaderContex>
 
-            <ProductContext>{children}</ProductContext>
+            <ProductContext>
+              <CategoryContext>
+                {children}
+              </CategoryContext>
+
+            </ProductContext>
           </WishlistContextProvider>
 
           <FooterContexProvider value={{ footerBg }}>

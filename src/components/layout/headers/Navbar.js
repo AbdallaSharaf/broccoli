@@ -28,72 +28,72 @@ const Navbar = () => {
       name: "Home",
       path: "/",
       dropdown: null,
-      dropdownSection: [
-        {
-          title: null,
-          path: "#",
-          dropdownItems: [
-            {
-              name: "Home Style - 01",
-              img: homeImage1,
-              path: "/",
-            },
-            {
-              name: "Home Style - 02",
-              img: homeImage2,
-              path: "/home-2",
-            },
-            {
-              name: "Home Style - 03",
-              img: homeImage3,
-              path: "/home-3",
-            },
-            {
-              name: "Home Style - 04",
-              img: homeImage4,
-              path: "/home-4",
-            },
-            {
-              name: "Home Style - 05",
-              img: homeImage5,
-              path: "/home-5",
-              label: "video",
-            },
-            {
-              name: "Home Style - 06",
-              img: homeImage6,
-              path: "/home-6",
-            },
-            {
-              name: "Home Style - 07",
-              img: homeImage7,
-              path: "/home-7",
-            },
-            {
-              name: "Home Style - 08",
-              img: homeImage8,
-              path: "/home-8",
-              label: null,
-            },
-            {
-              name: "Home Style - 09",
-              img: homeImage9,
-              path: "/home-9",
-            },
-            {
-              name: "Home Style - 10",
-              img: homeImage10,
-              path: "/home-10",
-            },
-            {
-              name: "Home Style - 11",
-              img: homeImage11,
-              path: "/home-11",
-              label: "Service",
-            },
-          ],
-        },
-      ],
+      // dropdownSection: [
+      //   {
+      //     title: null,
+      //     path: "#",
+      //     dropdownItems: [
+      //       {
+      //         name: "Home Style - 01",
+      //         img: homeImage1,
+      //         path: "/",
+      //       },
+      //       {
+      //         name: "Home Style - 02",
+      //         img: homeImage2,
+      //         path: "/home-2",
+      //       },
+      //       {
+      //         name: "Home Style - 03",
+      //         img: homeImage3,
+      //         path: "/home-3",
+      //       },
+      //       {
+      //         name: "Home Style - 04",
+      //         img: homeImage4,
+      //         path: "/home-4",
+      //       },
+      //       {
+      //         name: "Home Style - 05",
+      //         img: homeImage5,
+      //         path: "/home-5",
+      //         label: "video",
+      //       },
+      //       {
+      //         name: "Home Style - 06",
+      //         img: homeImage6,
+      //         path: "/home-6",
+      //       },
+      //       {
+      //         name: "Home Style - 07",
+      //         img: homeImage7,
+      //         path: "/home-7",
+      //       },
+      //       {
+      //         name: "Home Style - 08",
+      //         img: homeImage8,
+      //         path: "/home-8",
+      //         label: null,
+      //       },
+      //       {
+      //         name: "Home Style - 09",
+      //         img: homeImage9,
+      //         path: "/home-9",
+      //       },
+      //       {
+      //         name: "Home Style - 10",
+      //         img: homeImage10,
+      //         path: "/home-10",
+      //       },
+      //       {
+      //         name: "Home Style - 11",
+      //         img: homeImage11,
+      //         path: "/home-11",
+      //         label: "Service",
+      //       },
+      //     ],
+      //   },
+      // ],
     },
     {
       name: "About",
@@ -114,35 +114,35 @@ const Navbar = () => {
 
               path: "/services",
             },
-            {
-              name: "Service Details",
+            // {
+            //   name: "Service Details",
 
-              path: "/services/1",
-            },
+            //   path: "/services/1",
+            // },
             {
               name: "Gallery",
 
               path: "/portfolio",
             },
-            {
-              name: "Gallery - 02",
+            // {
+            //   name: "Gallery - 02",
 
-              path: "/portfolio-2",
-            },
-            {
-              name: "Gallery Details",
-              path: "/portfolio/1",
-            },
+            //   path: "/portfolio-2",
+            // },
+            // {
+            //   name: "Gallery Details",
+            //   path: "/portfolio/1",
+            // },
             {
               name: "Team",
 
               path: "/team",
             },
-            {
-              name: "Team Details",
+            // {
+            //   name: "Team Details",
 
-              path: "/team/1",
-            },
+            //   path: "/team/1",
+            // },
             {
               name: "FAQ",
 
@@ -162,237 +162,237 @@ const Navbar = () => {
       path: "/shop",
       dropdown: null,
       isNestedDropdown: null,
-      dropdownSection: [
-        {
-          title: null,
-          path: "#",
-          dropdownItems: [
-            {
-              name: "Shop",
+      // dropdownSection: [
+      //   {
+      //     title: null,
+      //     path: "#",
+      //     // dropdownItems: [
+      //     //   {
+      //     //     name: "Shop",
 
-              path: "/shop",
-            },
-            {
-              name: "Shop Grid",
+      //     //     path: "/shop",
+      //     //   },
+      //     //   {
+      //     //     name: "Shop Grid",
 
-              path: "/shop-grid",
-            },
-            {
-              name: "Shop Left sidebar",
+      //     //     path: "/shop-grid",
+      //     //   },
+      //     //   {
+      //     //     name: "Shop Left sidebar",
 
-              path: "/shop-left-sidebar",
-            },
-            {
-              name: "Shop right sidebar",
+      //     //     path: "/shop-left-sidebar",
+      //     //   },
+      //     //   {
+      //     //     name: "Shop right sidebar",
 
-              path: "/shop-right-sidebar",
-            },
-            {
-              name: "Shop details",
+      //     //     path: "/shop-right-sidebar",
+      //     //   },
+      //     //   {
+      //     //     name: "Shop details",
 
-              path: "/products/1",
-            },
-            {
-              name: "Shop details no sidebar ",
-              path: "/shop-details-2",
-            },
-            {
-              name: "Other Pages",
-              path: "/team",
-              nestedDropdown: null,
-              nestedDropdownItems: [
-                {
-                  name: "Cart",
-                  path: "/cart",
-                },
-                {
-                  name: "Wishlist",
-                  path: "/wishlist",
-                },
-                {
-                  name: "Checkout",
-                  path: "/checkout",
-                },
-                {
-                  name: "Order Tracking",
-                  path: "/order-tracking",
-                },
-                {
-                  name: "My Account",
-                  path: "/account",
-                },
-                {
-                  name: "Sign in",
-                  path: "/login",
-                },
-                {
-                  name: "Register",
-                  path: "/register",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      //     //     path: "/products/1",
+      //     //   },
+      //     //   {
+      //     //     name: "Shop details no sidebar ",
+      //     //     path: "/shop-details-2",
+      //     //   },
+      //     //   {
+      //     //     name: "Other Pages",
+      //     //     path: "/team",
+      //     //     nestedDropdown: null,
+      //     //     nestedDropdownItems: [
+      //     //       {
+      //     //         name: "Cart",
+      //     //         path: "/cart",
+      //     //       },
+      //     //       {
+      //     //         name: "Wishlist",
+      //     //         path: "/wishlist",
+      //     //       },
+      //     //       {
+      //     //         name: "Checkout",
+      //     //         path: "/checkout",
+      //     //       },
+      //     //       {
+      //     //         name: "Order Tracking",
+      //     //         path: "/order-tracking",
+      //     //       },
+      //     //       {
+      //     //         name: "My Account",
+      //     //         path: "/account",
+      //     //       },
+      //     //       {
+      //     //         name: "Sign in",
+      //     //         path: "/login",
+      //     //       },
+      //     //       {
+      //     //         name: "Register",
+      //     //         path: "/register",
+      //     //       },
+      //     //     ],
+      //     //   },
+      //     // ],
+      //   },
+      // ],
     },
-    {
-      name: "News",
-      path: "#",
-      dropdown: null,
-      dropdownSection: [
-        {
-          title: null,
-          path: "#",
-          dropdownItems: [
-            {
-              name: "News",
+    // {
+    //   name: "News",
+    //   path: "#",
+    //   dropdown: null,
+    //   dropdownSection: [
+    //     {
+    //       title: null,
+    //       path: "#",
+    //       dropdownItems: [
+    //         {
+    //           name: "News",
 
-              path: "/blogs",
-            },
-            {
-              name: "News Grid",
+    //           path: "/blogs",
+    //         },
+    //         {
+    //           name: "News Grid",
 
-              path: "/blogs-grid",
-            },
-            {
-              name: "News Left sidebar",
+    //           path: "/blogs-grid",
+    //         },
+    //         {
+    //           name: "News Left sidebar",
 
-              path: "/blog-left-sidebar",
-            },
-            {
-              name: "News Right sidebar",
+    //           path: "/blog-left-sidebar",
+    //         },
+    //         {
+    //           name: "News Right sidebar",
 
-              path: "/blog-right-sidebar",
-            },
-            {
-              name: "News details",
+    //           path: "/blog-right-sidebar",
+    //         },
+    //         {
+    //           name: "News details",
 
-              path: "/blogs/1",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Pages",
-      path: "#",
-      dropdown: null,
-      dropdownSection: [
-        {
-          title: "Inner Pages",
-          path: "#",
-          dropdownItems: [
-            {
-              name: "Gallery",
+    //           path: "/blogs/1",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // {
+    //   name: "Pages",
+    //   path: "#",
+    //   dropdown: null,
+    //   dropdownSection: [
+    //     {
+    //       title: "Inner Pages",
+    //       path: "#",
+    //       dropdownItems: [
+    //         {
+    //           name: "Gallery",
 
-              path: "/portfolio",
-            },
-            {
-              name: "Gallery - 02",
+    //           path: "/portfolio",
+    //         },
+    //         {
+    //           name: "Gallery - 02",
 
-              path: "/portfolio-2",
-            },
-            {
-              name: "Gallery",
+    //           path: "/portfolio-2",
+    //         },
+    //         {
+    //           name: "Gallery",
 
-              path: "/portfolio/1",
-            },
-            {
-              name: "Team",
+    //           path: "/portfolio/1",
+    //         },
+    //         {
+    //           name: "Team",
 
-              path: "/team",
-            },
-            {
-              name: "Team Details",
+    //           path: "/team",
+    //         },
+    //         {
+    //           name: "Team Details",
 
-              path: "/team/1",
-            },
-            {
-              name: "FAQ",
+    //           path: "/team/1",
+    //         },
+    //         {
+    //           name: "FAQ",
 
-              path: "/faq",
-            },
-          ],
-        },
-        {
-          title: "Inner Pages",
-          path: "#",
-          dropdownItems: [
-            {
-              name: "History",
+    //           path: "/faq",
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       title: "Inner Pages",
+    //       path: "#",
+    //       dropdownItems: [
+    //         {
+    //           name: "History",
 
-              path: "/history",
-            },
-            {
-              name: "Appointment",
+    //           path: "/history",
+    //         },
+    //         {
+    //           name: "Appointment",
 
-              path: "/contact",
-            },
-            {
-              name: "Google Map Locations",
+    //           path: "/contact",
+    //         },
+    //         {
+    //           name: "Google Map Locations",
 
-              path: "/locations",
-            },
-            {
-              name: "404",
+    //           path: "/locations",
+    //         },
+    //         {
+    //           name: "404",
 
-              path: "/error",
-            },
-            {
-              name: "Contact",
+    //           path: "/error",
+    //         },
+    //         {
+    //           name: "Contact",
 
-              path: "/contact",
-            },
-            {
-              name: "Coming Soon",
+    //           path: "/contact",
+    //         },
+    //         {
+    //           name: "Coming Soon",
 
-              path: "/coming-soon",
-            },
-          ],
-        },
-        {
-          title: "Shop Pages",
-          path: "#",
-          dropdownItems: [
-            {
-              name: "Shop",
+    //           path: "/coming-soon",
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       title: "Shop Pages",
+    //       path: "#",
+    //       dropdownItems: [
+    //         {
+    //           name: "Shop",
 
-              path: "/shop",
-            },
-            {
-              name: "Shop Left sidebar",
+    //           path: "/shop",
+    //         },
+    //         {
+    //           name: "Shop Left sidebar",
 
-              path: "/shop-left-sidebar",
-            },
-            {
-              name: "Shop right sidebar",
+    //           path: "/shop-left-sidebar",
+    //         },
+    //         {
+    //           name: "Shop right sidebar",
 
-              path: "/shop-right-sidebar",
-            },
-            {
-              name: "Shop Grid",
+    //           path: "/shop-right-sidebar",
+    //         },
+    //         {
+    //           name: "Shop Grid",
 
-              path: "/shop-grid",
-            },
-            {
-              name: "Shop details",
+    //           path: "/shop-grid",
+    //         },
+    //         {
+    //           name: "Shop details",
 
-              path: "/products/1",
-            },
-            {
-              name: "Cart",
+    //           path: "/products/1",
+    //         },
+    //         {
+    //           name: "Cart",
 
-              path: "/cart",
-            },
-          ],
-        },
-        {
-          title: null,
-          bannerImg: dropdownBannerImage1,
-          path: "/shop",
-        },
-      ],
-    },
+    //           path: "/cart",
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       title: null,
+    //       bannerImg: dropdownBannerImage1,
+    //       path: "/shop",
+    //     },
+    //   ],
+    // },
     {
       name: "Contact",
       path: "/contact",
@@ -402,13 +402,18 @@ const Navbar = () => {
   const navItems = navItemsRaw?.map((navItem, idx) => ({
     ...navItem,
     dropdown:
-      idx === 0 ? (
-        <HomeDropdown itmes={navItem?.dropdownSection} />
-      ) : idx > 0 && idx < 4 ? (
+      // idx === 0 ? (
+      //   <HomeDropdown itmes={navItem?.dropdownSection} />
+      // ) : 
+      // idx > 0 && idx < 4 ? (
+      (idx === 1) ? (
         <CommonDropdown items={navItem?.dropdownSection} />
-      ) : idx === 4 ? (
-        <PagesDropdown itmes={navItem?.dropdownSection} />
-      ) : null,
+      // ) : idx === 4 ? (
+      ) 
+      // : idx === 3 ? (
+      //   <PagesDropdown itmes={navItem?.dropdownSection} />
+      // ) 
+      : null,
   }));
   return (
     <div

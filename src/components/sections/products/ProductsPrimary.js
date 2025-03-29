@@ -1,6 +1,5 @@
 "use client";
 import ProductCardPrimary from "@/components/shared/cards/ProductCardPrimary";
-import ProductCardPrimary2 from "@/components/shared/cards/ProductCardPrimary2";
 import Nodata from "@/components/shared/no-data/Nodata";
 import Pagination from "@/components/shared/paginations/Pagination";
 import ShopDataShowing from "@/components/shared/products/ShopDataShowing";
@@ -132,21 +131,6 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
                     ))}
 
                     {/* <!--  --> */}
-                  </div>
-                </div>
-              </div>
-              <div
-                className={`tab-pane fade ${currentTab === 1 ? " active" : ""}`}
-                id="liton_product_2"
-              >
-                <div className="ltn__product-tab-content-inner ltn__product-list-view">
-                  <div className="row">
-                    {/* <!-- ltn__product-item --> */}
-                    {currentItems?.map((product, idx) => (
-                      <div className="col-lg-12" key={idx}>
-                        <ProductCardPrimary2 product={product} />
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>

@@ -1,10 +1,13 @@
-import IndexMain from "@/components/layout/main/IndexMain";
+import Home4Main from "@/components/layout/main/Home4Main";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
+import React from "react";
 
-export default function Home() {
+const Home4 = () => {
   return (
-    <PageWrapper isNavbarAppointmentBtn={true}>
-      <IndexMain />
+    <PageWrapper headerStyle={5} footerBg={"light"} navBg={"secondary"}>
+      <Home4Main />
     </PageWrapper>
   );
-}
+};
+
+export default Home4;

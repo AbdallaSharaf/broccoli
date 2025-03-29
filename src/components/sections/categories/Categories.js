@@ -1,9 +1,10 @@
 import CategoryCard from "@/components/shared/cards/CategoryCard";
-import getAllCategories from "@/libs/getAllCategories";
+import CategoryContext, { useCategoryContext } from "@/providers/CategoryContext";
 import React from "react";
 
 const Categories = () => {
-  const categories = getAllCategories()?.filter(({}, idx) => idx < 6);
+    const { categories } = useCategoryContext()?.filter(({}, idx) => idx < 6);
+  
   return (
     <div className="ltn__category-area section-bg-1 pt-115 pb-90">
       <div className="container">
