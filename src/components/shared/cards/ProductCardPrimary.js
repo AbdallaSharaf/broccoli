@@ -9,7 +9,7 @@ import Link from "next/link";
 import React from "react";
 
 const ProductCardPrimary = ({ product, isShowDisc }) => {
-  const { name, price, disc, image, id, status, color } = product
+  const { name, price, disc, image, _id, status, color } = product
     ? product
     : {};
   const { setCurrentProduct } = useProductContext();
@@ -25,7 +25,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
       onMouseEnter={() => setCurrentProduct(product)}
     >
       <div className="product-img">
-        <Link href={`/products/${id}`}>
+        <Link href={`/products/${_id}`}>
           <Image
             src={image || '/img/product/1.png'}
             alt="#"
@@ -68,7 +68,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
                   addProductToCart({
                     ...product,
                     quantity: 1,
-                    color: color,
+                    color: color ? color : "",
                   });
                 }}
                 href="#"
@@ -127,7 +127,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           </ul>
         </div>
         <h2 className="product-title">
-          <Link href={`/products/${id}`}>{name["en"] || name["ar"] || "N/A"}</Link>
+          <Link href={`/products/${_id}`}>{name["en"] || name["ar"] || "N/A"}</Link>
         </h2>
         <div className="product-price">
           <span>${netPriceModified}</span> <del>${priceModified}</del>
