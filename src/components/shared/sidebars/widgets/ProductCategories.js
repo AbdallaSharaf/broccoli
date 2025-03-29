@@ -22,7 +22,7 @@ const ProductCategories = () => {
               href={`${currentPath ? currentPath : "/shop"}?category=${makePath(
                 category.name["en"] ?? category.name["ar"] ??'N/A'
               )}`}
-              className={currentCategory === makePath(category.name["en"]) ? "active" : ""}
+              className={currentCategory === makePath(category.name["en"]  ?? category.name["ar"] ??'N/A' ) ? "active" : ""}
             >
               {category.name["en"] ?? category.name["ar"] ??'N/A'}{" "}
               <span>
