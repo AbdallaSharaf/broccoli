@@ -13,22 +13,17 @@ import ProductDetailsTab2 from "@/components/shared/products/ProductDetailsTab2"
 const ProductDetailsPrimary = () => {
   // hooks
   const { isNotSidebar, type } = useCommonContext();
-  const { setCurrentProduct } = useProductContext();
+  const { setCurrentProduct, product } = useProductContext();
   // products and filter current product
-  const { id: currentId } = useParams();
-  const products = getAllProducts();
-  const product = products?.find(
-    ({ id }) => id === (!currentId ? 1 : parseInt(currentId))
-  );
+  // const { id: currentId } = useParams();
   // current product
 
-  const { type: currentType } = product;
   // other slider images
-  const ohterImages = products?.filter(
-    ({ id, type }) =>
-      id !== parseInt(currentId) && (!currentId ? id !== 1 : true)
-  );
-  const allImages = [product, ...ohterImages?.slice(0, 6)];
+  // const ohterImages = products?.filter(
+  //   ({ id, type }) =>
+  //     id !== parseInt(currentId) && (!currentId ? id !== 1 : true)
+  // );
+  // const allImages = [product, ...ohterImages?.slice(0, 6)];
 
   return (
     <div
@@ -49,7 +44,7 @@ const ProductDetailsPrimary = () => {
                 <div className={isNotSidebar ? "col-lg-6" : "col-md-6"}>
                   <div className="ltn__shop-details-img-gallery">
                     <div className="ltn__shop-details-large-img">
-                      {allImages?.map(({ image }, idx) => (
+                      {/* {allImages?.map(({ image }, idx) => (
                         <div key={idx} className="single-large-img">
                           <Link href={image} data-rel="lightcase:myCollection">
                             <Image
@@ -60,10 +55,10 @@ const ProductDetailsPrimary = () => {
                             />
                           </Link>
                         </div>
-                      ))}
+                      ))} */}
                     </div>
                     <div className="ltn__shop-details-small-img slick-arrow-2">
-                      {allImages?.map(({ image }, idx) => (
+                      {/* {allImages?.map(({ image }, idx) => (
                         <div key={idx} className="single-small-img">
                           <Image
                             src={image}
@@ -72,7 +67,7 @@ const ProductDetailsPrimary = () => {
                             height={1000}
                           />
                         </div>
-                      ))}
+                      ))} */}
                     </div>
                   </div>
                 </div>

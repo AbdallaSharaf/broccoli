@@ -9,7 +9,7 @@ import Link from "next/link";
 import React from "react";
 
 const ProductCardPrimary = ({ product, isShowDisc }) => {
-  const { name, price, disc, image, _id, status, color } = product
+  const { title, name, price, disc, image, _id, status, color } = product
     ? product
     : {};
   const { setCurrentProduct } = useProductContext();
@@ -127,7 +127,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           </ul>
         </div>
         <h2 className="product-title">
-          <Link href={`/products/${_id}`}>{name["en"] || name["ar"] || "N/A"}</Link>
+          <Link href={`/products/${_id}`}>{title ||name["en"] || name["ar"] || "N/A"}</Link>
         </h2>
         <div className="product-price">
           <span>${netPriceModified}</span> <del>${priceModified}</del>

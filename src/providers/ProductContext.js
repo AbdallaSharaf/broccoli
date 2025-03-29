@@ -8,6 +8,7 @@ const productContext = createContext(null);
 
 const ProductContext = ({ children }) => {
   const [products, setProducts] = useState([]); // Store products from API
+  const [product, setProduct] = useState(); // Store products from API
   const [currentProduct, setCurrentProduct] = useState(null); // Track selected product
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -35,7 +36,7 @@ const ProductContext = ({ children }) => {
   }, []);
 
   return (
-    <productContext.Provider value={{ products, currentProduct, setCurrentProduct, loading, error }}>
+    <productContext.Provider value={{ products, product, setProduct, currentProduct, setCurrentProduct, loading, error }}>
       {children}
       {currentProduct && (
         <>

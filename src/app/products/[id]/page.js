@@ -1,13 +1,35 @@
 import ProductDetailsMain from "@/components/layout/main/ProductDetailsMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
-import getAllProducts from "@/libs/getAllProducts";
+import { useProductContext } from "@/providers/ProductContext";
 import { notFound } from "next/navigation";
 
-const products = getAllProducts();
-const ProductDetails = ({ params }) => {
+
+const getProductById = async (id) => {
+  try {
+    console.log("Fetching product with ID:", id);
+    const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) throw new Error(`Failed to fetch product: ${res.status}`);
+
+    const data = await res.json();
+    const product = data.Product;
+    console.log("Fetched product data:", data);
+    return product;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+};
+
+const ProductDetails = async ({ params }) => {
   const { id } = params;
-  const isExistProducts = products?.find(({ id: id1 }) => id1 === parseInt(id));
-  if (!isExistProducts) {
+  const product = await getProductById(id);
+  if (!product) {
     notFound();
   }
   return (
@@ -17,12 +39,25 @@ const ProductDetails = ({ params }) => {
       isTextWhite={true}
       isNavbarAppointmentBtn={true}
     >
-      <ProductDetailsMain type={1} />
+      <ProductDetailsMain type={1} product={product} />
     </PageWrapper>
   );
 };
 export async function generateStaticParams() {
-  return products?.map(({ id }) => ({ id: id.toString() }));
+  try {
+    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product");
+    if (!res.ok) throw new Error("Failed to fetch products");
+
+    const data = await res.json();
+    const products = data.Products; // Adjust this based on your API response
+    console.log(products)
+    console.log(products?.map(({ id }) => ({ id: id.toString() })))
+    return products?.map(({ id }) => ({ id: id.toString() })) || [];
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return []; // Return an empty array if the API call fails
+  }
 }
+
 
 export default ProductDetails;

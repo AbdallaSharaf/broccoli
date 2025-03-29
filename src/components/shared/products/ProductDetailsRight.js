@@ -13,8 +13,15 @@ import countCommentLength from "@/libs/countCommentLength";
 import modifyNumber from "@/libs/modifyNumber";
 const ProductDetailsRight = ({ product }) => {
   // destructure current product
-  const { id, title, price, reviews, disc, size, color } = product;
-  // current Date
+  
+  const {
+    name = { en: "Unknown", ar: "غير معروف" },
+    price = 0,
+    reviews = [],
+    disc = 0,
+    size = "N/A",
+    color = "N/A",
+  } = product || {};  // current Date
 
   // hooks
   const value = useCommonContext();
@@ -60,6 +67,11 @@ const ProductDetailsRight = ({ product }) => {
       });
     }, 500);
   }, []);
+
+  if (!product) {
+    return;
+  }
+  
   return (
     <div className="modal-product-info shop-details-info pl-0" id="details">
       {/* ratings */}
@@ -95,8 +107,8 @@ const ProductDetailsRight = ({ product }) => {
           </li>
         </ul>
       </div>
-      {/* title */}
-      <h3>{title}</h3>
+      {/* name["en"] */}
+      <h3>{name["en"] ?? name["ar"] ?? "N/A"}</h3>
       {/* price */}
       <div className="product-price text-nowrap">
         <span>${netPriceModified}</span> <del>${priceModified}</del>
