@@ -16,7 +16,7 @@ const useSearch = (items, pathForRedirect) => {
   // handle search
   const handleSearch = (e) => {
     e.preventDefault();
-    router.push(`${pathForRedirect}?search=${makePath(searchString)}`);
+    router.push(`${pathForRedirect}?keyword=${makePath(searchString)}`);
     setIsShowSearch(true);
     setpreviousSearchedItems(searchedItems);
     e.target.search.value = "";

@@ -1,142 +1,83 @@
 "use client";
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import Features4 from "@/components/sections/features/Features4";
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import ProductsPrimary from "@/components/sections/products/ProductsPrimary";
-import useSearch from "@/hooks/useSearch";
 import filterItems from "@/libs/filterItems";
 import getRangeValue from "@/libs/getRangeValue";
 import makeText from "@/libs/makeText";
 import CommonContext from "@/providers/CommonContext";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useProductContext } from "@/providers/ProductContext";
 
 const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
-  const { products: allProducts } = useProductContext();
-  const category = useSearchParams()?.get("category");
-  const brand = useSearchParams()?.get("brand");
-  const tag = useSearchParams()?.get("tag");
-  const size = useSearchParams()?.get("size");
-  const color = useSearchParams()?.get("color");
-  const search = useSearchParams()?.get("search");
+  const searchParams = useSearchParams();
   const currentPath = usePathname();
+  const { products, setProducts } = useProductContext();
+
+  // Extract filters from URL params
+  const category = searchParams.get("category");
+  const keyword = searchParams.get("search");
+
   const [rangeValue, setRangeValue] = useState(null);
+  const [categoryName, setCategoryName] = useState('');
   const maxSize = 5000;
   const intLowerLimit = 50;
   const intUpperLimit = 1500;
-  // get searched blogs
-  const {
-    searchedItems,
-    isShowSearch,
-    handleSearch,
-    handleSearchString,
-    startSearch,
-    closeSearch,
-    isShowQuickSearchResult,
-    setIsShowQuickSearchResult,
-  } = useSearch(allProducts, currentPath);
 
-  const ProductsBeforPriceFilter = filterItems(
-    allProducts,
-    category
-      ? "category"
-      : brand
-      ? "brand"
-      : tag
-      ? "tags"
-      : size
-      ? "size"
-      : color
-      ? "color"
-      : search
-      ? "search"
-      : "",
-    category
-      ? category
-      : brand
-      ? brand
-      : tag
-      ? tag
-      : size
-      ? size
-      : color
-      ? color
-      : search
-      ? search
-      : "",
-    true
-  );
-  const filteredProducts = filterItems(
-    ProductsBeforPriceFilter,
-    rangeValue ? "range" : "",
-
-    rangeValue ? rangeValue : ""
-  );
+  // Fetch filtered products when filters change
+  useEffect(() => {
+    const fetchFilteredProducts = async () => {
+      const filters = {
+        category,
+        keyword,
+        range: rangeValue ? rangeValue.join(",") : undefined, // Format range if available
+      };
+      const data = await filterItems(filters);
+      setProducts(data);
+    };
+    fetchFilteredProducts();
+  }, [category, keyword, rangeValue]);
 
   useEffect(() => {
-    getRangeValue(setRangeValue, maxSize, intLowerLimit, intUpperLimit, true);
-    setRangeValue(null);
-  }, [
-    category,
-    tag,
-    ,
-    size,
-    ,
-    color,
-    ,
-    search,
-    intLowerLimit,
-    maxSize,
-    intUpperLimit,
-  ]);
+    const fetchCategoryName = async () => {
+  try {
+    // Fetch data from backend
+    const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/category/${category}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch filtered items");
+    }
+    const data = await response.json();
+    setCategoryName(data.Category.name["en"]);
+  } catch (error) {
+    console.error("Error fetching filtered items:", error);
+    return [];
+  }
+};
+    fetchCategoryName();
+  }, [category]);
+
+  // Get range value
   useEffect(() => {
     getRangeValue(setRangeValue, maxSize, intLowerLimit, intUpperLimit);
   }, [intLowerLimit, intUpperLimit, maxSize]);
-
+  console.log(products)
   return (
     <main>
       <HeroPrimary
         title={
           category
-            ? `Category: ${makeText(category)}`
-            :
-             brand
-            ? `Brand: ${makeText(brand)}`
-            : size
-            ? `Product Size: ${makeText(size)}`
-            : tag
-            ? `Tag: ${makeText(tag)}`
-            : color
-            ? `Product  Color: ${makeText(color)}`
-            : search
-            ? `Search: ${makeText(search)}`
+            ? `Category: ${makeText(categoryName)}`
+            :  keyword
+            ? `Keyword: ${makeText(keyword)}`
             : title
             ? title
             : "Shop"
         }
-        text={text ? text : "Shop"}
+        text={text || "Shop"}
         type={isSidebar === "primary" ? 2 : 3}
-        isCapitalize={brand ? true : false}
       />
-      <CommonContext
-        value={{
-          filteredProducts,
-          searchedItems,
-          handleSearch,
-          handleSearchString,
-          startSearch,
-          closeSearch,
-          isShowSearch,
-          isShowQuickSearchResult,
-          setIsShowQuickSearchResult,
-          isShop: true,
-          currentPath,
-          category,
-          brand,
-          tag,
-          size,
-        }}
-      >
+      <CommonContext value={{ products, isShop: true, currentPath }}>
         <ProductsPrimary isSidebar={isSidebar} currentTapId={currentTapId} />
       </CommonContext>
       <Features4 />

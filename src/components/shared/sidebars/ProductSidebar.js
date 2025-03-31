@@ -15,22 +15,13 @@ const ProductSidebar = () => {
       {<ProductCategories />}
 
       {/* <!-- Price Filter Widget --> */}
-      <PriceRange />
+      {/* <PriceRange /> */}
 
       {/* <!-- Top Rated Product Widget --> */}
       <SidebarTopRatedProducs />
 
       {/* <!-- Search Widget --> */}
       <SidebarSearch />
-
-      {/* <!-- Tagcloud Widget --> */}
-      <ProductTags />
-
-      {/* <!-- Size Widget --> */}
-      <ProductSizes />
-
-      {/* <!-- Color Widget --> */}
-      <ProductColors />
 
       {/* <!-- Banner Widget --> */}
       <SidebarBanner image={"/img/banner/banner-2.jpg"} />

@@ -8,14 +8,14 @@ import ProductSidebar from "@/components/shared/sidebars/ProductSidebar";
 import usePagination from "@/hooks/usePagination";
 import filterItems from "@/libs/filterItems";
 import { useCommonContext } from "@/providers/CommonContext";
+import { useProductContext } from "@/providers/ProductContext";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const ProductsPrimary = ({ isSidebar, currentTapId }) => {
   const [arrangeInput, setArrangeInput] = useState("default");
   const [currentTab, setCurrentTab] = useState(currentTapId ? currentTapId : 0);
-
-  const { filteredProducts } = useCommonContext();
+  const { products } = useProductContext();
   const limit =
     currentTab === 1
       ? isSidebar === false
@@ -24,13 +24,8 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
       : isSidebar === false
       ? 16
       : 21;
-
-  const arrangedProducts = filterItems(
-    filteredProducts,
-    arrangeInput,
-    arrangeInput
-  );
   // get pagination details
+  
   const {
     currentItems,
     totalItems,
@@ -43,7 +38,7 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
     handleCurrentPage,
     firstItem,
     lastItem,
-  } = usePagination(arrangedProducts, limit, 5);
+  } = usePagination(products, limit, 5);
 
   const tabControllers = ["fas fa-th-large", "fas fa-list"];
   useEffect(() => {

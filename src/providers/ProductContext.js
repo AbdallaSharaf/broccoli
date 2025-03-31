@@ -36,7 +36,7 @@ const ProductContext = ({ children }) => {
   }, []);
 
   return (
-    <productContext.Provider value={{ products, product, setProduct, currentProduct, setCurrentProduct, loading, error }}>
+    <productContext.Provider value={{ products, setProducts, product, setProduct, currentProduct, setCurrentProduct, loading, error }}>
       {children}
       {currentProduct && (
         <>

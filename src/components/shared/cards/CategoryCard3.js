@@ -1,23 +1,20 @@
+"use client"
 import countDataLength from "@/libs/countDataLength";
 import filterItems from "@/libs/filterItems";
 import getAllProducts from "@/libs/getAllProducts";
 import makePath from "@/libs/makePath";
 import modifyNumber from "@/libs/modifyNumber";
+import { useProductContext } from "@/providers/ProductContext";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const CategoryCard3 = ({ category }) => {
   const { title, items, image, path } = category;
-
+  const { products } = useProductContext();
   const totalItems = modifyNumber(
     countDataLength(
-      filterItems(
-        getAllProducts(),
-        title === "Browse all" ? "default" : "category",
-        makePath(title),
-        true
-      )
+      products
     )
   );
 

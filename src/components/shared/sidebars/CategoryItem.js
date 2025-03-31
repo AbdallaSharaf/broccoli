@@ -11,7 +11,7 @@ const CategoryItem = ({ item, isMore }) => {
           : "ltn__category-menu-item ltn__category-menu-drop"
       }`}
     >
-      <Link href={`/shop?categorsy=${_id}`}>
+      <Link href={`/shop?category=${_id}`}>
 
         {name["en"]}{" "}
       </Link>
