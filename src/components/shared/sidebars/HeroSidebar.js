@@ -1,12 +1,14 @@
-import Link from "next/link";
+"use client";
 import React from "react";
 import CategoryItem from "./CategoryItem";
-import getCategoryItems from "@/libs/getCategoryItems";
+import { useCategoryContext } from "@/providers/CategoryContext";
 
 const HeroSidebar = ({ type }) => {
-  const allItems = getCategoryItems();
-  const items = allItems?.filter(({ id }) => id < 9);
-  const moreItems = allItems?.filter(({ id }) => id > 8);
+  const { categories } = useCategoryContext();
+
+  const items = categories?.slice(0, 9); // First 9 items
+  const moreItems = categories?.slice(9); // Items after index 8
+  
   return (
     <div className="ltn__category-menu-wrap">
       <div className="ltn__category-menu-title">

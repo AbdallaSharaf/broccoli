@@ -16,314 +16,314 @@ const MobileMenu = () => {
       name: "Home",
       path: "#",
       accordion: null,
-      accordionItems: [
-        {
-          name: "Home Pages 01",
+      // accordionItems: [
+      //   {
+      //     name: "Home Pages 01",
 
-          path: "/",
-        },
-        {
-          name: "Home Pages 02",
+      //     path: "/",
+      //   },
+      //   {
+      //     name: "Home Pages 02",
 
-          path: "/home-2",
-        },
-        {
-          name: "Home Pages 03",
+      //     path: "/home-2",
+      //   },
+      //   {
+      //     name: "Home Pages 03",
 
-          path: "/home-3",
-        },
-        {
-          name: "Home Pages 04",
+      //     path: "/home-3",
+      //   },
+      //   {
+      //     name: "Home Pages 04",
 
-          path: "/home-4",
-        },
-        {
-          name: "Home Pages 05",
+      //     path: "/home-4",
+      //   },
+      //   {
+      //     name: "Home Pages 05",
 
-          path: "/home-5",
-          label: "video",
-        },
-        {
-          name: "Home Pages 06",
+      //     path: "/home-5",
+      //     label: "video",
+      //   },
+      //   {
+      //     name: "Home Pages 06",
 
-          path: "/home-6",
-        },
-        {
-          name: "Home Pages 07",
+      //     path: "/home-6",
+      //   },
+      //   {
+      //     name: "Home Pages 07",
 
-          path: "/home-7",
-        },
-        {
-          name: "Home Pages 08",
+      //     path: "/home-7",
+      //   },
+      //   {
+      //     name: "Home Pages 08",
 
-          path: "/home-8",
-        },
-        {
-          name: "Home Pages 09",
+      //     path: "/home-8",
+      //   },
+      //   {
+      //     name: "Home Pages 09",
 
-          path: "/home-9",
-        },
-        {
-          name: "Home Pages 10",
+      //     path: "/home-9",
+      //   },
+      //   {
+      //     name: "Home Pages 10",
 
-          path: "/home-10",
-        },
-        {
-          name: "Home Pages 11",
+      //     path: "/home-10",
+      //   },
+      //   {
+      //     name: "Home Pages 11",
 
-          path: "/home-11",
-          label: "service",
-        },
-      ],
+      //     path: "/home-11",
+      //     label: "service",
+      //   },
+      // ],
     },
-    {
-      name: "About",
-      path: "#",
-      accordion: null,
-      accordionItems: [
-        {
-          name: "About",
+    // {
+    //   name: "About",
+    //   path: "#",
+    //   accordion: null,
+    //   accordionItems: [
+    //     {
+    //       name: "About",
 
-          path: "/about",
-        },
-        {
-          name: "Services",
+    //       path: "/about",
+    //     },
+    //     {
+    //       name: "Services",
 
-          path: "/services",
-        },
-        {
-          name: "Service Details",
+    //       path: "/services",
+    //     },
+    //     {
+    //       name: "Service Details",
 
-          path: "/services/1",
-        },
-        {
-          name: "Portfolio",
+    //       path: "/services/1",
+    //     },
+    //     {
+    //       name: "Portfolio",
 
-          path: "/portfolio",
-        },
-        {
-          name: "Portfolio - 02",
+    //       path: "/portfolio",
+    //     },
+    //     {
+    //       name: "Portfolio - 02",
 
-          path: "/portfolio-2",
-        },
-        {
-          name: "Portfolio Details",
-          path: "/portfolio/1",
-        },
-        {
-          name: "Team",
+    //       path: "/portfolio-2",
+    //     },
+    //     {
+    //       name: "Portfolio Details",
+    //       path: "/portfolio/1",
+    //     },
+    //     {
+    //       name: "Team",
 
-          path: "/team",
-        },
-        {
-          name: "Team Details",
+    //       path: "/team",
+    //     },
+    //     {
+    //       name: "Team Details",
 
-          path: "/team/1",
-        },
-        {
-          name: "FAQ",
+    //       path: "/team/1",
+    //     },
+    //     {
+    //       name: "FAQ",
 
-          path: "/faq",
-        },
-        {
-          name: "Google Map Locations",
+    //       path: "/faq",
+    //     },
+    //     {
+    //       name: "Google Map Locations",
 
-          path: "/locations",
-        },
-      ],
-    },
+    //       path: "/locations",
+    //     },
+    //   ],
+    // },
     {
       name: "Shop",
       path: "/shop",
       accordion: null,
       isNestedaccordion: null,
-      accordionItems: [
-        {
-          name: "Shop",
+      // accordionItems: [
+      //   {
+      //     name: "Shop",
 
-          path: "/shop",
-        },
-        {
-          name: "Shop Grid",
+      //     path: "/shop",
+      //   },
+      //   {
+      //     name: "Shop Grid",
 
-          path: "/shop-grid",
-        },
-        {
-          name: "Shop Left sidebar",
+      //     path: "/shop-grid",
+      //   },
+      //   {
+      //     name: "Shop Left sidebar",
 
-          path: "/shop-left-sidebar",
-        },
-        {
-          name: "Shop right sidebar",
+      //     path: "/shop-left-sidebar",
+      //   },
+      //   {
+      //     name: "Shop right sidebar",
 
-          path: "/shop-right-sidebar",
-        },
-        {
-          name: "Shop details",
+      //     path: "/shop-right-sidebar",
+      //   },
+      //   {
+      //     name: "Shop details",
 
-          path: "/products/1",
-        },
-        {
-          name: "Shop details 02",
-          path: "/shop-details-2",
-        },
+      //     path: "/products/1",
+      //   },
+      //   {
+      //     name: "Shop details 02",
+      //     path: "/shop-details-2",
+      //   },
 
-        {
-          name: "Cart",
+      //   {
+      //     name: "Cart",
 
-          path: "/cart",
-        },
-        {
-          name: "Wishlist",
+      //     path: "/cart",
+      //   },
+      //   {
+      //     name: "Wishlist",
 
-          path: "/wishlist",
-        },
-        {
-          name: "Checkout",
+      //     path: "/wishlist",
+      //   },
+      //   {
+      //     name: "Checkout",
 
-          path: "/checkout",
-        },
-        {
-          name: "Order Tracking",
+      //     path: "/checkout",
+      //   },
+      //   {
+      //     name: "Order Tracking",
 
-          path: "/order-tracking",
-        },
-        {
-          name: "My Account",
+      //     path: "/order-tracking",
+      //   },
+      //   {
+      //     name: "My Account",
 
-          path: "/account",
-        },
-        {
-          name: "Sign in",
+      //     path: "/account",
+      //   },
+      //   {
+      //     name: "Sign in",
 
-          path: "/login",
-        },
-        {
-          name: "Register",
+      //     path: "/login",
+      //   },
+      //   {
+      //     name: "Register",
 
-          path: "/register",
-        },
-      ],
+      //     path: "/register",
+      //   },
+      // ],
     },
-    {
-      name: "News",
-      path: "#",
-      accordion: null,
-      accordionItems: [
-        {
-          name: "News",
+    // {
+    //   name: "News",
+    //   path: "#",
+    //   accordion: null,
+    //   accordionItems: [
+    //     {
+    //       name: "News",
 
-          path: "/blogs",
-        },
-        {
-          name: "News Grid",
+    //       path: "/blogs",
+    //     },
+    //     {
+    //       name: "News Grid",
 
-          path: "/blogs-grid",
-        },
-        {
-          name: "News Left sidebar",
+    //       path: "/blogs-grid",
+    //     },
+    //     {
+    //       name: "News Left sidebar",
 
-          path: "/blog-left-sidebar",
-        },
-        {
-          name: "News Right sidebar",
+    //       path: "/blog-left-sidebar",
+    //     },
+    //     {
+    //       name: "News Right sidebar",
 
-          path: "/blog-right-sidebar",
-        },
-        {
-          name: "News details",
+    //       path: "/blog-right-sidebar",
+    //     },
+    //     {
+    //       name: "News details",
 
-          path: "/blogs/1",
-        },
-      ],
-    },
-    {
-      name: "Pages",
-      path: "#",
-      accordion: null,
-      accordionItems: [
-        {
-          name: "About",
+    //       path: "/blogs/1",
+    //     },
+    //   ],
+    // },
+    // {
+    //   name: "Pages",
+    //   path: "#",
+    //   accordion: null,
+    //   accordionItems: [
+    //     {
+    //       name: "About",
 
-          path: "/about",
-        },
-        {
-          name: "Services",
+    //       path: "/about",
+    //     },
+    //     {
+    //       name: "Services",
 
-          path: "/services",
-        },
-        {
-          name: "Service Details",
+    //       path: "/services",
+    //     },
+    //     {
+    //       name: "Service Details",
 
-          path: "/services/1",
-        },
-        {
-          name: "Portfolio",
+    //       path: "/services/1",
+    //     },
+    //     {
+    //       name: "Portfolio",
 
-          path: "/portfolio",
-        },
-        {
-          name: "Portfolio - 02",
+    //       path: "/portfolio",
+    //     },
+    //     {
+    //       name: "Portfolio - 02",
 
-          path: "/portfolio-2",
-        },
-        {
-          name: "Portfolio Details",
-          path: "/portfolio/1",
-        },
-        {
-          name: "Team",
+    //       path: "/portfolio-2",
+    //     },
+    //     {
+    //       name: "Portfolio Details",
+    //       path: "/portfolio/1",
+    //     },
+    //     {
+    //       name: "Team",
 
-          path: "/team",
-        },
-        {
-          name: "Team Details",
+    //       path: "/team",
+    //     },
+    //     {
+    //       name: "Team Details",
 
-          path: "/team/1",
-        },
-        {
-          name: "FAQ",
+    //       path: "/team/1",
+    //     },
+    //     {
+    //       name: "FAQ",
 
-          path: "/faq",
-        },
+    //       path: "/faq",
+    //     },
 
-        {
-          name: "History",
+    //     {
+    //       name: "History",
 
-          path: "/history",
-        },
-        {
-          name: "Appointment",
+    //       path: "/history",
+    //     },
+    //     {
+    //       name: "Appointment",
 
-          path: "/contact",
-        },
-        {
-          name: "Google Map Locations",
+    //       path: "/contact",
+    //     },
+    //     {
+    //       name: "Google Map Locations",
 
-          path: "/locations",
-        },
-        {
-          name: "404",
+    //       path: "/locations",
+    //     },
+    //     {
+    //       name: "404",
 
-          path: "/error",
-        },
-        {
-          name: "Contact",
+    //       path: "/error",
+    //     },
+    //     {
+    //       name: "Contact",
 
-          path: "/contact",
-        },
-        {
-          name: "Coming Soon",
+    //       path: "/contact",
+    //     },
+    //     {
+    //       name: "Coming Soon",
 
-          path: "/coming-soon",
-        },
-      ],
-    },
-    {
-      name: "Contact",
-      path: "/contact",
-      accordion: null,
-    },
+    //       path: "/coming-soon",
+    //     },
+    //   ],
+    // },
+    // {
+    //   name: "Contact",
+    //   path: "/contact",
+    //   accordion: null,
+    // },
   ];
   return (
     <div
@@ -352,7 +352,7 @@ const MobileMenu = () => {
             {navItems?.map(({ name, path, accordionItems }, idx) => (
               <li key={idx}>
                 <Link href={path}>{name}</Link>
-                {accordionItems ? (
+                {/* {accordionItems ? (
                   <ul className="sub-menu">
                     {accordionItems?.map(
                       ({ name: name1, path: path1, label }, idx1) => (
@@ -371,7 +371,7 @@ const MobileMenu = () => {
                   </ul>
                 ) : (
                   ""
-                )}
+                )} */}
               </li>
             ))}
           </ul>

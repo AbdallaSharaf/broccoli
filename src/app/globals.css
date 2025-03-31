@@ -7247,7 +7247,7 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   .ltn__category-menu-drop > a {
     position: relative;
   }
-  .ltn__category-menu-drop > a::before {
+  /* .ltn__category-menu-drop > a::before {
     position: absolute;
     content: "+";
     right: 15px;
@@ -7271,7 +7271,7 @@ ul.wp-block-latest-posts.is-grid.alignwide {
     transform: translatey(-50%);
     font-size: 30px;
     font-weight: 400;
-  }
+  } */
 }
 
 .mobile-header-menu-fullwidth .mobile-menu-toggle {

@@ -6,6 +6,7 @@ import makeText from "./makeText";
 const filterItems = (items, collection, filterItem, isProducts) => {
   switch (collection) {
     case "category":
+      console.log(filterItem, collection)
       return items?.filter(
         ({ type, category }) =>
           makePath(isProducts ? type : category) === filterItem

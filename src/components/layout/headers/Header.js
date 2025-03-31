@@ -42,7 +42,7 @@ const Header = () => {
         } ${isTextWhite ? "gradient-color-2" : ""}`}
       >
         {/* <!-- ltn__header-top-area start --> */}
-        {isNotHeaderTop ? "" : <HeaderTop />}
+        {/* {isNotHeaderTop ? "" : <HeaderTop />} */}
 
         {/* <!-- ltn__header-top-area end --> */}
 
@@ -71,8 +71,9 @@ const Header = () => {
         >
           <div
             className={headerSize === "lg" ? "container-fluid" : "container"}
+            style={{width: "100%"}}
           >
-            <div className="row">
+            <div className="row" style={{width: "100%"}}>
               {/* logo */}
               <Logo />
               {/* navbar */}

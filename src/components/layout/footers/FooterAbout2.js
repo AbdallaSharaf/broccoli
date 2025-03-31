@@ -24,14 +24,14 @@ const FooterAbout2 = () => {
         </p> */}
         <div className="footer-address">
           <ul>
-            <li>
+            {/* <li>
               <div className="footer-address-icon">
                 <i className="icon-placeholder"></i>
               </div>
               <div className="footer-address-info">
                 <p>Brooklyn, New York, United States</p>
               </div>
-            </li>
+            </li> */}
             <li>
               <div className="footer-address-icon">
                 <i className="icon-call"></i>

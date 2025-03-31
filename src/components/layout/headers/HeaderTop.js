@@ -40,35 +40,6 @@ const HeaderTop = () => {
                 <ul>
                   <li>
                     {/* <!-- ltn__language-menu --> */}
-                    <div className="ltn__drop-menu ltn__currency-menu ltn__language-menu">
-                      <ul>
-                        <li>
-                          <Link href="#" className="dropdown-toggle">
-                            <span className="active-currency">English</span>
-                          </Link>
-                          <ul>
-                            <li>
-                              <Link href="#">Arabic</Link>
-                            </li>
-                            <li>
-                              <Link href="#">Bengali</Link>
-                            </li>
-                            <li>
-                              <Link href="#">Chinese</Link>
-                            </li>
-                            <li>
-                              <Link href="#">English</Link>
-                            </li>
-                            <li>
-                              <Link href="#">French</Link>
-                            </li>
-                            <li>
-                              <Link href="#">Hindi</Link>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </div>
                   </li>{" "}
                   <li>
                     {/* <!-- ltn__social-media --> */}

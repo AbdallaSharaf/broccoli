@@ -99,7 +99,8 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
         title={
           category
             ? `Category: ${makeText(category)}`
-            : brand
+            :
+             brand
             ? `Brand: ${makeText(brand)}`
             : size
             ? `Product Size: ${makeText(size)}`

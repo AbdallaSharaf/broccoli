@@ -2,8 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 const CategoryItem = ({ item, isMore }) => {
-  const { name, path, dropdown, icon } = item;
-  const totalSections = dropdown?.length;
+  const { name, _id } = item;
   return (
     <li
       className={`${
@@ -12,12 +11,12 @@ const CategoryItem = ({ item, isMore }) => {
           : "ltn__category-menu-item ltn__category-menu-drop"
       }`}
     >
-      <Link href={path}>
-        {icon}
-        {name}{" "}
+      <Link href={`/shop?categorsy=${_id}`}>
+
+        {name["en"]}{" "}
       </Link>
       {/* dropdown */}
-      {dropdown ? (
+      {/* {dropdown ? (
         <ul
           className={`ltn__category-submenu ltn__category-column-${totalSections}`}
         >
@@ -39,7 +38,7 @@ const CategoryItem = ({ item, isMore }) => {
         </ul>
       ) : (
         ""
-      )}
+      )} */}
     </li>
   );
 };

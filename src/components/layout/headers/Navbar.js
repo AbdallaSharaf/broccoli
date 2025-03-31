@@ -95,68 +95,68 @@ const Navbar = () => {
       //   },
       // ],
     },
-    {
-      name: "About",
-      path: "#",
-      dropdown: null,
-      dropdownSection: [
-        {
-          title: null,
-          path: "#",
-          dropdownItems: [
-            {
-              name: "About",
+    // {
+    //   name: "About",
+    //   path: "#",
+    //   dropdown: null,
+    //   dropdownSection: [
+    //     {
+    //       title: null,
+    //       path: "#",
+    //       dropdownItems: [
+    //         {
+    //           name: "About",
 
-              path: "/about",
-            },
-            {
-              name: "Services",
+    //           path: "/about",
+    //         },
+    //         {
+    //           name: "Services",
 
-              path: "/services",
-            },
-            // {
-            //   name: "Service Details",
+    //           path: "/services",
+    //         },
+    //         // {
+    //         //   name: "Service Details",
 
-            //   path: "/services/1",
-            // },
-            {
-              name: "Gallery",
+    //         //   path: "/services/1",
+    //         // },
+    //         {
+    //           name: "Gallery",
 
-              path: "/portfolio",
-            },
-            // {
-            //   name: "Gallery - 02",
+    //           path: "/portfolio",
+    //         },
+    //         // {
+    //         //   name: "Gallery - 02",
 
-            //   path: "/portfolio-2",
-            // },
-            // {
-            //   name: "Gallery Details",
-            //   path: "/portfolio/1",
-            // },
-            {
-              name: "Team",
+    //         //   path: "/portfolio-2",
+    //         // },
+    //         // {
+    //         //   name: "Gallery Details",
+    //         //   path: "/portfolio/1",
+    //         // },
+    //         {
+    //           name: "Team",
 
-              path: "/team",
-            },
-            // {
-            //   name: "Team Details",
+    //           path: "/team",
+    //         },
+    //         // {
+    //         //   name: "Team Details",
 
-            //   path: "/team/1",
-            // },
-            {
-              name: "FAQ",
+    //         //   path: "/team/1",
+    //         // },
+    //         {
+    //           name: "FAQ",
 
-              path: "/faq",
-            },
-            {
-              name: "Google Map Locations",
+    //           path: "/faq",
+    //         },
+    //         {
+    //           name: "Google Map Locations",
 
-              path: "/locations",
-            },
-          ],
-        },
-      ],
-    },
+    //           path: "/locations",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
       name: "Shop",
       path: "/shop",
@@ -393,27 +393,27 @@ const Navbar = () => {
     //     },
     //   ],
     // },
-    {
-      name: "Contact",
-      path: "/contact",
-      dropdown: null,
-    },
+    // {
+    //   name: "Contact",
+    //   path: "/contact",
+    //   dropdown: null,
+    // },
   ];
   const navItems = navItemsRaw?.map((navItem, idx) => ({
     ...navItem,
-    dropdown:
-      // idx === 0 ? (
-      //   <HomeDropdown itmes={navItem?.dropdownSection} />
-      // ) : 
-      // idx > 0 && idx < 4 ? (
-      (idx === 1) ? (
-        <CommonDropdown items={navItem?.dropdownSection} />
-      // ) : idx === 4 ? (
-      ) 
-      // : idx === 3 ? (
-      //   <PagesDropdown itmes={navItem?.dropdownSection} />
-      // ) 
-      : null,
+    // dropdown:
+    //   // idx === 0 ? (
+    //   //   <HomeDropdown itmes={navItem?.dropdownSection} />
+    //   // ) : 
+    //   // idx > 0 && idx < 4 ? (
+    //   (idx === 1 || idx === 2) ? (
+    //     <CommonDropdown items={navItem?.dropdownSection} />
+    //   // ) : idx === 4 ? (
+    //   ) 
+    //   // : idx === 3 ? (
+    //   //   <PagesDropdown itmes={navItem?.dropdownSection} />
+    //   // ) 
+    //   : null,
   }));
   return (
     <div

@@ -3,6 +3,15 @@ import HeaderCartShow from "./HeaderCartShow";
 import Link from "next/link";
 
 const HeaderRight2 = () => {
+
+const languages = [
+  { code: "en", name: "English", flag: "img/flags/en.png" },
+  { code: "ar", name: "Arabic", flag: "img/flags/ar.png" },
+
+];
+
+const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
+
   return (
     <div className="col">
       {/* <!-- header-options --> */}
@@ -69,6 +78,37 @@ const HeaderRight2 = () => {
                   </button>
                 </form>
               </div>
+            </div>
+          </li>{" "}
+          <li className="d-none---">
+            <div className="ltn__drop-menu ltn__currency-menu ltn__language-menu">
+              <ul>
+                <li>
+                  <Link href="#" >
+                    <img
+                      src={activeLang.flag}
+                      alt={activeLang.name}
+                      style={{ width: "24px", height: "24px"}}
+                    />
+                  </Link>
+                  <ul>
+                    {languages.map((lang) => (
+                      <li key={lang.code}>
+                        <Link
+                          href="#"
+                        >
+                          <img
+                            src={lang.flag}
+                            alt={lang.name}
+                            style={{ width: "20px", height: "14px", marginRight: "8px" }}
+                          />
+                          {lang.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
             </div>
           </li>{" "}
           <li className="d-none---">
