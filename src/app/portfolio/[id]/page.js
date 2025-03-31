@@ -23,7 +23,7 @@ const PortfolioDetails = ({ params }) => {
     </PageWrapper>
   );
 };
-export async function generateStaticParams() {
-  return portfolios?.map(({ id }) => ({ id: id.toString() }));
-}
+// export async function generateStaticParams() {
+//   return portfolios?.map(({ id }) => ({ id: id.toString() }));
+// }
 export default PortfolioDetails;
