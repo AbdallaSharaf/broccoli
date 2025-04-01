@@ -28,7 +28,7 @@ const ProductDetailsMain = ({ title, text, type, isNotSidebar, product }) => {
       <CommonContext value={{ type, isNotSidebar }}>
         <ProductDetailsPrimary />
       </CommonContext>
-      <Products5 isRelated={true} title="Related Products" tag="// Foods" />
+      <Products5 isRelated={true} title="Related Products" tag={product?.category?.[0].category.name["en"] ?? product?.category?.[0].category.name["ar"]} />
       <Features4 />
     </main>
   );

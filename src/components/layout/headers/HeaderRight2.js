@@ -80,8 +80,8 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
               </div>
             </div>
           </li>{" "}
-          <li className="d-none---">
-            <div className="ltn__drop-menu ltn__currency-menu ltn__language-menu">
+          <li className="d-none---" style={{ marginRight: "5px" }}>
+            <div className="ltn__drop-menu ltn__currency-menu ltn__language-menu" >
               <ul>
                 <li>
                   <Link href="#" >
@@ -100,7 +100,7 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
                           <img
                             src={lang.flag}
                             alt={lang.name}
-                            style={{ width: "20px", height: "14px", marginRight: "8px" }}
+                            style={{ width: "20px", height: "14px", marginRight: "5px" }}
                           />
                           {lang.name}
                         </Link>
@@ -111,9 +111,9 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
               </ul>
             </div>
           </li>{" "}
-          <li className="d-none---">
+          <li className="d-none---" style={{ marginRight: "5px" }}>
             {/* <!-- user-menu --> */}
-            <div className="ltn__drop-menu user-menu">
+            <div className="ltn__drop-menu user-menu" >
               <ul>
                 <li>
                   <Link href="#">

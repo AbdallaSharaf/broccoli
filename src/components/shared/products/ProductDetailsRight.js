@@ -21,6 +21,7 @@ const ProductDetailsRight = ({ product }) => {
     disc = 0,
     size = "N/A",
     color = "N/A",
+    category = []
   } = product || {};  // current Date
 
   // hooks
@@ -54,11 +55,11 @@ const ProductDetailsRight = ({ product }) => {
     const calanderFormat = moment(currentDate).format("YYYY-MM-DD");
     setPurchaseDate(calanderFormat);
     const inputParent = inputRef.current;
-    const input = inputParent.querySelector("input");
+    const input = inputParent?.querySelector("input");
 
     setTimeout(() => {
-      const increament = inputParent.querySelector(".inc");
-      const decreament = inputParent.querySelector(".dec");
+      const increament = inputParent?.querySelector(".inc");
+      const decreament = inputParent?.querySelector(".dec");
       increament?.addEventListener("click", () => {
         setQuantity(parseInt(input.value));
       });
@@ -111,28 +112,30 @@ const ProductDetailsRight = ({ product }) => {
       <h3>{name["en"] ?? name["ar"] ?? "N/A"}</h3>
       {/* price */}
       <div className="product-price text-nowrap">
-        <span>${netPriceModified}</span> <del>${priceModified}</del>
+        <span>${netPriceModified}</span> 
+        {/* <del>${priceModified}</del> */}
       </div>
       {/* description */}
 
       {/* category, availability */}
-      <div className={`modal-product-meta ltn__product-details-menu-1  `}>
+      {Array.isArray(category) && category?.length > 0 && <div className={`modal-product-meta ltn__product-details-menu-1`}>
         <ul>
           <li
             onClick={() => {
-              !type ? controlModal() : "";
+              if (!type) controlModal();
             }}
           >
             <strong>Categories:</strong>{" "}
             <span>
-              <Link href="/shop?category=fruits">Fruits</Link>{" "}
-              <Link href="/shop?category=meat">Meat</Link>{" "}
-              <Link href="/shop?category=fish">Fish</Link>{" "}
-              <Link href="/shop?category=fried">Fried</Link>
+              {Array.isArray(category) && category?.map((cat) => (
+                <Link key={cat.category._id} href={`/shop?category=${cat.category._id}`}>
+                  {cat.category.name["en"] ?? cat.category.name["ar"] ?? "N/A"}
+                </Link>
+              ))}
             </span>
           </li>
         </ul>
-      </div>
+      </div>}
       {/* countdown */}
 
       {/* add to cart */}

@@ -61,7 +61,7 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   useEffect(() => {
     getRangeValue(setRangeValue, maxSize, intLowerLimit, intUpperLimit);
   }, [intLowerLimit, intUpperLimit, maxSize]);
-  console.log(products)
+  // console.log(products)
   return (
     <main>
       <HeroPrimary

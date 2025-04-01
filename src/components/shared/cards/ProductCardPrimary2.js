@@ -1,17 +1,22 @@
 "use client";
+
 import countDiscount from "@/libs/countDiscount";
 import modifyAmount from "@/libs/modifyAmount";
+import sliceText from "@/libs/sliceText";
 import { useCartContext } from "@/providers/CartContext";
 import { useProductContext } from "@/providers/ProductContext";
 import { useWishlistContext } from "@/providers/WshlistContext";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-const ProductCardPrimary = ({ product, isShowDisc }) => {
-  const { name, price, images, _id, status, color } = product
-    ? product
-    : {};
+const ProductCardPrimary2 = ({ product, isShowDisc }) => {
+  const {
+    name,
+    description,
+    price,
+    images,
+    _id,
+  } = product;
   const { setCurrentProduct } = useProductContext();
   const { netPrice } = countDiscount(price, 0);
   const netPriceModified = modifyAmount(netPrice);
@@ -20,24 +25,18 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
   const { addProductToWishlist } = useWishlistContext();
   return (
     <div
-      className="ltn__product-item ltn__product-item-3 text-center"
+      className="ltn__product-item ltn__product-item-3"
       onMouseEnter={() => setCurrentProduct(product)}
     >
       <div className="product-img">
         <Link href={`/products/${_id}`}>
-          <Image
-            src={images?.[0] || '/img/product/1.png'}
-            alt="#"
-            width={1000}
-            height={1000}
-            // placeholder="blur"
-          />
+          <Image src={images?.[0] || '/img/product/1.png'} alt="#" width={1000} height={1000} />
         </Link>
-        {/* {status || isShowDisc ? (
+        {status || isShowDisc ? (
           <div className="product-badge">
             <ul>
               {isShowDisc ? (
-                <li className="sale-badge">-{disc}%</li>
+                <li className="sale-badge">-{0}%</li>
               ) : status === "sale" ? (
                 <li className="new-badge">{status}</li>
               ) : (
@@ -47,7 +46,49 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           </div>
         ) : (
           ""
-        )} */}
+        )}
+      </div>
+      <div className="product-info">
+        <h2 className="product-title">
+          <Link href={`/products/${_id}`}>{name["en"] ?? name["ar"]}</Link>
+        </h2>
+        <div className="product-ratting">
+          <ul>
+            <li>
+              <Link href="#">
+                <i className="fas fa-star"></i>
+              </Link>
+            </li>
+            <li>
+              <Link href="#">
+                <i className="fas fa-star"></i>
+              </Link>
+            </li>
+            <li>
+              <Link href="#">
+                <i className="fas fa-star"></i>
+              </Link>
+            </li>
+            <li>
+              <Link href="#">
+                <i className="fas fa-star-half-alt"></i>
+              </Link>
+            </li>
+            <li>
+              <Link href="#">
+                <i className="far fa-star"></i>
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="product-price">
+          <span>${netPriceModified}</span>
+          {/* <del>${priceModified}</del> */}
+        </div>
+
+        <div className="product-brief">
+          <p>{sliceText(description["en"] ?? description["ar"], 140)}</p>
+        </div>
         <div className="product-hover-action">
           <ul>
             <li>
@@ -59,7 +100,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
               >
                 <i className="far fa-eye"></i>
               </Link>
-            </li>{" "}
+            </li>
             <li>
               <Link
                 onClick={(e) => {
@@ -67,7 +108,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
                   addProductToCart({
                     ...product,
                     quantity: 1,
-                    color: color ? color : "",
+                    color: color,
                   });
                 }}
                 href="#"
@@ -77,7 +118,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
               >
                 <i className="fas fa-shopping-cart"></i>
               </Link>
-            </li>{" "}
+            </li>
             <li>
               <Link
                 onClick={(e) => {
@@ -95,46 +136,8 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           </ul>
         </div>
       </div>
-      <div className="product-info">
-        <div className="product-ratting">
-          <ul>
-            <li>
-              <Link href="#">
-                <i className="fas fa-star"></i>
-              </Link>
-            </li>{" "}
-            <li>
-              <Link href="#">
-                <i className="fas fa-star"></i>
-              </Link>
-            </li>{" "}
-            <li>
-              <Link href="#">
-                <i className="fas fa-star"></i>
-              </Link>
-            </li>{" "}
-            <li>
-              <Link href="#">
-                <i className="fas fa-star-half-alt"></i>
-              </Link>
-            </li>{" "}
-            <li>
-              <Link href="#">
-                <i className="far fa-star"></i>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <h2 className="product-title">
-          <Link href={`/products/${_id}`}>{name["en"] || name["ar"] || "N/A"}</Link>
-        </h2>
-        <div className="product-price">
-          <span>${netPriceModified}</span> 
-          {/* <del>${priceModified}</del> */}
-        </div>
-      </div>
     </div>
   );
 };
 
-export default ProductCardPrimary;
+export default ProductCardPrimary2;

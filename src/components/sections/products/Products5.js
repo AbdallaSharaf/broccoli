@@ -1,11 +1,29 @@
+"use client";
 import ProductCardPrimary from "@/components/shared/cards/ProductCardPrimary";
-import getAllProducts from "@/libs/getAllProducts";
-import React from "react";
+import { useProductContext } from "@/providers/ProductContext";
+import React, { useEffect } from "react";
 
 const Products5 = ({ isRelated, title, tag, pt, pb }) => {
-  const products = getAllProducts()
-    ?.sort((a, b) => b.disc - a.disc)
-    .slice(0, 6);
+  const { relatedProducts, setRelatedProducts, product } = useProductContext();
+
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+    try {
+      // Fetch data from backend
+      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch filtered items");
+      }
+      const data = await response.json();
+      console.log("data", data);
+      setRelatedProducts(data.data);
+    } catch (error) {
+      console.error("Error fetching filtered items:", error);
+      return [];
+    }
+  };
+      fetchRelatedProducts();
+    }, [product]);
 
   return (
     <div
@@ -22,7 +40,7 @@ const Products5 = ({ isRelated, title, tag, pt, pb }) => {
               }`}
             >
               {tag ? (
-                <h6 className="section-subtitle ltn__secondary-color">{tag}</h6>
+                <h6 className="section-subtitle ltn__secondary-color">// {tag}</h6>
               ) : (
                 ""
               )}
@@ -35,7 +53,7 @@ const Products5 = ({ isRelated, title, tag, pt, pb }) => {
         </div>
         <div className="row ltn__product-slider-item-four-active slick-arrow-1">
           {/* <!-- ltn__product-item --> */}
-          {products?.map((product, idx) => (
+          {relatedProducts?.map((product, idx) => (
             <div key={idx} className="col-lg-12">
               <ProductCardPrimary product={product} isShowDisc={true} />
             </div>

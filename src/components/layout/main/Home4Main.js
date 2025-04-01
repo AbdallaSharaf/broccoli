@@ -15,15 +15,15 @@ const Home4Main = () => {
     <main>
       <Hero15 type={2} />
       <HotDeal4 />
-      <Categories3 type={3} />
-      <HotDeal2 type={2} />
       <Products3
         isSmallTitle={true}
         isDouble={true}
         desc="A highly efficient slip-ring scanner for today's diagnostic requirements."
       />
-      <Offer4 mt="mt-0" />
+      {/* <Categories3 type={3} /> */}
+      <HotDeal2 type={2} />
       <Products5 pt="pt-80" pb="pb-70" />
+      <Offer4 mt="mt-0" />
 
       <Brands3 type={2} />
       <Blogs2 type={2} pb="pb-70" title="Leatest Blog" />

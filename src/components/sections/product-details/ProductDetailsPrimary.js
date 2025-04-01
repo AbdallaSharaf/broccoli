@@ -44,7 +44,7 @@ const ProductDetailsPrimary = () => {
                 <div className={isNotSidebar ? "col-lg-6" : "col-md-6"}>
                   <div className="ltn__shop-details-img-gallery">
                     <div className="ltn__shop-details-large-img">
-                      {/* {allImages?.map(({ image }, idx) => (
+                      {product?.images?.map((image, idx) => (
                         <div key={idx} className="single-large-img">
                           <Link href={image} data-rel="lightcase:myCollection">
                             <Image
@@ -55,10 +55,10 @@ const ProductDetailsPrimary = () => {
                             />
                           </Link>
                         </div>
-                      ))} */}
+                      ))}
                     </div>
                     <div className="ltn__shop-details-small-img slick-arrow-2">
-                      {/* {allImages?.map(({ image }, idx) => (
+                      {product?.images?.map((image, idx) => (
                         <div key={idx} className="single-small-img">
                           <Image
                             src={image}
@@ -67,7 +67,7 @@ const ProductDetailsPrimary = () => {
                             height={1000}
                           />
                         </div>
-                      ))} */}
+                      ))}
                     </div>
                   </div>
                 </div>

@@ -10,33 +10,36 @@ const ProductContext = ({ children }) => {
   const [products, setProducts] = useState([]); // Store products from API
   const [product, setProduct] = useState(); // Store products from API
   const [currentProduct, setCurrentProduct] = useState(null); // Track selected product
+  const [topRatedProducts, setTopRatedProducts] = useState([]); // Track selected product
+  const [relatedProducts, setRelatedProducts] = useState([]); // Track selected product
+  const [topProducts, setTopProducts] = useState([]); // Track selected product
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product"); // Replace with your API URL
-        const data = await response.json();
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product"); // Replace with your API URL
+  //       const data = await response.json();
+  //       console.log("fetched by context");
+  //       if (response.ok) {
+  //         setProducts(data.data); // Store products in state
+  //         setCurrentProduct(data[0] || null); // Set first product as default
+  //       } else {
+  //         throw new Error(data.message || "Failed to fetch products");
+  //       }
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-        if (response.ok) {
-          setProducts(data.data); // Store products in state
-          setCurrentProduct(data[0] || null); // Set first product as default
-        } else {
-          throw new Error(data.message || "Failed to fetch products");
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  //   fetchProducts();
+  // }, []);
 
   return (
-    <productContext.Provider value={{ products, setProducts, product, setProduct, currentProduct, setCurrentProduct, loading, error }}>
+    <productContext.Provider value={{ products, setProducts, product, setProduct, currentProduct, setCurrentProduct, loading, error, topRatedProducts, setTopRatedProducts, relatedProducts, setRelatedProducts, topProducts, setTopProducts }}>
       {children}
       {currentProduct && (
         <>

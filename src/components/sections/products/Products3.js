@@ -2,7 +2,9 @@
 import ProductCardPrimary from "@/components/shared/cards/ProductCardPrimary";
 import getAllProducts from "@/libs/getAllProducts";
 import makePath from "@/libs/makePath";
+import { useProductContext } from "@/providers/ProductContext";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const Products3 = ({
   title,
@@ -13,36 +15,27 @@ const Products3 = ({
   type,
   isDouble,
 }) => {
-  const drinksProducts = getAllProducts()?.filter(
-    ({ collection }) => makePath(collection) === makePath("Food & Drinks")
-  );
+  const { topProducts, setTopProducts } = useProductContext();
 
-  const drinksProducts1 = drinksProducts?.slice(0, 6);
-  const drinksProducts2 = drinksProducts?.slice(6, 12);
-  const vegetablesProducts = getAllProducts()?.filter(
-    ({ collection }) => makePath(collection) === makePath("Vegetables")
-  );
-
-  const vegetablesProducts1 = vegetablesProducts?.slice(0, 6);
-  const vegetablesProducts2 = vegetablesProducts?.slice(6, 12);
-  const driedProducts = getAllProducts()?.filter(
-    ({ collection }) => makePath(collection) === makePath("Dried Foods")
-  );
-
-  const driedProducts1 = driedProducts?.slice(0, 6);
-  const driedProducts2 = driedProducts?.slice(6, 12);
-  const breadProducts = getAllProducts()?.filter(
-    ({ collection }) => makePath(collection) === makePath("Bread & Cake")
-  );
-
-  const breadProducts1 = breadProducts?.slice(0, 6);
-  const breadProducts2 = breadProducts?.slice(6, 12);
-  const fishProducts = getAllProducts()?.filter(
-    ({ collection }) => makePath(collection) === makePath("Fish & Meat")
-  );
-  const fishProducts1 = fishProducts?.slice(0, 6);
-  const fishProducts2 = fishProducts?.slice(6, 12);
-
+    useEffect(() => {
+      const fetchRelatedProducts = async () => {
+      try {
+        // Fetch data from backend
+        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch filtered items");
+        }
+        const data = await response.json();
+        setTopProducts(data.data);
+      } catch (error) {
+        console.error("Error fetching filtered items:", error);
+        return [];
+      }
+    };
+    fetchRelatedProducts();
+  }, []);
+  
+  console.log("data", topProducts);
   return (
     <section>
       <div
@@ -63,7 +56,7 @@ const Products3 = ({
                 }`}
               >
                 <h1 className="section-title">
-                  {title ? title : "Our Products"}
+                  {title ? title : "Top Products"}
                 </h1>
                 {desc ? (
                   <p>
@@ -79,129 +72,20 @@ const Products3 = ({
                   type === 2 ? "ltn__tab-menu-top-right" : ""
                 }  text-uppercase text-center`}
               >
-                <div className="nav">
-                  <Link
-                    className="active show"
-                    data-bs-toggle="tab"
-                    href="#liton_tab_3_1"
-                  >
-                    Food & Drinks
-                  </Link>
-                  <Link data-bs-toggle="tab" href="#liton_tab_3_2" className="">
-                    Vegetables
-                  </Link>
-                  <Link data-bs-toggle="tab" href="#liton_tab_3_3" className="">
-                    Dried Foods
-                  </Link>
-                  {type === 2 ? (
-                    ""
-                  ) : (
-                    <Link
-                      data-bs-toggle="tab"
-                      href="#liton_tab_3_4"
-                      className=""
-                    >
-                      Bread & Cake
-                    </Link>
-                  )}
-                  <Link data-bs-toggle="tab" href="#liton_tab_3_5" className="">
-                    Fish & Meat
-                  </Link>
-                </div>
               </div>
               <div className="tab-content">
-                <div className="tab-pane fade active show" id="liton_tab_3_1">
+                <div>
                   <div className="ltn__product-tab-content-inner">
                     <div className="row ltn__tab-product-slider-one-active slick-arrow-1">
                       {/* <!-- ltn__product-item --> */}
-                      {drinksProducts1?.map((product, idx) => (
+                      {topProducts?.map((product, idx) => (
                         <div className="col-lg-12" key={idx}>
                           <ProductCardPrimary product={product} />
-                          {isDouble ? (
-                            <ProductCardPrimary
-                              product={drinksProducts2[idx]}
-                            />
+                          {/* {isDouble ? (
+                            <ProductCardPrimary product={topProducts[idx]} />
                           ) : (
                             ""
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="tab-pane fade" id="liton_tab_3_2">
-                  <div className="ltn__product-tab-content-inner">
-                    <div className="row ltn__tab-product-slider-one-active slick-arrow-1">
-                      {/* <!-- ltn__product-item --> */}
-                      {vegetablesProducts1?.map((product, idx) => (
-                        <div className="col-lg-12" key={idx}>
-                          <ProductCardPrimary product={product} />
-                          {isDouble ? (
-                            <ProductCardPrimary
-                              product={vegetablesProducts2[idx]}
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      ))}
-                      {/* <!--  --> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="tab-pane fade" id="liton_tab_3_3">
-                  <div className="ltn__product-tab-content-inner">
-                    <div className="row ltn__tab-product-slider-one-active slick-arrow-1">
-                      {/* <!-- ltn__product-item --> */}
-                      {driedProducts1?.map((product, idx) => (
-                        <div className="col-lg-12" key={idx}>
-                          <ProductCardPrimary product={product} />
-                          {isDouble ? (
-                            <ProductCardPrimary product={driedProducts2[idx]} />
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {type === 2 ? (
-                  ""
-                ) : (
-                  <div className="tab-pane fade" id="liton_tab_3_4">
-                    <div className="ltn__product-tab-content-inner">
-                      <div className="row ltn__tab-product-slider-one-active slick-arrow-1">
-                        {/* <!-- ltn__product-item --> */}
-                        {breadProducts1?.map((product, idx) => (
-                          <div className="col-lg-12" key={idx}>
-                            <ProductCardPrimary product={product} />
-                            {isDouble ? (
-                              <ProductCardPrimary
-                                product={breadProducts2[idx]}
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div className="tab-pane fade" id="liton_tab_3_5">
-                  <div className="ltn__product-tab-content-inner">
-                    <div className="row ltn__tab-product-slider-one-active slick-arrow-1">
-                      {/* <!-- ltn__product-item --> */}
-                      {fishProducts1?.map((product, idx) => (
-                        <div className="col-lg-12" key={idx}>
-                          <ProductCardPrimary product={product} />
-                          {isDouble ? (
-                            <ProductCardPrimary product={fishProducts2[idx]} />
-                          ) : (
-                            ""
-                          )}
+                          )} */}
                         </div>
                       ))}
                     </div>
