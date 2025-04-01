@@ -40,7 +40,7 @@ const Products5 = ({ isRelated, title, tag, pt, pb }) => {
               }`}
             >
               {tag ? (
-                <h6 className="section-subtitle ltn__secondary-color">// {tag}</h6>
+                <h6 className="section-subtitle ltn__secondary-color">{"//"} {tag}</h6>
               ) : (
                 ""
               )}
