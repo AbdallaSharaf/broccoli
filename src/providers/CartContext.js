@@ -28,7 +28,7 @@ const CartContextProvider = ({ children }) => {
     const previousQuantity = modifyableProduct?.quantity;
     const currentQuantity = currentProduct?.quantity;
 
-    let currentProducts;
+    let currentProducts = [];
     if (isTotalQuantity) {
       currentProducts = cartProducts?.map((product) =>
         product._id === currentId &&
