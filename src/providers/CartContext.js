@@ -3,25 +3,60 @@ import useSweetAlert from "@/hooks/useSweetAlert";
 import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 import getItemsFromLocalstorage from "@/libs/getItemsFromLocalstorage";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useUserContext } from "./UserContext";
+const cart1 = "/img/product/1.png";
+const cart2 = "/img/product/2.png";
+const cart3 = "/img/product/3.png";
+const cart4 = "/img/product/4.png";
 
+const demoProducts = [
+  {
+    id: 1,
+    title: "Wheel Bearing Retainer",
+    image: cart1,
+    price: 65,
+    quantity: 1,
+  },
+  {
+    id: 2,
+    title: "Brake Conversion Kit",
+    image: cart2,
+    price: 85,
+    quantity: 1,
+  },
+  {
+    id: 3,
+    title: "OE Replica Wheels",
+    image: cart3,
+    price: 92,
+    quantity: 1,
+  },
+  {
+    id: 4,
+    title: "Shock Mount Insulator",
+    image: cart4,
+    price: 68,
+    quantity: 1,
+  },
+];
 const cartContext = createContext(null);
 const CartContextProvider = ({ children }) => {
-  // const { user } = useUserContext(); // Get login function from context
   const [cartStatus, setCartStatus] = useState(null);
   const [cartProducts, setCartProducts] = useState([]);
   const creteAlert = useSweetAlert();
   useEffect(() => {
     const cartProductFromLocalStorage = getItemsFromLocalstorage("cart");
-    setCartProducts(cartProductFromLocalStorage);
+
+    if (!cartProductFromLocalStorage) {
+      setCartProducts(demoProducts);
+      addItemsToLocalstorage("cart", demoProducts);
+    } else [setCartProducts(cartProductFromLocalStorage)];
   }, []);
   // add  product = localstorage cart
-
   const addProductToCart = (currentProduct, isDecreament, isTotalQuantity) => {
-    const { _id: currentId, name: currentTitle } = currentProduct;
+    const { id: currentId, title: currentTitle } = currentProduct;
 
     const modifyableProduct = cartProducts?.find(
-      ({ _id, name }) => _id === currentId && name === currentTitle
+      ({ id, title }) => id === currentId && title === currentTitle
     );
     const previousQuantity = modifyableProduct?.quantity;
     const currentQuantity = currentProduct?.quantity;
@@ -29,8 +64,8 @@ const CartContextProvider = ({ children }) => {
     let currentProducts;
     if (isTotalQuantity) {
       currentProducts = cartProducts?.map((product) =>
-        product._id === currentId &&
-        product?.name === currentTitle &&
+        product.id === currentId &&
+        product?.title === currentTitle &&
         isTotalQuantity
           ? {
               ...product,
@@ -51,14 +86,14 @@ const CartContextProvider = ({ children }) => {
 
       if (isAlreadyExist) {
         currentProducts = cartProducts?.map((product) =>
-          product._id === currentId &&
-          product?.name === currentTitle &&
+          product.id === currentId &&
+          product?.title === currentTitle &&
           isDecreament
             ? {
                 ...product,
                 quantity: product.quantity - currentProduct?.quantity,
               }
-            : product._id === currentId && product?.name === currentTitle
+            : product.id === currentId && product?.title === currentTitle
             ? {
                 ...product,
                 quantity: product.quantity + currentProduct?.quantity,
@@ -86,7 +121,7 @@ const CartContextProvider = ({ children }) => {
   // delete product = localstorage cart
   const deleteProductFromCart = (currentId, currentTitle) => {
     const currentProducts = cartProducts?.filter(
-      ({ _id, name }) => _id !== currentId || name !== currentTitle
+      ({ id, title }) => id !== currentId || title !== currentTitle
     );
     setCartProducts(currentProducts);
     addItemsToLocalstorage("cart", currentProducts);
