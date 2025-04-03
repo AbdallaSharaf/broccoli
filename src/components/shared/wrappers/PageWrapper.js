@@ -39,7 +39,6 @@ const PageWrapper = ({
       {isCommingSoon ? (
         children
       ) : (
-        <UserContextProvider>
         <CartContextProvider>
           <WishlistContextProvider>
             <HeaderContex
@@ -62,19 +61,20 @@ const PageWrapper = ({
               <Header />
             </HeaderContex>
 
+                <UserContextProvider>
             <ProductContextProvider>
               <CategoryContextProvider>
                 {children}
               </CategoryContextProvider>
 
             </ProductContextProvider>
+            </UserContextProvider>
           </WishlistContextProvider>
 
           <FooterContexProvider value={{ footerBg }}>
             <Footer />
           </FooterContexProvider>
         </CartContextProvider>
-        </UserContextProvider>
       )}
 
       <Preloader />
