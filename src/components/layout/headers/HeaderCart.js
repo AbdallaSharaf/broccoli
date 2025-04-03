@@ -36,7 +36,7 @@ const HeaderCart = () => {
                     <div className="mini-cart-img">
                       <Link href={`/products/${_id}`}>
                         <Image
-                          src={images[0] || "/img/product/1.png"}
+                          src={images?.[0] || "/img/product/1.png"}
                           alt="Image"
                           width={1000}
                           height={1000}

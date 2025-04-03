@@ -79,7 +79,7 @@ const CartProduct = ({
       </td>
       <td className="cart-product-image">
         <Link href={`/products/${_id}`}>
-          <Image src={images[0] || "/img/product/1.png"} alt="#" height={1000} width={1000} />
+          <Image src={images?.[0] || "/img/product/1.png"} alt="#" height={1000} width={1000} />
         </Link>
       </td>
       <td className="cart-product-info">

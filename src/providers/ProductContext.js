@@ -21,7 +21,6 @@ const ProductContext = ({ children }) => {
       try {
         const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product"); // Replace with your API URL
         const data = await response.json();
-        console.log("fetched by context");
         if (response.ok) {
           setTopRatedProducts(data.data); // Store products in state
           setTopProducts(data.data); // Store products in state
