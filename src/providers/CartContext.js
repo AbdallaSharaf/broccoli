@@ -7,7 +7,7 @@ import { useUserContext } from "./UserContext";
 
 const cartContext = createContext(null);
 const CartContextProvider = ({ children }) => {
-  const { user } = useUserContext(); // Get login function from context
+  // const { user } = useUserContext(); // Get login function from context
   const [cartStatus, setCartStatus] = useState(null);
   const [cartProducts, setCartProducts] = useState([]);
   const creteAlert = useSweetAlert();
@@ -16,7 +16,7 @@ const CartContextProvider = ({ children }) => {
     setCartProducts(cartProductFromLocalStorage);
   }, []);
   // add  product = localstorage cart
-  console.log(cartProducts)
+
   const addProductToCart = (currentProduct, isDecreament, isTotalQuantity) => {
     const { _id: currentId, name: currentTitle } = currentProduct;
 
