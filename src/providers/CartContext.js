@@ -81,6 +81,7 @@ const CartContextProvider = ({ children }) => {
         setCartStatus("added");
       }
     }
+    console.log("problem")
     setCartProducts(currentProducts);
     addItemsToLocalstorage("cart", currentProducts);
   };
