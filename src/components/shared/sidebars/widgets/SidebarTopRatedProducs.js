@@ -6,25 +6,6 @@ import { useEffect } from "react";
 
 const SidebarTopRatedProducs = () => {
   const products = useProductContext().topRatedProducts?.slice(0,3);
-  const setTopRatedProducts = useProductContext().setTopRatedProducts;
-  
-    useEffect(() => {
-      const fetchTopRatedProducts = async () => {
-    try {
-      // Fetch data from backend
-      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch filtered items");
-      }
-      const data = await response.json();
-      setTopRatedProducts(data.data);
-    } catch (error) {
-      console.error("Error fetching filtered items:", error);
-      return [];
-    }
-  };
-      fetchTopRatedProducts();
-    }, []);
 
   return (
     <div className="widget ltn__top-rated-product-widget">

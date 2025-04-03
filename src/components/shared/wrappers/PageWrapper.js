@@ -9,8 +9,9 @@ import FooterContexProvider from "@/providers/FooterContext";
 import Preloader from "../others/Preloader";
 import main from "@/libs/main";
 import WishlistContextProvider from "@/providers/WshlistContext";
-import ProductContext from "@/providers/ProductContext";
-import CategoryContext from "@/providers/CategoryContext";
+import ProductContextProvider from "@/providers/ProductContext";
+import CategoryContextProvider from "@/providers/CategoryContext";
+import UserContextProvider from "@/providers/UserContext";
 
 const PageWrapper = ({
   children,
@@ -38,6 +39,7 @@ const PageWrapper = ({
       {isCommingSoon ? (
         children
       ) : (
+        <UserContextProvider>
         <CartContextProvider>
           <WishlistContextProvider>
             <HeaderContex
@@ -56,22 +58,23 @@ const PageWrapper = ({
                 isNavbarAppointmentBtn,
                 isNotTransparent,
               }}
-            >
+              >
               <Header />
             </HeaderContex>
 
-            <ProductContext>
-              <CategoryContext>
+            <ProductContextProvider>
+              <CategoryContextProvider>
                 {children}
-              </CategoryContext>
+              </CategoryContextProvider>
 
-            </ProductContext>
+            </ProductContextProvider>
           </WishlistContextProvider>
 
           <FooterContexProvider value={{ footerBg }}>
             <Footer />
           </FooterContexProvider>
         </CartContextProvider>
+        </UserContextProvider>
       )}
 
       <Preloader />

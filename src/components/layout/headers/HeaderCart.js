@@ -29,21 +29,21 @@ const HeaderCart = () => {
             <Nodata text={"Empty Cart!"} />
           ) : (
             cartProducts?.map(
-              ({ id, title, image, price, quantity, disc }, idx) => {
-                const { netPrice } = countDiscount(price, disc);
+              ({ _id, name, images, price, quantity }, idx) => {
+                const { netPrice } = countDiscount(price, 0);
                 return (
                   <div key={idx} className="mini-cart-item clearfix">
                     <div className="mini-cart-img">
-                      <Link href={`/products/${id}`}>
+                      <Link href={`/products/${_id}`}>
                         <Image
-                          src={image}
+                          src={images[0] || "/img/product/1.png"}
                           alt="Image"
                           width={1000}
                           height={1000}
                         />
                       </Link>
                       <span
-                        onClick={() => deleteProductFromCart(id, title)}
+                        onClick={() => deleteProductFromCart(_id, name)}
                         className="mini-cart-item-delete"
                       >
                         <i className="icon-cancel"></i>
@@ -51,9 +51,9 @@ const HeaderCart = () => {
                     </div>
                     <div className="mini-cart-info">
                       <h6>
-                        <Link href={`/products/${id}`}>
+                        <Link href={`/products/${_id}`}>
                           {" "}
-                          {title?.length > 22 ? title?.slice(0, 22) : title}
+                          {(name["en"] ?? name["ar"])?.length > 22 ? (name["en"] ?? name["ar"])?.slice(0, 22) : (name["en"] ?? name["ar"])}
                         </Link>
                       </h6>
                       <span className="mini-cart-quantity">

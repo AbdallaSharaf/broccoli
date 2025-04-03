@@ -15,27 +15,13 @@ const Products3 = ({
   type,
   isDouble,
 }) => {
-  const { topProducts, setTopProducts } = useProductContext();
+  const { topProducts } = useProductContext();
 
-    useEffect(() => {
-      const fetchRelatedProducts = async () => {
-      try {
-        // Fetch data from backend
-        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch filtered items");
-        }
-        const data = await response.json();
-        setTopProducts(data.data);
-      } catch (error) {
-        console.error("Error fetching filtered items:", error);
-        return [];
-      }
-    };
-    fetchRelatedProducts();
-  }, []);
+
+  if (!topProducts || topProducts.length === 0) {
+    return null;
+  }
   
-  console.log("data", topProducts);
   return (
     <section>
       <div
@@ -67,28 +53,20 @@ const Products3 = ({
                   ""
                 )}
               </div>
-              <div
-                className={`ltn__tab-menu ltn__tab-menu-2 ${
-                  type === 2 ? "ltn__tab-menu-top-right" : ""
-                }  text-uppercase text-center`}
-              >
-              </div>
               <div className="tab-content">
-                <div>
-                  <div className="ltn__product-tab-content-inner">
-                    <div className="row ltn__tab-product-slider-one-active slick-arrow-1">
-                      {/* <!-- ltn__product-item --> */}
-                      {topProducts?.map((product, idx) => (
-                        <div className="col-lg-12" key={idx}>
-                          <ProductCardPrimary product={product} />
-                          {/* {isDouble ? (
-                            <ProductCardPrimary product={topProducts[idx]} />
-                          ) : (
-                            ""
-                          )} */}
-                        </div>
-                      ))}
-                    </div>
+                <div className="ltn__product-tab-content-inner">
+                  <div className="row ltn__tab-product-slider-one-active slick-arrow-1">
+                    {/* <!-- ltn__product-item --> */}
+                    {topProducts.length > 0 && topProducts?.map((product, idx) => (
+                      <div className="col-lg-12" key={idx}>
+                        <ProductCardPrimary product={product} />
+                        {/* {isDouble ? (
+                          <ProductCardPrimary product={topProducts[idx]} />
+                        ) : (
+                          ""
+                        )} */}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

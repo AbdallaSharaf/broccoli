@@ -1,7 +1,11 @@
+"use client"
+import { useUserContext } from "@/providers/UserContext";
 import Link from "next/link";
 import React from "react";
 
 const AccountPrimary = () => {
+  const { logout, user } = useUserContext(); // Get login function from context
+  
   return (
     <div className="liton__wishlist-area pb-70">
       <div className="container">
@@ -33,7 +37,7 @@ const AccountPrimary = () => {
                         <Link data-bs-toggle="tab" href="#liton_tab_1_5">
                           Account Details <i className="fas fa-user"></i>
                         </Link>
-                        <Link href="/login">
+                        <Link href="/" onClick={logout}>
                           Logout <i className="fas fa-sign-out-alt"></i>
                         </Link>
                       </div>
@@ -47,10 +51,10 @@ const AccountPrimary = () => {
                       >
                         <div className="ltn__myaccount-tab-content-inner">
                           <p>
-                            Hello <strong>UserName</strong> (not{" "}
-                            <strong>UserName</strong>?{" "}
+                            Hello <strong>{user?.name}</strong> (not{" "}
+                            <strong>{user?.name}</strong>?{" "}
                             <small>
-                              <Link href="/login">Log out</Link>
+                              <Link href="/" onClick={logout}>Log out</Link>
                             </small>{" "}
                             )
                           </p>

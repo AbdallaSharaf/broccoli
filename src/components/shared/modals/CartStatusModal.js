@@ -5,7 +5,7 @@ import { useCartContext } from "@/providers/CartContext";
 import controlModal from "@/libs/controlModal";
 
 const CartStatusModal = ({ product }) => {
-  const { id, title, image } = product;
+  const { _id, name, images } = product;
   const { cartStatus } = useCartContext();
   return (
     <div className="ltn__modal-area ltn__add-to-cart-modal-area">
@@ -28,11 +28,11 @@ const CartStatusModal = ({ product }) => {
                   <div className="row">
                     <div className="col-12">
                       <div className="modal-product-img">
-                        <Image src={image} alt="#" width={1000} height={1000} />
+                        <Image src={images[0] || "/img/product/1.png"} alt="#" width={1000} height={1000} />
                       </div>
                       <div className="modal-product-info">
                         <h5 onClick={() => controlModal()}>
-                          <Link href={`/products/${id}`}>{title}</Link>
+                          <Link href={`/products/${_id}`}>{name["en"] ?? name["ar"]}</Link>
                         </h5>
                         <p className="added-cart">
                           <i className="fa fa-check-circle"></i> Successfully{" "}

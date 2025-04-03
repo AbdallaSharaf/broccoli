@@ -19,7 +19,7 @@ const CartProduct = ({
   setIsUpdate,
   isWishlist,
 }) => {
-  const { id, title, price, quantity: quantity1, image, disc, color } = product;
+  const { _id, name, price, quantity: quantity1, images, disc, color } = product;
   // dom referance
   const inputRef = useRef(null);
   // hooks
@@ -58,7 +58,7 @@ const CartProduct = ({
   useEffect(() => {
     if (!isWishlist) {
       const newUptedProducts = [...updateProducts]?.map((product) =>
-        id === product?.id ? { ...product, quantity } : product
+        _id === product?._id ? { ...product, quantity } : product
       );
       setUpdateProducts(newUptedProducts);
     }
@@ -71,20 +71,20 @@ const CartProduct = ({
         className="cart-product-remove"
         onClick={() =>
           isWishlist
-            ? deleteProductFromWishlist(id, title)
-            : deleteProductFromCart(id, title)
+            ? deleteProductFromWishlist(_id, name["en"] ?? name["ar"])
+            : deleteProductFromCart(_id, name)
         }
       >
         x
       </td>
       <td className="cart-product-image">
-        <Link href={`/products/${id}`}>
-          <Image src={image} alt="#" height={1000} width={1000} />
+        <Link href={`/products/${_id}`}>
+          <Image src={images[0] || "/img/product/1.png"} alt="#" height={1000} width={1000} />
         </Link>
       </td>
       <td className="cart-product-info">
         <h4>
-          <Link href={`/products/${id}`}>{sliceText(title, 30)}</Link>
+          <Link href={`/products/${_id}`}>{sliceText(name["en"] ?? name["ar"], 30)}</Link>
         </h4>
       </td>
       <td className="cart-product-price">${netPriceModified}</td>

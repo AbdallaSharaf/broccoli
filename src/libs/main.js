@@ -482,47 +482,6 @@ const main = () => {
       /* --------------------------------------------------------
               16. Product Slider One
           --------------------------------------------------------- */
-      $(".ltn__product-slider-item-four-active").slick({
-        arrows: true,
-        dots: false,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        prevArrow:
-          '<a class="slick-prev"><i class="fas fa-arrow-left" alt="Arrow Icon"></i></a>',
-        nextArrow:
-          '<a class="slick-next"><i class="fas fa-arrow-right" alt="Arrow Icon"></i></a>',
-        responsive: [
-          {
-            breakpoint: 992,
-            settings: {
-              arrows: false,
-              dots: true,
-              slidesToShow: 3,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 768,
-            settings: {
-              arrows: false,
-              dots: true,
-              slidesToShow: 2,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 580,
-            settings: {
-              arrows: false,
-              dots: true,
-              slidesToShow: 2,
-              slidesToScroll: 1,
-            },
-          },
-        ],
-      });
 
       /* --------------------------------------------------------
               16. Product Slider One
@@ -570,54 +529,120 @@ const main = () => {
       /* --------------------------------------------------------
               17. Tab Product Slider One
           --------------------------------------------------------- */
-      $(".ltn__tab-product-slider-one-active").slick({
-        arrows: true,
-        dots: false,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        prevArrow:
-          '<a class="slick-prev"><i class="fas fa-arrow-left" alt="Arrow Icon"></i></a>',
-        nextArrow:
-          '<a class="slick-next"><i class="fas fa-arrow-right" alt="Arrow Icon"></i></a>',
-        responsive: [
-          {
-            breakpoint: 1200,
-            settings: {
-              slidesToShow: 3,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 992,
-            settings: {
-              arrows: false,
-              dots: true,
-              slidesToShow: 2,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 768,
-            settings: {
-              arrows: false,
-              dots: true,
-              slidesToShow: 2,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 580,
-            settings: {
-              arrows: false,
-              dots: true,
-              slidesToShow: 2,
-              slidesToScroll: 1,
-            },
-          },
-        ],
-      });
+          const waitForProductSliders = setInterval(() => {
+            const $sliderOne = $(".ltn__tab-product-slider-one-active");
+            const $sliderFour = $(".ltn__product-slider-item-four-active");
+    
+            if (
+              $sliderOne.length > 0 &&
+              $sliderOne.children().length > 0 &&
+              !$sliderOne.hasClass("slick-initialized")
+            ) {
+              $sliderOne.slick({
+                arrows: true,
+                dots: false,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                prevArrow:
+                  '<a class="slick-prev"><i class="fas fa-arrow-left"></i></a>',
+                nextArrow:
+                  '<a class="slick-next"><i class="fas fa-arrow-right"></i></a>',
+                responsive: [
+                  {
+                    breakpoint: 1200,
+                    settings: {
+                      slidesToShow: 3,
+                      slidesToScroll: 1,
+                    },
+                  },
+                  {
+                    breakpoint: 992,
+                    settings: {
+                      arrows: false,
+                      dots: true,
+                      slidesToShow: 2,
+                      slidesToScroll: 1,
+                    },
+                  },
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      arrows: false,
+                      dots: true,
+                      slidesToShow: 2,
+                      slidesToScroll: 1,
+                    },
+                  },
+                  {
+                    breakpoint: 580,
+                    settings: {
+                      arrows: false,
+                      dots: true,
+                      slidesToShow: 2,
+                      slidesToScroll: 1,
+                    },
+                  },
+                ],
+              });
+            }
+    
+            if (
+              $sliderFour.length > 0 &&
+              $sliderFour.children().length > 0 &&
+              !$sliderFour.hasClass("slick-initialized")
+            ) {
+              $sliderFour.slick({
+                arrows: true,
+                dots: false,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                prevArrow:
+                  '<a class="slick-prev"><i class="fas fa-arrow-left"></i></a>',
+                nextArrow:
+                  '<a class="slick-next"><i class="fas fa-arrow-right"></i></a>',
+                responsive: [
+                  {
+                    breakpoint: 992,
+                    settings: {
+                      arrows: false,
+                      dots: true,
+                      slidesToShow: 3,
+                      slidesToScroll: 1,
+                    },
+                  },
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      arrows: false,
+                      dots: true,
+                      slidesToShow: 2,
+                      slidesToScroll: 1,
+                    },
+                  },
+                  {
+                    breakpoint: 580,
+                    settings: {
+                      arrows: false,
+                      dots: true,
+                      slidesToShow: 2,
+                      slidesToScroll: 1,
+                    },
+                  },
+                ],
+              });
+            }
+    
+            if (
+              $sliderOne.hasClass("slick-initialized") &&
+              $sliderFour.hasClass("slick-initialized")
+            ) {
+              clearInterval(waitForProductSliders); // ✅ Stop checking once both are initialized
+            }
+          }, 100); // ✅ Check every 100ms if data has loaded
       /* --------------------------------------------------------
               17. Small Product Slider One
           --------------------------------------------------------- */
