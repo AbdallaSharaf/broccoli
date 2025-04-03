@@ -53,7 +53,7 @@ const HeaderCart = () => {
                       <h6>
                         <Link href={`/products/${_id}`}>
                           {" "}
-                          {(name["en"] ?? name["ar"])?.length > 22 ? (name["en"] ?? name["ar"])?.slice(0, 22) : (name["en"] ?? name["ar"])}
+                          {(name?.["en"] ?? name?.["ar"] ?? "N/A")?.length > 22 ? (name?.["en"] ?? name?.["ar"] ?? "N/A")?.slice(0, 22) : (name?.["en"] ?? name?.["ar"] ?? "N/A")}
                         </Link>
                       </h6>
                       <span className="mini-cart-quantity">

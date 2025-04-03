@@ -32,7 +32,7 @@ const CartStatusModal = ({ product }) => {
                       </div>
                       <div className="modal-product-info">
                         <h5 onClick={() => controlModal()}>
-                          <Link href={`/products/${_id}`}>{name["en"] ?? name["ar"]}</Link>
+                          <Link href={`/products/${_id}`}>{name?.["en"] ?? name?.["ar"] ?? "N/A"}</Link>
                         </h5>
                         <p className="added-cart">
                           <i className="fa fa-check-circle"></i> Successfully{" "}
