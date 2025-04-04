@@ -13,7 +13,6 @@ const CartContextProvider = ({ children }) => {
   const [cartStatus, setCartStatus] = useState(null);
   const [cartProducts, setCartProducts] = useState({});
   const creteAlert = useSweetAlert();
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const localCart = getItemsFromLocalstorage("cart") || [];
@@ -22,8 +21,6 @@ const CartContextProvider = ({ children }) => {
   }, [user]);
   // add  product = localstorage cart
   // console.log(cartProducts)
-  console.log(cartProducts.cart)
-
   const addProductToCart = (currentProduct, isDecreament, isTotalQuantity) => {
     const { _id: currentId, name: currentTitle } = currentProduct;
 
@@ -94,6 +91,7 @@ const CartContextProvider = ({ children }) => {
   const deleteProductFromCart = async (currentId, currentTitle) => {
     try {
       if (user) {
+        const token = localStorage.getItem("token");
         const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/${currentId}`, {
           method: "DELETE",
           headers: {

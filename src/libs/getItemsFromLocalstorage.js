@@ -1,3 +1,5 @@
+"use client"
+
 const getItemsFromLocalstorage = (itemName) => {
   let itemsFromLocastorage = localStorage.getItem(itemName);
 

@@ -1,3 +1,4 @@
+"use client"
 const addItemsToLocalstorage = (itemName, items) => {
   const itemsToLocalstorage = JSON.stringify(items);
   localStorage.setItem(itemName, itemsToLocalstorage);

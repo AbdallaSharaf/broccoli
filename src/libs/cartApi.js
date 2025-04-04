@@ -1,5 +1,4 @@
-export const getUserCart = async () => {
-    const token = localStorage.getItem("token");
+export const getUserCart = async (token) => {
     if (!token) return []; // Don't fetch anything if no token
 
     const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart`, {

@@ -10,7 +10,7 @@ const userContext = createContext();
 
 export const UserContext = ({ children }) => {
   const [user, setUser] = useState(null);
-
+  
   // ✅ Check if user is already logged in (persist session)
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
@@ -47,7 +47,7 @@ export const UserContext = ({ children }) => {
   
       // Fetch cart data
       const localCart = getItemsFromLocalstorage("cart") || {_id: "", cart: []};
-      const backendCart = await getUserCart(); // Use token or user ID if needed
+      const backendCart = await getUserCart(token); // Use token or user ID if needed
       const { items, ...backendCartWithoutCart } = backendCart; // Destructure to exclude 'cart' property
       
       // If localCart._id is equal to backendCart._id, don't merge
