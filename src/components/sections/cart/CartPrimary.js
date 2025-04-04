@@ -28,9 +28,11 @@ const CartPrimary = () => {
     setIsUpdate(false);
   };
   useEffect(() => {
+    if(cartProducts.cart > 0){
       setUpdateProducts([...cartProducts]);
       setIsisClient(true);
       console.log("called")
+    }
   }, [cartProducts]);
 
   return (
