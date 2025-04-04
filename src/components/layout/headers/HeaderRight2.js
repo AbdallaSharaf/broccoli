@@ -1,6 +1,8 @@
+"use client"
 import React from "react";
 import HeaderCartShow from "./HeaderCartShow";
 import Link from "next/link";
+import { useUserContext } from "@/providers/UserContext";
 
 const HeaderRight2 = () => {
 
@@ -9,6 +11,7 @@ const languages = [
   { code: "ar", name: "Arabic", flag: "img/flags/ar.png" },
 
 ];
+  const { user } = useUserContext();
 
 const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
 
@@ -120,15 +123,20 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
                     <i className="icon-user"></i>
                   </Link>
                   <ul>
+                  {user?.name ?
+                    <li>
+                      <Link href="/account">My Account</Link>
+                    </li>
+                    :
+                    <>
                     <li>
                       <Link href="/login">Sign in</Link>
                     </li>
                     <li>
                       <Link href="/register">Register</Link>
                     </li>
-                    <li>
-                      <Link href="/account">My Account</Link>
-                    </li>
+                    </>
+                    }
                     <li>
                       <Link href="/wishlist">Wishlist</Link>
                     </li>

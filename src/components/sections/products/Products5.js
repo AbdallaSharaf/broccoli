@@ -15,7 +15,6 @@ const Products5 = ({ isRelated, title, tag, pt, pb }) => {
         throw new Error("Failed to fetch filtered items");
       }
       const data = await response.json();
-      console.log("data", data);
       setRelatedProducts(data.data);
     } catch (error) {
       console.error("Error fetching filtered items:", error);

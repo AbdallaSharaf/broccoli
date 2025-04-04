@@ -19,59 +19,78 @@ const CartProduct = ({
   setIsUpdate,
   isWishlist,
 }) => {
-  const { _id, name, price, quantity: quantity1, images, disc, color } = product;
+  const { product: productData, quantity: quantity1, price, totalPrice } = product;
+  const { _id, name, images } = productData;
   // dom referance
   const inputRef = useRef(null);
   // hooks
+  
   const { deleteProductFromCart, addProductToCart } = useCartContext();
   const { deleteProductFromWishlist } = useWishlistContext();
   const [quantity, setQuantity] = useState(quantity1);
   const { setCurrentProduct } = useProductContext();
   // variables
-  const { netPrice } = countDiscount(price, disc);
-  const totalPrice = countTotalPrice([{ ...product, quantity }]);
-  const netPriceModified = modifyAmount(netPrice);
-  const totalPiceModified = modifyAmount(totalPrice);
   const isQuantiy = quantity > 1;
 
-  //   get quantity
   useEffect(() => {
     if (!isWishlist) {
       const inputParent = inputRef.current;
+      if (!inputParent) return;
+  
       const input = inputParent.querySelector("input");
-      setTimeout(() => {
-        const increament = inputParent.querySelector(".inc");
-        const decreament = inputParent.querySelector(".dec");
-
-        increament.addEventListener("click", () => {
-          setQuantity(parseInt(input.value));
+      const increament = inputParent.querySelector(".inc");
+      const decreament = inputParent.querySelector(".dec");
+  
+      // Ensure input is synced with state on mount
+      // console.log(quantity)
+      input.value = quantity;
+      const handleInc = () => {
+        setQuantity(prev => {
+          const newVal = prev + 1;
+          input.value = newVal;
           setIsUpdate(true);
+          return newVal;
         });
-        decreament.addEventListener("click", () => {
-          setQuantity(parseInt(input.value));
+      };
+  
+      const handleDec = () => {
+        setQuantity(prev => {
+          const newVal = prev > 1 ? prev - 1 : 1;
+          input.value = newVal;
           setIsUpdate(true);
+          return newVal;
         });
-      }, 500);
+      };
+  
+      increament?.addEventListener("click", handleInc);
+      decreament?.addEventListener("click", handleDec);
+  
+      return () => {
+        increament?.removeEventListener("click", handleInc);
+        decreament?.removeEventListener("click", handleDec);
+      };
     }
-  }, [isWishlist]);
+  }, [isWishlist, quantity, setIsUpdate]);
+  
+
   // handle updated products
   useEffect(() => {
     if (!isWishlist) {
       const newUptedProducts = [...updateProducts]?.map((product) =>
-        _id === product?._id ? { ...product, quantity } : product
+        _id === product?.product._id ? { ...product, quantity } : product
       );
       setUpdateProducts(newUptedProducts);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWishlist, quantity]);
+
   return (
     <tr onMouseEnter={() => setCurrentProduct(product)}>
       <td
         className="cart-product-remove"
         onClick={() =>
           isWishlist
-            ? deleteProductFromWishlist(_id, name["en"] ?? name["ar"])
+            ? deleteProductFromWishlist(_id, name?.["en"] ?? name?.["ar"])
             : deleteProductFromCart(_id, name)
         }
       >
@@ -84,10 +103,10 @@ const CartProduct = ({
       </td>
       <td className="cart-product-info">
         <h4>
-          <Link href={`/products/${_id}`}>{sliceText(name["en"] ?? name["ar"], 30)}</Link>
+          <Link href={`/products/${_id}`}>{sliceText(name?.["en"] ?? name?.["ar"], 30)}</Link>
         </h4>
       </td>
-      <td className="cart-product-price">${netPriceModified}</td>
+      <td className="cart-product-price">${price}</td>
       {isWishlist ? (
         <td className="cart-product-stock">In Stock</td>
       ) : (
@@ -99,9 +118,8 @@ const CartProduct = ({
               name="qtybutton"
               className="cart-plus-minus-box"
               onChange={(e) => {
-                setQuantity(
-                  !parseInt(e.target.value) ? 1 : parseInt(e.target.value)
-                );
+                const val = parseInt(e.target.value);
+                setQuantity(val > 0 ? val : 1);
                 setIsUpdate(true);
               }}
             />
@@ -130,7 +148,7 @@ const CartProduct = ({
           </Link>
         </td>
       ) : (
-        <td className="cart-product-subtotal">${totalPiceModified}</td>
+        <td className="cart-product-subtotal">${quantity*price}</td>
       )}
     </tr>
   );

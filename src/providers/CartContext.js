@@ -4,20 +4,25 @@ import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 import getItemsFromLocalstorage from "@/libs/getItemsFromLocalstorage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUserContext } from "./UserContext";
+import mergeCarts from "@/libs/mergeCarts";
+import { getUserCart } from "@/libs/cartApi";
 
 const cartContext = createContext(null);
 const CartContextProvider = ({ children }) => {
-  // const { user } = useUserContext(); // Get login function from context
+  const { user } = useUserContext(); // Get login function from context
   const [cartStatus, setCartStatus] = useState(null);
-  const [cartProducts, setCartProducts] = useState([]);
+  const [cartProducts, setCartProducts] = useState({});
   const creteAlert = useSweetAlert();
-  
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const cartProductFromLocalStorage = getItemsFromLocalstorage("cart");
-    if(!cartProductFromLocalStorage) return
-    setCartProducts(cartProductFromLocalStorage);
-  }, []);
+    const localCart = getItemsFromLocalstorage("cart") || [];
+    setCartProducts(localCart);
+
+  }, [user]);
   // add  product = localstorage cart
+  // console.log(cartProducts)
+  console.log(cartProducts.cart)
 
   const addProductToCart = (currentProduct, isDecreament, isTotalQuantity) => {
     const { _id: currentId, name: currentTitle } = currentProduct;
@@ -81,21 +86,60 @@ const CartContextProvider = ({ children }) => {
         setCartStatus("added");
       }
     }
-    console.log("problem")
     setCartProducts(currentProducts);
     addItemsToLocalstorage("cart", currentProducts);
   };
 
   // delete product = localstorage cart
-  const deleteProductFromCart = (currentId, currentTitle) => {
-    const currentProducts = cartProducts?.filter(
-      ({ _id, name }) => _id !== currentId || name !== currentTitle
-    );
-    setCartProducts(currentProducts);
-    addItemsToLocalstorage("cart", currentProducts);
-    creteAlert("success", "Success! deleted from cart.");
-    setCartStatus("deleted");
+  const deleteProductFromCart = async (currentId, currentTitle) => {
+    try {
+      if (user) {
+        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/${currentId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        const data = await response.json();
+  
+        if (data.success) {
+          const updatedCart = cartProducts?.cart?.filter(
+            ({ product }) => product._id !== currentId
+          );
+  
+          // ✅ Only update the `cart` key while preserving other data
+          const newCartProducts = { ...cartProducts, cart: updatedCart };
+  
+          setCartProducts(newCartProducts);
+          addItemsToLocalstorage("cart", newCartProducts);
+  
+          creteAlert("success", "Item successfully deleted from cart.");
+          setCartStatus("deleted");
+        } else {
+          creteAlert("error", "Failed to delete item from backend.");
+        }
+      } else {
+        const updatedCart = cartProducts?.cart?.filter(
+          ({ product }) => product._id !== currentId
+        );
+  
+        const newCartProducts = { ...cartProducts, cart: updatedCart };
+  
+        setCartProducts(newCartProducts);
+        addItemsToLocalstorage("cart", newCartProducts);
+  
+        creteAlert("success", "Item successfully deleted from cart.");
+        setCartStatus("deleted");
+      }
+    } catch (error) {
+      creteAlert("error", "An error occurred while deleting the item.");
+      console.error(error);
+    }
   };
+  
+  
   return (
     <cartContext.Provider
       value={{

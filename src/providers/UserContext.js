@@ -1,6 +1,10 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode"; // Import the decoder
+import mergeCarts from "@/libs/mergeCarts";
+import getItemsFromLocalstorage from "@/libs/getItemsFromLocalstorage";
+import { getUserCart } from "@/libs/cartApi";
+import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 
 const userContext = createContext();
 
@@ -29,24 +33,46 @@ export const UserContext = ({ children }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Login failed");
-
+  
       const { token } = data;
       if (!token) throw new Error("No token received");
-
+  
       const decodedUser = jwtDecode(token); // Decode JWT
       setUser(decodedUser);
-      console.log(decodedUser)
       // Save token in localStorage for persistence
       localStorage.setItem("token", token);
-      return decodedUser
+  
+      // Fetch cart data
+      const localCart = getItemsFromLocalstorage("cart") || {_id: "", cart: []};
+      const backendCart = await getUserCart(); // Use token or user ID if needed
+      const { items, ...backendCartWithoutCart } = backendCart; // Destructure to exclude 'cart' property
+      
+      // If localCart._id is equal to backendCart._id, don't merge
+      if (localCart._id === backendCart._id) {
+        // If the IDs match, simply use the backendCart as is (without merging)
+        const updatedBackendCart = { ...backendCartWithoutCart, cart: items };
+        addItemsToLocalstorage("cart", updatedBackendCart);
+        return { user: decodedUser, cart: items }; // No merge, return backendCart items directly
+      }
+
+      // Exclude 'cart' property from backendCart and merge it with localCart
+      const mergedCart = mergeCarts(items, localCart?.cart);
+  
+      // Now save the entire backendCart object except 'cart' to localStorage, and merge the cart separately
+      const updatedBackendCart = { ...backendCartWithoutCart, cart: mergedCart };
+      addItemsToLocalstorage("cart", updatedBackendCart);
+  
+      return { user: decodedUser, cart: mergedCart };
     } catch (error) {
-        console.error("Login error:", error.message);
-        return null
+      console.log(error);
+      console.error("Login error:", error.message);
+      return null;
     }
   };
+  
 
   // ✅ Logout function
   const logout = () => {

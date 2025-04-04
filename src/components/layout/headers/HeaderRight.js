@@ -7,12 +7,12 @@ import React from "react";
 import HeaderCurrency from "./HeaderCurrency";
 import countTotalPrice from "@/libs/countTotalPrice";
 import HeaderCartShow from "./HeaderCartShow";
+import { useUserContext } from "@/providers/UserContext";
 
 const HeaderRight = () => {
   const { headerStyle } = useHeaderContex();
-  const { cartProducts } = useCartContext();
-  const totalProduct = cartProducts?.length;
-  const totalPrice = countTotalPrice(cartProducts);
+  const { user } = useUserContext();
+
   return (
     <div
       className={`ltn__header-options  ${
@@ -47,15 +47,20 @@ const HeaderRight = () => {
               <i className="icon-user"></i>
             </Link>
             <ul>
+              {user?.name ?
+              <li>
+                <Link href="/account">My Account</Link>
+              </li>
+              :
+              <>
               <li>
                 <Link href="/login">Sign in</Link>
               </li>
               <li>
                 <Link href="/register">Register</Link>
               </li>
-              <li>
-                <Link href="/account">My Account</Link>
-              </li>
+              </>
+              }
               <li>
                 <Link href="/wishlist">Wishlist</Link>
               </li>

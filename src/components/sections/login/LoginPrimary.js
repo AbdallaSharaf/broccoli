@@ -3,11 +3,13 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // Use router to redirect after login
 import { useUserContext } from "@/providers/UserContext";
+import { useCartContext } from "@/providers/CartContext";
 
 const LoginPrimary = () => {
   const { login } = useUserContext(); // Get login function from context
   const router = useRouter(); // To navigate after successful login
-
+  const { setCartProducts } = useCartContext(); // Get login function from context
+  
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null); // State to track errors
 
@@ -22,9 +24,11 @@ const LoginPrimary = () => {
     setError(null); // Reset previous errors
   
     try {
-      const user = await login(formData.email, formData.password); // Call login function
-      console.log(user)
-      if (user) {
+      const result = await login(formData.email, formData.password); // Call login function
+      console.log(result)
+      if (result) {
+        setCartProducts(result.cart); // update UI cart from merged version
+          // maybe navigate to /dashboard or /cart
         router.push("/"); // Redirect only if login is successful
       } else {
         setError("Invalid email or password"); // Show error if login fails

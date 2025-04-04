@@ -8,8 +8,8 @@ import React from "react";
 const HeaderCartShow = () => {
   const { headerStyle } = useHeaderContex();
   const { cartProducts } = useCartContext();
-  const totalProduct = cartProducts?.length;
-  const totalPrice = countTotalPrice(cartProducts);
+  const totalProduct = cartProducts?.cart?.length;
+  if(!cartProducts) return
   return (
     <>
       {totalProduct || totalProduct === 0 ? (
@@ -26,7 +26,7 @@ const HeaderCartShow = () => {
               <h6>
                 <span>Your Cart</span>{" "}
                 <span className="ltn__secondary-color">
-                  ${modifyAmount(totalPrice)}
+                  ${modifyAmount(cartProducts.totalPrice)}
                 </span>
               </h6>
             ) : (

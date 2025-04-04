@@ -9,12 +9,6 @@ const FooterCustomerCare = () => {
         <div className="footer-menu">
           <ul>
             {/* <li>
-              <Link href="/login">Login</Link>
-            </li>
-            <li>
-              <Link href="/account">My account</Link>
-            </li> */}
-            {/* <li>
               <Link href="/wishlist">Wish List</Link>
             </li> */}
             {/* <li>

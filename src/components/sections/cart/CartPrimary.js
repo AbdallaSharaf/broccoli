@@ -14,17 +14,12 @@ import { useEffect, useState } from "react";
 const CartPrimary = () => {
   const { cartProducts: currentProducts, setCartProducts } = useCartContext();
   const creteAlert = useSweetAlert();
-  const cartProducts = currentProducts;
+  const cartProducts = currentProducts?.cart ?? [];
   // stats
   const [updateProducts, setUpdateProducts] = useState(cartProducts);
-
   const [isUpdate, setIsUpdate] = useState(false);
   const [isClient, setIsisClient] = useState(false);
-  const subTotalPrice = countTotalPrice(cartProducts);
-  const vat = subTotalPrice ? 15 : 0;
-  const totalPrice = modifyAmount(subTotalPrice + vat);
-  const isCartProduct = cartProducts?.length || false;
-
+  const isCartProduct = currentProducts?.cart?.length || false;
   // update cart
   const handleUpdateCart = () => {
     addItemsToLocalstorage("cart", [...updateProducts]);
@@ -33,9 +28,11 @@ const CartPrimary = () => {
     setIsUpdate(false);
   };
   useEffect(() => {
-    setUpdateProducts([...cartProducts]);
-    setIsisClient(true);
+      setUpdateProducts([...cartProducts]);
+      setIsisClient(true);
+      console.log("called")
   }, [cartProducts]);
+
   return (
     <div className="liton__shoping-cart-area mb-120">
       <div className="container">
@@ -106,11 +103,11 @@ const CartPrimary = () => {
                     <tbody>
                       <tr>
                         <td>Cart Subtotal</td>
-                        <td>${modifyAmount(subTotalPrice)}</td>
+                        <td>${modifyAmount(cartProducts?.totalPrice)}</td>
                       </tr>
                       <tr>
                         <td>Shipping and Handing</td>
-                        <td>${modifyAmount(vat)}</td>
+                        <td>$00.00</td>
                       </tr>
                       <tr>
                         <td>Vat</td>
@@ -121,7 +118,7 @@ const CartPrimary = () => {
                           <strong>Order Total</strong>
                         </td>
                         <td>
-                          <strong>${totalPrice}</strong>
+                          <strong>${cartProducts?.subTotal}</strong>
                         </td>
                       </tr>
                     </tbody>

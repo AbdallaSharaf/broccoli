@@ -5,11 +5,13 @@ import React from "react";
 import { useWishlistContext } from "@/providers/WshlistContext";
 import { useCartContext } from "@/providers/CartContext";
 import countDataLength from "@/libs/countDataLength";
+import { useUserContext } from "@/providers/UserContext";
 
 const MobileMenu = () => {
   const { wishlistProducts } = useWishlistContext();
   const { cartProducts } = useCartContext();
-  const totalCartProduct = countDataLength(cartProducts);
+  const { user } = useUserContext();
+  const totalCartProduct = cartProducts?.cart?.length;
   const totalWishlistProduct = countDataLength(wishlistProducts);
   const navItems = [
     {
@@ -378,7 +380,8 @@ const MobileMenu = () => {
         </div>
         <div className="ltn__utilize-buttons ltn__utilize-buttons-2">
           <ul>
-            <li>
+            {user?.name ?
+              <li>
               <Link href="/account" title="My Account">
                 <span className="utilize-btn-icon">
                   <i className="far fa-user"></i>
@@ -386,6 +389,16 @@ const MobileMenu = () => {
                 My Account
               </Link>
             </li>
+            :
+            <li>
+              <Link href="/login" title="Sign in">
+                <span className="utilize-btn-icon">
+                  <i className="far fa-user"></i>
+                </span>
+                Sign in
+              </Link>
+            </li>
+            }
             <li>
               <Link href="/wishlist" title="Wishlist">
                 <span className="utilize-btn-icon">
@@ -396,7 +409,7 @@ const MobileMenu = () => {
               </Link>
             </li>
             <li>
-              <Link href="/cart" title="Shoping Cart">
+              <Link href="/cart" title="Shopping Cart">
                 <span className="utilize-btn-icon">
                   <i className="fas fa-shopping-cart"></i>{" "}
                   <sup>{totalCartProduct}</sup>

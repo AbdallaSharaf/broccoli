@@ -12,8 +12,8 @@ import Link from "next/link";
 
 const HeaderCart = () => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
-  const totalProduct = cartProducts?.length;
-  const totalPrice = countTotalPrice(cartProducts);
+  const totalProduct = cartProducts?.cart?.length;
+  if (!cartProducts) return
   return (
     <div
       id="ltn__utilize-cart-menu"
@@ -28,9 +28,9 @@ const HeaderCart = () => {
           {!totalProduct ? (
             <Nodata text={"Empty Cart!"} />
           ) : (
-            cartProducts?.map(
-              ({ _id, name, images, price, quantity }, idx) => {
-                const { netPrice } = countDiscount(price, 0);
+            cartProducts?.cart?.map(
+              ({ product, quantity, price }, idx) => {
+                const { _id, name, images } = product
                 return (
                   <div key={idx} className="mini-cart-item clearfix">
                     <div className="mini-cart-img">
@@ -57,7 +57,7 @@ const HeaderCart = () => {
                         </Link>
                       </h6>
                       <span className="mini-cart-quantity">
-                        {quantity} x ${modifyAmount(netPrice)}
+                        {quantity} x ${modifyAmount(price)}
                       </span>
                     </div>
                   </div>
@@ -69,7 +69,7 @@ const HeaderCart = () => {
         <div className="mini-cart-footer">
           <div className="mini-cart-sub-total">
             <h5>
-              Subtotal: <span>${totalPrice.toFixed(2)}</span>
+              Subtotal: <span>${cartProducts?.totalPrice?.toFixed(2)}</span>
             </h5>
           </div>
           <div className="btn-wrapper">
