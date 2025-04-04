@@ -11,7 +11,7 @@ const MobileMenu = () => {
   const { wishlistProducts } = useWishlistContext();
   const { cartProducts } = useCartContext();
   const { user } = useUserContext();
-  const totalCartProduct = cartProducts?.cart?.length;
+  const totalCartProduct = cartProducts?.items?.length;
   const totalWishlistProduct = countDataLength(wishlistProducts);
   const navItems = [
     {

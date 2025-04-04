@@ -14,12 +14,10 @@ import { useEffect, useState } from "react";
 const CartPrimary = () => {
   const { cartProducts: currentProducts, setCartProducts } = useCartContext();
   const creteAlert = useSweetAlert();
-  const cartProducts = currentProducts?.cart ?? [];
+  const cartProducts = currentProducts?.items ?? [];
   // stats
   const [updateProducts, setUpdateProducts] = useState(cartProducts);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [isClient, setIsisClient] = useState(false);
-  const isCartProduct = currentProducts?.cart?.length || false;
   // update cart
   const handleUpdateCart = () => {
     addItemsToLocalstorage("cart", [...updateProducts]);
@@ -28,12 +26,13 @@ const CartPrimary = () => {
     setIsUpdate(false);
   };
   useEffect(() => {
-    if(cartProducts.cart > 0){
+    if(cartProducts > 0){
       setUpdateProducts([...cartProducts]);
-      setIsisClient(true);
       console.log("called")
     }
   }, [cartProducts]);
+  console.log(cartProducts)
+  // console.log(modifyAmount(currentProducts?.totalPrice))
 
   return (
     <div className="liton__shoping-cart-area mb-120">
@@ -42,16 +41,9 @@ const CartPrimary = () => {
           <div className="col-lg-12">
             <div className="shoping-cart-inner">
               <div className="shoping-cart-table table-responsive">
-                {isClient ? (
                   <table className="table">
                     <tbody>
-                      {!isCartProduct ? (
-                        <tr>
-                          <td>
-                            <Nodata text={"Empty Cart!"} />
-                          </td>
-                        </tr>
-                      ) : (
+                      {cartProducts?.length > 0 &&
                         cartProducts?.map((product, idx) => (
                           <CartProduct
                             key={idx}
@@ -61,7 +53,7 @@ const CartPrimary = () => {
                             setIsUpdate={setIsUpdate}
                           />
                         ))
-                      )}
+                      }
 
                       <tr className="cart-coupon-row">
                         <td colSpan="6">
@@ -94,18 +86,14 @@ const CartPrimary = () => {
                       </tr>
                     </tbody>
                   </table>
-                ) : (
-                  ""
-                )}
               </div>
               <div className="shoping-cart-total mt-50">
                 <h4>Cart Totals</h4>
-                {isClient ? (
                   <table className="table">
                     <tbody>
                       <tr>
                         <td>Cart Subtotal</td>
-                        <td>${modifyAmount(cartProducts?.totalPrice)}</td>
+                        <td>{modifyAmount(currentProducts?.totalPrice)} SAR</td>
                       </tr>
                       <tr>
                         <td>Shipping and Handing</td>
@@ -120,14 +108,11 @@ const CartPrimary = () => {
                           <strong>Order Total</strong>
                         </td>
                         <td>
-                          <strong>${cartProducts?.subTotal}</strong>
+                          <strong>{currentProducts?.subTotal} SAR</strong>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                ) : (
-                  ""
-                )}
                 <div className="btn-wrapper text-right">
                   <Link
                     href="/checkout"

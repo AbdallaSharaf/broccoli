@@ -8,8 +8,9 @@ import React from "react";
 const HeaderCartShow = () => {
   const { headerStyle } = useHeaderContex();
   const { cartProducts } = useCartContext();
-  const totalProduct = cartProducts?.cart?.length;
-  if(!cartProducts) return
+  const totalProduct = cartProducts?.items?.length;
+  // console.log(totalProduct)
+  if(!cartProducts.items) return
   return (
     <>
       {totalProduct || totalProduct === 0 ? (

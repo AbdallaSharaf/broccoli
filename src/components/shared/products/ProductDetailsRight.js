@@ -15,8 +15,9 @@ const ProductDetailsRight = ({ product }) => {
   // destructure current product
   
   const {
-    name = { en: "Unknown", ar: "غير معروف" },
-    price = 0,
+    name,
+    price,
+    priceAfterDiscount,
     reviews = [],
     disc = 0,
     size = "N/A",
@@ -32,20 +33,16 @@ const ProductDetailsRight = ({ product }) => {
   const inputRef = useRef(null);
   // states
   const [quantity, setQuantity] = useState(1);
-  const [currentColor, setCurrentColor] = useState(color);
   const [currentSize, setCurrentSize] = useState(size?.toLowerCase());
   const [purchaseDate, setPurchaseDate] = useState(null);
   // varriables
   const { type } = value ? value : {};
-  const { netPrice } = countDiscount(price, disc);
-  const netPriceModified = modifyAmount(netPrice);
-  const priceModified = modifyAmount(price);
+  // const netPriceModified = modifyAmount(netPrice);
+  // const priceModified = modifyAmount(price);
   const reviewsLength = countCommentLength(reviews);
   const purchaseDateMilliseconds = moment(purchaseDate)?.valueOf();
   const productToSave = {
     ...product,
-    color: currentColor,
-    size: currentSize,
     quantity,
     purchaseDate: purchaseDateMilliseconds,
   };
@@ -61,18 +58,18 @@ const ProductDetailsRight = ({ product }) => {
       const increament = inputParent?.querySelector(".inc");
       const decreament = inputParent?.querySelector(".dec");
       increament?.addEventListener("click", () => {
-        setQuantity(parseInt(input.value));
+        setQuantity(Number(input.value));
       });
       decreament?.addEventListener("click", () => {
-        setQuantity(parseInt(input.value));
+        setQuantity(Number(input.value));
       });
     }, 500);
-  }, []);
+  }, [inputRef.current]);
 
   if (!product) {
     return;
   }
-  
+  // console.log("quantity", quantity)
   return (
     <div className="modal-product-info shop-details-info pl-0" id="details">
       {/* ratings */}
@@ -109,11 +106,13 @@ const ProductDetailsRight = ({ product }) => {
         </ul>
       </div>
       {/* name["en"] */}
-      <h3>{name["en"] ?? name["ar"] ?? "N/A"}</h3>
+      <h3>{name?.["en"] ?? name?.["ar"] ?? "N/A"}</h3>
       {/* price */}
       <div className="product-price text-nowrap">
-        <span>${netPriceModified}</span> 
-        {/* <del>${priceModified}</del> */}
+        <span>{(priceAfterDiscount && !isNaN(priceAfterDiscount) ? priceAfterDiscount : price) * quantity} SAR</span>
+        {!isNaN(priceAfterDiscount) && priceAfterDiscount !== price && (
+          <del>{price * quantity} SAR</del>
+        )}
       </div>
       {/* description */}
 
@@ -129,7 +128,7 @@ const ProductDetailsRight = ({ product }) => {
             <span>
               {Array.isArray(category) && category?.map((cat) => (
                 <Link key={cat.category._id} href={`/shop?category=${cat.category._id}`}>
-                  {cat.category.name["en"] ?? cat.category.name["ar"] ?? "N/A"}
+                  {cat.category.name?.["en"] ?? cat.category.name?.["ar"] ?? "N/A"}
                 </Link>
               ))}
             </span>
@@ -144,10 +143,11 @@ const ProductDetailsRight = ({ product }) => {
           <li>
             <div className="cart-plus-minus" ref={inputRef}>
               <input
-                onChange={(e) =>
+                onChange={(e) =>{
                   setQuantity(
-                    !parseInt(e.target.value) ? 1 : parseInt(e.target.value)
+                    !Number(e.target.value) ? 0.25 : Number(e.target.value)
                   )
+                }
                 }
                 type="text"
                 value={quantity}

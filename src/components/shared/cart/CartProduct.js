@@ -19,7 +19,7 @@ const CartProduct = ({
   setIsUpdate,
   isWishlist,
 }) => {
-  const { product: productData, quantity: quantity1, price, totalPrice } = product;
+  const { product: productData, quantity: quantity1 = 1, price } = product;
   const { _id, name, images } = productData;
   // dom referance
   const inputRef = useRef(null);
@@ -27,11 +27,10 @@ const CartProduct = ({
   
   const { deleteProductFromCart, addProductToCart } = useCartContext();
   const { deleteProductFromWishlist } = useWishlistContext();
-  const [quantity, setQuantity] = useState(quantity1);
+  const [quantity, setQuantity] = useState(Number(quantity1) ?? 1);
   const { setCurrentProduct } = useProductContext();
   // variables
-  const isQuantiy = quantity > 1;
-
+  console.log(quantity)
   useEffect(() => {
     if (!isWishlist) {
       const inputParent = inputRef.current;
@@ -41,12 +40,11 @@ const CartProduct = ({
       const increament = inputParent.querySelector(".inc");
       const decreament = inputParent.querySelector(".dec");
   
-      // Ensure input is synced with state on mount
-      // console.log(quantity)
       input.value = quantity;
+  
       const handleInc = () => {
-        setQuantity(prev => {
-          const newVal = prev + 1;
+        setQuantity((prev) => {
+          const newVal = prev + 0.25;
           input.value = newVal;
           setIsUpdate(true);
           return newVal;
@@ -54,8 +52,8 @@ const CartProduct = ({
       };
   
       const handleDec = () => {
-        setQuantity(prev => {
-          const newVal = prev > 1 ? prev - 1 : 1;
+        setQuantity((prev) => {
+          const newVal = prev > 0.25 ? prev - 0.25 : 0.25;
           input.value = newVal;
           setIsUpdate(true);
           return newVal;
@@ -72,7 +70,7 @@ const CartProduct = ({
     }
   }, [isWishlist, quantity, setIsUpdate]);
   
-
+  
   // handle updated products
   useEffect(() => {
     if (!isWishlist) {
@@ -112,17 +110,19 @@ const CartProduct = ({
       ) : (
         <td className="cart-product-quantity">
           <div className="cart-plus-minus" ref={inputRef}>
+            <div className="dec qtybutton">-</div>
             <input
               value={quantity}
               type="text"
               name="qtybutton"
               className="cart-plus-minus-box"
               onChange={(e) => {
-                const val = parseInt(e.target.value);
-                setQuantity(val > 0 ? val : 1);
+                const val = Number(e.target.value);
+                setQuantity(val > 0 ? val : 0.25);
                 setIsUpdate(true);
               }}
             />
+            <div className="inc qtybutton">+</div>
           </div>
         </td>
       )}

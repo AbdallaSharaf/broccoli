@@ -12,8 +12,7 @@ import Link from "next/link";
 
 const HeaderCart = () => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
-  const totalProduct = cartProducts?.cart?.length;
-  if (!cartProducts) return
+  if (!cartProducts.items) return
   return (
     <div
       id="ltn__utilize-cart-menu"
@@ -25,10 +24,7 @@ const HeaderCart = () => {
           <button className="ltn__utilize-close">×</button>
         </div>
         <div className="mini-cart-product-area ltn__scrollbar">
-          {!totalProduct ? (
-            <Nodata text={"Empty Cart!"} />
-          ) : (
-            cartProducts?.cart?.map(
+            {cartProducts?.items?.map(
               ({ product, quantity, price }, idx) => {
                 const { _id, name, images } = product
                 return (
@@ -64,7 +60,7 @@ const HeaderCart = () => {
                 );
               }
             )
-          )}
+          }
         </div>
         <div className="mini-cart-footer">
           <div className="mini-cart-sub-total">

@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode"; // Import the decoder
 import mergeCarts from "@/libs/mergeCarts";
 import getItemsFromLocalstorage from "@/libs/getItemsFromLocalstorage";
-import { getUserCart } from "@/libs/cartApi";
+import { getGuestCart, getUserCart } from "@/libs/cartApi";
 import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 
 const userContext = createContext();
@@ -44,9 +44,14 @@ export const UserContext = ({ children }) => {
       setUser(decodedUser);
       // Save token in localStorage for persistence
       localStorage.setItem("token", token);
-  
+      const guest = getItemsFromLocalstorage("guest");
       // Fetch cart data
-      const localCart = getItemsFromLocalstorage("cart") || {_id: "", cart: []};
+      let localCart = { _id: "", cart: [] };
+
+      if (guest) {
+        const guestCart = await getGuestCart(guest);
+        localCart = guestCart || localCart;
+      }
       const backendCart = await getUserCart(token); // Use token or user ID if needed
       const { items, ...backendCartWithoutCart } = backendCart; // Destructure to exclude 'cart' property
       
@@ -59,12 +64,12 @@ export const UserContext = ({ children }) => {
       }
 
       // Exclude 'cart' property from backendCart and merge it with localCart
-      const mergedCart = mergeCarts(items, localCart?.cart);
+      const mergedCart = mergeCarts(items, localCart?.items);
   
       // Now save the entire backendCart object except 'cart' to localStorage, and merge the cart separately
       const updatedBackendCart = { ...backendCartWithoutCart, cart: mergedCart };
       addItemsToLocalstorage("cart", updatedBackendCart);
-  
+      localStorage.removeItem("guest"); // Remove guest on login
       return { user: decodedUser, cart: mergedCart };
     } catch (error) {
       console.log(error);
