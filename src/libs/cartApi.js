@@ -6,7 +6,6 @@ export const getUserCart = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("called")
     const data = await res.json();
     if (!res.ok) throw new Error("Failed to fetch cart");
     return data.cart;
