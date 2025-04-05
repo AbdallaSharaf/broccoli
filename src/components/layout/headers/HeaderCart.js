@@ -12,7 +12,7 @@ import Link from "next/link";
 
 const HeaderCart = () => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
-  if (!cartProducts.items) return
+  if (!cartProducts?.items) return
   return (
     <div
       id="ltn__utilize-cart-menu"
@@ -24,6 +24,10 @@ const HeaderCart = () => {
           <button className="ltn__utilize-close">×</button>
         </div>
         <div className="mini-cart-product-area ltn__scrollbar">
+        {cartProducts?.items ?.length === 0 ? (
+             <Nodata text={"Empty Cart!"} />
+                      ) : (
+                        <>
             {cartProducts?.items?.map(
               ({ product, quantity, price }, idx) => {
                 const { _id, name, images } = product
@@ -36,12 +40,12 @@ const HeaderCart = () => {
                           alt="Image"
                           width={1000}
                           height={1000}
-                        />
+                          />
                       </Link>
                       <span
                         onClick={() => deleteProductFromCart(_id, name)}
                         className="mini-cart-item-delete"
-                      >
+                        >
                         <i className="icon-cancel"></i>
                       </span>
                     </div>
@@ -59,9 +63,7 @@ const HeaderCart = () => {
                   </div>
                 );
               }
-            )
-          }
-        </div>
+            )}
         <div className="mini-cart-footer">
           <div className="mini-cart-sub-total">
             <h5>
@@ -72,6 +74,9 @@ const HeaderCart = () => {
             <ButtonPrimary text={"View Cart"} path={"/cart"} />
             <ButtonSecondary text={"Checkout"} path={"/checkout"} />
           </div>
+          </div>
+          </>
+          )}
           <p>Free Shipping on All Orders Over $100!</p>
         </div>
       </div>

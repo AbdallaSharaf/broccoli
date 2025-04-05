@@ -21,171 +21,147 @@ const CartContextProvider = ({ children }) => {
           // Case 1: Logged in user
           const token = localStorage.getItem("token");
           const userCart = await getUserCart(token);
-
-          setCartProducts(userCart);
-          console.log("called", userCart)
+  
+          if (userCart && userCart.items) {
+            console.log("User cart fetched:", userCart);
+            setCartProducts(userCart);
+          }
         } else {
           // Case 2: Guest user
           const guestId = getItemsFromLocalstorage("guest");
           if (guestId) {
             const guestCart = await getGuestCart(guestId);
-            setCartProducts(guestCart);
-          } else {
-            // Case 3: Neither user nor guest
-            return
+            if (guestCart && guestCart.items) {
+              console.log("Guest cart fetched:", guestCart);
+              setCartProducts(guestCart);
+            }
           }
         }
       } catch (error) {
         console.error("Failed to fetch cart:", error);
       }
     };
+  
     fetchCart();
   }, [user]);
+  
 
   // add  product = localstorage cart
   // console.log(cartProducts)
-  const addProductToCart = (currentProduct, isDecreament, isTotalQuantity) => {
-    const { _id: currentId, name: currentTitle, quantity } = currentProduct;
-    // console.log("isTotalQuantity", isTotalQuantity)
-    // console.log("currentProduct", currentProduct)
-    // console.log("quantity", quantity)
-    const modifyableProduct = cartProducts?.cart?.find(
-      ({ product }) => product._id === currentId
-    );
-    // console.log("modifyableProduct", modifyableProduct)
-    // console.log("cartProduct", cartProducts.cart[1].product._id)
-    const previousQuantity = modifyableProduct?.quantity;
-    // console.log("previousQuantity", previousQuantity)
-    const currentQuantity = currentProduct?.quantity;
-    // console.log("currentQuantity", currentQuantity)
-    // console.log("cartProducts", cartProducts)
-    let currentProducts = {
-      _id: cartProducts?._id,
-      cart: cartProducts?.cart,
-    };
-    if (isTotalQuantity) {
-      currentProducts.cart = cartProducts?.cart?.map((product) =>
-        product._id === currentId &&
-      product?.name === currentTitle &&
-      isTotalQuantity
-      ? {
-        ...product,
-        quantity: currentProduct.quantity,
-      }
-      : product
-    );
-    
-    console.log(currentProducts)
-    if (previousQuantity < currentQuantity) {
-      // creteAlert("success", "Success! Quantity increased.");
-      setCartStatus("incresed");
-    } else if (previousQuantity > currentQuantity) {
-      // creteAlert("success", "Success! Quantity decreased.");
-      setCartStatus("decreased");
-    }
-  } else {
-    const isAlreadyExist = modifyableProduct ? true : false;
-    
-    // console.log(currentProducts)
-    if (isAlreadyExist) {
-      currentProducts.cart = cartProducts?.cart?.map((product) =>
-        product._id === currentId &&
-      product?.name === currentTitle &&
-      isDecreament
-      ? {
-        ...product,
-        quantity: product.quantity - currentProduct?.quantity,
-      }
-      : product._id === currentId && product?.name === currentTitle
-      ? {
-        ...product,
-        quantity: product.quantity + currentProduct?.quantity,
-      }
-      : product
-    );
-    if (isDecreament) {
-      // creteAlert("success", "Success! Quantity decreased.");
-      setCartStatus("decreased");
-    } else {
-          // creteAlert("success", "Success! Quantity increased.");
+  const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) => {
+    try {
+      const { _id: currentId, quantity } = currentProduct;
+  
+      const token = localStorage.getItem("token");
+      const guestId = localStorage.getItem("guest");
+  
+      // Determine the correct headers
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(!token && guestId && { tempId: guestId }),
+      };
+  
+      // Prepare the payload
+      const body = JSON.stringify({
+        items: [
+          {
+            product: currentId,
+            quantity,
+          },
+        ],
+      });
+  
+      const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/cart", {
+        method: "POST",
+        headers,
+        body,
+      });
+  
+      const data = await response.json();
+  
+      if (data.message === "Success" && data.cart) {
+        const { cart } = data;
+  
+        // Set guest ID if it's a new session
+        if (cart?.guest && !guestId) {
+          localStorage.setItem("guest", cart.guest);
+        }
+  
+        setCartProducts(cart);
+        addItemsToLocalstorage("cart", cart);
+  
+        // Status and feedback
+        if (isTotalQuantity) {
+          setCartStatus("updated");
+        } else if (isDecreament) {
+          setCartStatus("decreased");
+        } else if (data.newItem) {
+          setCartStatus("added");
+        } else {
           setCartStatus("increased");
         }
+  
+        creteAlert("success", "Success! Cart updated.");
       } else {
-        currentProducts = {...currentProduct, cart:[...currentProducts.cart, currentProduct]};
-
-        setCartStatus("added");
+        creteAlert("error", data.message || "Failed to update cart.");
       }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      creteAlert("error", "An error occurred while updating the cart.");
     }
-    creteAlert("success", "Success! added to cart.");
-    // console.log(currentProducts)
-    // setCartProducts(currentProducts);
-    // addItemsToLocalstorage("cart", currentProducts);
   };
+  
 
   // delete product = localstorage cart
   const deleteProductFromCart = async (currentId, currentTitle) => {
     try {
-      if (user) {
-        const token = localStorage.getItem("token");
-        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/${currentId}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const isGuest = !user;
+      const token = localStorage.getItem("token");
+      const guest = localStorage.getItem("guest");
   
-        const data = await response.json();
+      const headers = {
+        "Content-Type": "application/json",
+        ...(isGuest ? { tempId: guest } : { Authorization: `Bearer ${token}` }),
+      };
   
-        if (data.success) {
-          const updatedCart = cartProducts?.items?.filter(
+      if (isGuest && !guest) return;
+  
+      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/${currentId}`, {
+        method: "DELETE",
+        headers,
+      });
+  
+      const data = await response.json();
+  
+      if (data.message === "Success") {
+        let newCartProducts;
+
+        if (data.cart) {
+          // ✅ If the backend returns a cart, use it directly
+          newCartProducts = data.cart;
+        } else {
+          // 🧹 Fallback to filtering the local cart
+          const updatedCartItems = cartProducts?.items?.filter(
             ({ product }) => product._id !== currentId
           );
-  
-          // ✅ Only update the `cart` key while preserving other data
-          const newCartProducts = { ...cartProducts, cart: updatedCart };
-  
-          setCartProducts(newCartProducts);
-          addItemsToLocalstorage("cart", newCartProducts);
-  
-          creteAlert("success", "Item successfully deleted from cart.");
-          setCartStatus("deleted");
-        } else {
-          creteAlert("error", "Failed to delete item from backend.");
-        }
-      } else {
-        const guest = localStorage.getItem("guest");
-        if (!guest) {
-          return;
-        }
-        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/${currentId}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "tempId": guest,
-          },
-        });
 
-        const data = await response.json();
-
-        if (data.success) {
-          const updatedCart = cartProducts?.items?.filter(
-            ({ product }) => product._id !== currentId
-          );
-  
-          // ✅ Only update the `cart` key while preserving other data
-          const newCartProducts = { ...cartProducts, cart: updatedCart };
-  
-          setCartProducts(newCartProducts);
-          addItemsToLocalstorage("cart", newCartProducts);
-  
-          creteAlert("success", "Item successfully deleted from cart.");
-          setCartStatus("deleted");
-        } else {
-          creteAlert("error", "Failed to delete item from backend.");
+          newCartProducts =
+            updatedCartItems.length === 0
+              ? { _id: "", items: [] }
+              : { ...cartProducts, items: updatedCartItems };
         }
+
+        setCartProducts(newCartProducts);
+        addItemsToLocalstorage("cart", newCartProducts);
+
+        creteAlert("success", "Item successfully deleted from cart.");
+        setCartStatus("deleted");
       }
-    } catch (error) {
+      else {
+        creteAlert("error", "Failed to delete item from backend.");
+      }
+      } catch (error) {
       creteAlert("error", "An error occurred while deleting the item.");
       console.error(error);
     }

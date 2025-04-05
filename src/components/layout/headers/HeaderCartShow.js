@@ -10,10 +10,9 @@ const HeaderCartShow = () => {
   const { cartProducts } = useCartContext();
   const totalProduct = cartProducts?.items?.length;
   // console.log(totalProduct)
-  if(!cartProducts.items) return
+  if(!cartProducts?.items) return
   return (
     <>
-      {totalProduct || totalProduct === 0 ? (
         <div
           className={`mini-cart-icon   ${
             headerStyle === 5 ? "mini-cart-icon-2" : ""
@@ -21,13 +20,13 @@ const HeaderCartShow = () => {
         >
           <Link href="#ltn__utilize-cart-menu" className="ltn__utilize-toggle">
             <span className={headerStyle === 5 ? "mini-cart-icon" : ""}>
-              <i className="icon-shopping-cart"></i> <sup>{totalProduct}</sup>
+              <i className="icon-shopping-cart"></i> <sup>{totalProduct || 0}</sup>
             </span>
             {headerStyle === 5 ? (
               <h6>
                 <span>Your Cart</span>{" "}
                 <span className="ltn__secondary-color">
-                  ${modifyAmount(cartProducts.totalPrice)}
+                  {cartProducts?.totalPrice && modifyAmount(cartProducts?.totalPrice)}
                 </span>
               </h6>
             ) : (
@@ -35,9 +34,6 @@ const HeaderCartShow = () => {
             )}
           </Link>
         </div>
-      ) : (
-        ""
-      )}
     </>
   );
 };

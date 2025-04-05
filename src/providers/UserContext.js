@@ -40,39 +40,43 @@ export const UserContext = ({ children }) => {
       const { token } = data;
       if (!token) throw new Error("No token received");
   
-      const decodedUser = jwtDecode(token); // Decode JWT
+      const decodedUser = jwtDecode(token);
       setUser(decodedUser);
-      // Save token in localStorage for persistence
       localStorage.setItem("token", token);
+  
       const guest = getItemsFromLocalstorage("guest");
-      // Fetch cart data
-      let localCart = { _id: "", cart: [] };
-
+      let localCart = { _id: "", items: [] };
+  
       if (guest) {
         const guestCart = await getGuestCart(guest);
-        localCart = guestCart || localCart;
+        if (guestCart && Array.isArray(guestCart.items)) {
+          localCart = guestCart;
+        }
       }
-      const backendCart = await getUserCart(token); // Use token or user ID if needed
-      const { items, ...backendCartWithoutCart } = backendCart; // Destructure to exclude 'cart' property
-      
-      // If localCart._id is equal to backendCart._id, don't merge
-      if (localCart._id === backendCart._id) {
-        // If the IDs match, simply use the backendCart as is (without merging)
-        const updatedBackendCart = { ...backendCartWithoutCart, cart: items };
-        addItemsToLocalstorage("cart", updatedBackendCart);
-        return { user: decodedUser, cart: items }; // No merge, return backendCart items directly
-      }
-
-      // Exclude 'cart' property from backendCart and merge it with localCart
-      const mergedCart = mergeCarts(items, localCart?.items);
   
-      // Now save the entire backendCart object except 'cart' to localStorage, and merge the cart separately
-      const updatedBackendCart = { ...backendCartWithoutCart, cart: mergedCart };
+      const backendCart = await getUserCart(token);
+      const backendItems = Array.isArray(backendCart?.items) ? backendCart.items : [];
+      const backendId = backendCart?._id ?? "";
+  
+      // If localCart._id is equal to backendCart._id, don't merge
+      if (localCart._id === backendId) {
+        const updatedBackendCart = { ...backendCart, cart: backendItems };
+        addItemsToLocalstorage("cart", updatedBackendCart);
+        return { user: decodedUser, cart: backendItems };
+      }
+  
+      // Merge backend items and local items
+      const mergedCart = mergeCarts(backendItems, localCart.items);
+  
+      const updatedBackendCart = {
+        ...(backendCart || {}),
+        cart: mergedCart,
+      };
       addItemsToLocalstorage("cart", updatedBackendCart);
-      localStorage.removeItem("guest"); // Remove guest on login
+      localStorage.removeItem("guest");
+  
       return { user: decodedUser, cart: mergedCart };
     } catch (error) {
-      console.log(error);
       console.error("Login error:", error.message);
       return null;
     }

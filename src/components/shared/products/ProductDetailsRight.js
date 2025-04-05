@@ -48,22 +48,38 @@ const ProductDetailsRight = ({ product }) => {
   };
 
   useEffect(() => {
-    const currentDate = Date.now();
-    const calanderFormat = moment(currentDate).format("YYYY-MM-DD");
-    setPurchaseDate(calanderFormat);
-    const inputParent = inputRef.current;
-    const input = inputParent?.querySelector("input");
-
-    setTimeout(() => {
-      const increament = inputParent?.querySelector(".inc");
-      const decreament = inputParent?.querySelector(".dec");
-      increament?.addEventListener("click", () => {
-        setQuantity(Number(input.value));
-      });
-      decreament?.addEventListener("click", () => {
-        setQuantity(Number(input.value));
-      });
-    }, 500);
+      const inputParent = inputRef.current;
+      if (!inputParent) return;
+  
+      const input = inputParent.querySelector("input");
+      const increament = inputParent.querySelector(".inc");
+      const decreament = inputParent.querySelector(".dec");
+  
+      input.value = quantity;
+  
+      const handleInc = () => {
+        setQuantity((prev) => {
+          const newVal = prev + 0.25;
+          input.value = newVal;
+          return newVal;
+        });
+      };
+  
+      const handleDec = () => {
+        setQuantity((prev) => {
+          const newVal = prev > 0.25 ? prev - 0.25 : 0.25;
+          input.value = newVal;
+          return newVal;
+        });
+      };
+  
+      increament?.addEventListener("click", handleInc);
+      decreament?.addEventListener("click", handleDec);
+  
+      return () => {
+        increament?.removeEventListener("click", handleInc);
+        decreament?.removeEventListener("click", handleDec);
+      };
   }, [inputRef.current]);
 
   if (!product) {
@@ -142,18 +158,20 @@ const ProductDetailsRight = ({ product }) => {
         <ul>
           <li>
             <div className="cart-plus-minus" ref={inputRef}>
+            <div className="dec qtybutton">-</div>
               <input
                 onChange={(e) =>{
                   setQuantity(
                     !Number(e.target.value) ? 0.25 : Number(e.target.value)
                   )
                 }
-                }
+              }
                 type="text"
                 value={quantity}
                 name="qtybutton"
                 className="cart-plus-minus-box"
               />
+              <div className="inc qtybutton">+</div>
             </div>
           </li>{" "}
           <li>

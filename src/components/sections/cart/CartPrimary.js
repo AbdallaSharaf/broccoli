@@ -43,6 +43,14 @@ const CartPrimary = () => {
               <div className="shoping-cart-table table-responsive">
                   <table className="table">
                     <tbody>
+                    {cartProducts.length === 0 ? (
+                        <tr>
+                          <td>
+                            <Nodata text={"Empty Cart!"} />
+                          </td>
+                        </tr>
+                      ) : (
+                        <>
                       {cartProducts?.length > 0 &&
                         cartProducts?.map((product, idx) => (
                           <CartProduct
@@ -51,10 +59,8 @@ const CartPrimary = () => {
                             updateProducts={updateProducts}
                             setUpdateProducts={setUpdateProducts}
                             setIsUpdate={setIsUpdate}
-                          />
-                        ))
-                      }
-
+                            />
+                        ))}
                       <tr className="cart-coupon-row">
                         <td colSpan="6">
                           <div className="cart-coupon">
@@ -62,11 +68,11 @@ const CartPrimary = () => {
                               type="text"
                               name="cart-coupon"
                               placeholder="Coupon code"
-                            />{" "}
+                              />{" "}
                             <button
                               type="submit"
                               className="btn theme-btn-2 btn-effect-2"
-                            >
+                              >
                               Apply Coupon
                             </button>
                           </div>
@@ -79,15 +85,17 @@ const CartPrimary = () => {
                               isUpdate ? "" : "disabled"
                             }`}
                             disabled={isUpdate ? false : true}
-                          >
+                            >
                             Update Cart
                           </button>
                         </td>
                       </tr>
+                      </>
+                    )}
                     </tbody>
                   </table>
               </div>
-              <div className="shoping-cart-total mt-50">
+              {cartProducts.length > 0 && <div className="shoping-cart-total mt-50">
                 <h4>Cart Totals</h4>
                   <table className="table">
                     <tbody>
@@ -122,7 +130,7 @@ const CartPrimary = () => {
                     Proceed to checkout
                   </Link>
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
         </div>
