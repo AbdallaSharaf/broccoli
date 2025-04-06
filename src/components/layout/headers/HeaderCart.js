@@ -24,7 +24,7 @@ const HeaderCart = () => {
           <button className="ltn__utilize-close">×</button>
         </div>
         <div className="mini-cart-product-area ltn__scrollbar">
-        {cartProducts?.items ?.length === 0 ? (
+        {cartProducts?.items?.length === 0 ? (
              <Nodata text={"Empty Cart!"} />
                       ) : (
                         <>
@@ -64,6 +64,10 @@ const HeaderCart = () => {
                 );
               }
             )}
+            </>
+          )}
+      </div>
+        {cartProducts?.items?.length > 0 && <>
         <div className="mini-cart-footer">
           <div className="mini-cart-sub-total">
             <h5>
@@ -75,11 +79,9 @@ const HeaderCart = () => {
             <ButtonSecondary text={"Checkout"} path={"/checkout"} />
           </div>
           </div>
-          </>
-          )}
           <p>Free Shipping on All Orders Over $100!</p>
+          </>}
         </div>
-      </div>
     </div>
   );
 };

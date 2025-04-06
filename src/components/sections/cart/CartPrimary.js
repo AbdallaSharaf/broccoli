@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const CartPrimary = () => {
-  const { cartProducts: currentProducts, setCartProducts } = useCartContext();
+  const { cartProducts: currentProducts, setCartProducts, updateCart } = useCartContext();
   const creteAlert = useSweetAlert();
   const cartProducts = currentProducts?.items ?? [];
   // stats
@@ -20,20 +20,16 @@ const CartPrimary = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   // update cart
   const handleUpdateCart = () => {
-    addItemsToLocalstorage("cart", [...updateProducts]);
-    setCartProducts([...updateProducts]);
-    creteAlert("success", "Success! Cart updated.");
+    updateCart(updateProducts);
     setIsUpdate(false);
   };
   useEffect(() => {
-    if(cartProducts > 0){
       setUpdateProducts([...cartProducts]);
-      console.log("called")
-    }
+      // console.log("called")
   }, [cartProducts]);
-  console.log(cartProducts)
   // console.log(modifyAmount(currentProducts?.totalPrice))
-
+  console.log(updateProducts)
+  
   return (
     <div className="liton__shoping-cart-area mb-120">
       <div className="container">

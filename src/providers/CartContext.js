@@ -50,24 +50,36 @@ const CartContextProvider = ({ children }) => {
   // console.log(cartProducts)
   const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) => {
     try {
-      const { _id: currentId, quantity } = currentProduct;
+      const { _id: currentId, quantity: addedQuantity } = currentProduct;
   
       const token = localStorage.getItem("token");
       const guestId = localStorage.getItem("guest");
   
-      // Determine the correct headers
+      // Check existing product in cart
+      const existingItem = cartProducts?.items?.find(
+        (item) => item.product._id === currentId
+      );
+      
+      const currentQuantity = existingItem
+      ? existingItem.quantity + addedQuantity
+      : addedQuantity;
+      // console.log("existingItem", existingItem);
+      // console.log("existingItem", existingItem?.quantity);
+      // console.log("addedQuantity", addedQuantity);
+      // console.log("currentQuantity", currentQuantity);
+      // Construct headers
       const headers = {
         "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(!token && guestId && { tempId: guestId }),
       };
   
-      // Prepare the payload
+      // Payload to backend
       const body = JSON.stringify({
         items: [
           {
             product: currentId,
-            quantity,
+            quantity: currentQuantity,
           },
         ],
       });
@@ -83,7 +95,7 @@ const CartContextProvider = ({ children }) => {
       if (data.message === "Success" && data.cart) {
         const { cart } = data;
   
-        // Set guest ID if it's a new session
+        // Store guest ID if new
         if (cart?.guest && !guestId) {
           localStorage.setItem("guest", cart.guest);
         }
@@ -91,17 +103,63 @@ const CartContextProvider = ({ children }) => {
         setCartProducts(cart);
         addItemsToLocalstorage("cart", cart);
   
-        // Status and feedback
+        // Set status
         if (isTotalQuantity) {
           setCartStatus("updated");
         } else if (isDecreament) {
           setCartStatus("decreased");
-        } else if (data.newItem) {
+        } else if (!existingItem) {
           setCartStatus("added");
         } else {
           setCartStatus("increased");
         }
   
+        creteAlert("success", "Success! Cart updated.");
+      } else {
+        creteAlert("error", data.message || "Failed to update cart.");
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      creteAlert("error", "An error occurred while updating the cart.");
+    }
+  };
+  
+  const updateCart = async (cart) => {
+    try {
+      const token = localStorage.getItem("token");
+      const guestId = localStorage.getItem("guest");
+  
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(!token && guestId && { tempId: guestId }),
+      };
+  
+      // Format the payload
+      const body = JSON.stringify({
+        items: cart.map((item) => ({
+          product: item.product._id,
+          quantity: item.quantity,
+        })),
+      });
+      console.log(body)
+      const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/cart", {
+        method: "POST",
+        headers,
+        body,
+      });
+  
+      const data = await response.json();
+  
+      if (data.message === "Success" && data.cart) {
+        const { cart } = data;
+  
+        // Store guest ID if new
+        if (cart?.guest && !guestId) {
+          localStorage.setItem("guest", cart.guest);
+        }
+  
+        setCartProducts(cart);
         creteAlert("success", "Success! Cart updated.");
       } else {
         creteAlert("error", data.message || "Failed to update cart.");
@@ -176,6 +234,7 @@ const CartContextProvider = ({ children }) => {
         addProductToCart,
         deleteProductFromCart,
         cartStatus,
+        updateCart
       }}
     >
       {children}

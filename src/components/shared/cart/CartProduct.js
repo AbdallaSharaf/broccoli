@@ -30,7 +30,7 @@ const CartProduct = ({
   const [quantity, setQuantity] = useState(Number(quantity1) ?? 1);
   const { setCurrentProduct } = useProductContext();
   // variables
-  console.log(quantity)
+  // console.log(quantity)
   useEffect(() => {
     if (!isWishlist) {
       const inputParent = inputRef.current;
@@ -78,6 +78,7 @@ const CartProduct = ({
         _id === product?.product._id ? { ...product, quantity } : product
       );
       setUpdateProducts(newUptedProducts);
+      // console.log(newUptedProducts)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWishlist, quantity]);
