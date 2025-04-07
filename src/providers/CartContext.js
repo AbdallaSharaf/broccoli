@@ -169,6 +169,47 @@ const CartContextProvider = ({ children }) => {
       creteAlert("error", "An error occurred while updating the cart.");
     }
   };
+
+  const applyCoupon = async (coupon) => {
+    try {
+      const token = localStorage.getItem("token");
+      const guestId = localStorage.getItem("guest");
+  
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(!token && guestId && { tempId: guestId }),
+      };
+  
+      const body = JSON.stringify({
+        code: coupon,
+      });
+  
+      const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/cart/coupon", {
+        method: "POST",
+        headers,
+        body,
+      });
+  
+      const data = await response.json();
+  
+      if (data.message === "Success" && data.cart) {
+        const { cart } = data;
+  
+        if (cart?.guest && !guestId) {
+          localStorage.setItem("guest", cart.guest);
+        }
+  
+        setCartProducts(cart);
+        return { success: true, message: "Success! Coupon applied." };
+      } else {
+        return { success: false, message: data.error || "Failed to apply coupon." };
+      }
+    } catch (error) {
+      console.error("Apply coupon error:", error);
+      return { success: false, message: "An error occurred while applying the coupon." };
+    }
+  };
   
 
   // delete product = localstorage cart
@@ -234,7 +275,8 @@ const CartContextProvider = ({ children }) => {
         addProductToCart,
         deleteProductFromCart,
         cartStatus,
-        updateCart
+        updateCart,
+        applyCoupon
       }}
     >
       {children}

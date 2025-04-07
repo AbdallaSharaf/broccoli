@@ -3,17 +3,15 @@
 
 import CartProduct from "@/components/shared/cart/CartProduct";
 import Nodata from "@/components/shared/no-data/Nodata";
-import useSweetAlert from "@/hooks/useSweetAlert";
-import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
-import countTotalPrice from "@/libs/countTotalPrice";
 import modifyAmount from "@/libs/modifyAmount";
 import { useCartContext } from "@/providers/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const CartPrimary = () => {
-  const { cartProducts: currentProducts, setCartProducts, updateCart } = useCartContext();
-  const creteAlert = useSweetAlert();
+  const { cartProducts: currentProducts, updateCart, applyCoupon } = useCartContext();
+  const [couponCode, setCouponCode] = useState(""); // coupon input
+  const [couponResponse, setCouponResponse] = useState(null); // coupon result
   const cartProducts = currentProducts?.items ?? [];
   // stats
   const [updateProducts, setUpdateProducts] = useState(cartProducts);
@@ -23,12 +21,18 @@ const CartPrimary = () => {
     updateCart(updateProducts);
     setIsUpdate(false);
   };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode) return;
+    const result = await applyCoupon(couponCode);
+    setCouponResponse(result); // show success or error
+  };
+
   useEffect(() => {
       setUpdateProducts([...cartProducts]);
       // console.log("called")
   }, [cartProducts]);
   // console.log(modifyAmount(currentProducts?.totalPrice))
-  console.log(updateProducts)
   
   return (
     <div className="liton__shoping-cart-area mb-120">
@@ -59,24 +63,35 @@ const CartPrimary = () => {
                         ))}
                       <tr className="cart-coupon-row">
                         <td colSpan="6">
-                          <div className="cart-coupon">
-                            <input
-                              type="text"
-                              name="cart-coupon"
-                              placeholder="Coupon code"
-                              />{" "}
-                            <button
-                              type="submit"
-                              className="btn theme-btn-2 btn-effect-2"
+                        <div className="cart-coupon">
+                              <input
+                                type="text"
+                                name="cart-coupon"
+                                placeholder="Coupon code"
+                                value={couponCode}
+                                onChange={(e) => setCouponCode(e.target.value)}
+                              />
+                              <button
+                                type="button"
+                                onClick={handleApplyCoupon}
+                                className="btn theme-btn-2 btn-effect-2"
                               >
-                              Apply Coupon
-                            </button>
-                          </div>
+                                Apply Coupon
+                              </button>
+                              {couponResponse && (
+                                <p
+                                  className="mt-2"
+                                  style={{ color: couponResponse.status ? "#28a745" : "#dc3545" }} // green if true, red if false
+                                >
+                                  {couponResponse.message}
+                                </p>
+                              )}
+                            </div>
                         </td>
                         <td>
                           <button
                             onClick={handleUpdateCart}
-                            type="submit"
+                            type="button"
                             className={`btn theme-btn-2  ${
                               isUpdate ? "" : "disabled"
                             }`}
@@ -98,10 +113,6 @@ const CartPrimary = () => {
                       <tr>
                         <td>Cart Subtotal</td>
                         <td>{modifyAmount(currentProducts?.totalPrice)} SAR</td>
-                      </tr>
-                      <tr>
-                        <td>Shipping and Handing</td>
-                        <td>$00.00</td>
                       </tr>
                       <tr>
                         <td>Vat</td>

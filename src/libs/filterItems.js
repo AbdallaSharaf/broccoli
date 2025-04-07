@@ -12,6 +12,8 @@ const filterItems = async (filters) => {
     }
   });
 
+  queryParams.append("PageCount", 10000);
+
   // Determine API URL based on category presence
   const apiUrl = filters.category
     ? `https://fruits-heaven-api.vercel.app/api/v1/product/category/${filters.category}`
