@@ -1,10 +1,8 @@
 "use client";
 import useSweetAlert from "@/hooks/useSweetAlert";
 import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
-import getItemsFromLocalstorage from "@/libs/getItemsFromLocalstorage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUserContext } from "./UserContext";
-import mergeCarts from "@/libs/mergeCarts";
 import { getGuestCart, getUserCart } from "@/libs/cartApi";
 
 const cartContext = createContext(null);
@@ -23,12 +21,11 @@ const CartContextProvider = ({ children }) => {
           const userCart = await getUserCart(token);
   
           if (userCart && userCart.items) {
-            console.log("User cart fetched:", userCart);
             setCartProducts(userCart);
           }
         } else {
           // Case 2: Guest user
-          const guestId = getItemsFromLocalstorage("guest");
+          const guestId = localStorage.getItem("guest");
           if (guestId) {
             const guestCart = await getGuestCart(guestId);
             if (guestCart && guestCart.items) {
