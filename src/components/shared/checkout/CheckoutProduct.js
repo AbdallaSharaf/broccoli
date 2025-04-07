@@ -4,15 +4,14 @@ import sliceText from "@/libs/sliceText";
 import React from "react";
 
 const CheckoutProduct = ({ product }) => {
-  const { title, price, disc, quantity } = product ? product : {};
-  const totalPriceSingle = countTotalPrice([{ price, quantity, disc }]);
-
+  const { product: productData, totalPrice, quantity } = product ? product : {};
+  const { name } = productData ? productData : {};
   return (
     <tr>
       <td>
-        {sliceText(title, 20)} <strong>× {quantity}</strong>
+        {sliceText(name['en'] ?? name['ar'], 20)} <strong>× {quantity}</strong>
       </td>
-      <td>${modifyAmount(totalPriceSingle)}</td>
+      <td>${modifyAmount(totalPrice)}</td>
     </tr>
   );
 };

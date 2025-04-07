@@ -131,7 +131,7 @@ const CartContextProvider = ({ children }) => {
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(!token && guestId && { tempId: guestId }),
       };
-  
+      console.log("context", cart)
       // Format the payload
       const body = JSON.stringify({
         items: cart.map((item) => ({
@@ -218,7 +218,8 @@ const CartContextProvider = ({ children }) => {
   
       const headers = {
         "Content-Type": "application/json",
-        ...(isGuest ? { tempId: guest } : { Authorization: `Bearer ${token}` }),
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(!token && guest && { tempId: guest }),      
       };
   
       if (isGuest && !guest) return;

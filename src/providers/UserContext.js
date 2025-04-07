@@ -2,7 +2,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode"; // Import the decoder
 import mergeCarts from "@/libs/mergeCarts";
-import getItemsFromLocalstorage from "@/libs/getItemsFromLocalstorage";
 import { getGuestCart, getUserCart } from "@/libs/cartApi";
 import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 
@@ -44,7 +43,7 @@ export const UserContext = ({ children }) => {
       setUser(decodedUser);
       localStorage.setItem("token", token);
   
-      const guest = getItemsFromLocalstorage("guest");
+      const guest = localStorage.getItem("guest");
       let localCart = { _id: "", items: [] };
   
       if (guest) {
@@ -68,15 +67,16 @@ export const UserContext = ({ children }) => {
       // Merge backend items and local items
       const mergedCart = mergeCarts(backendItems, localCart.items);
   
-      const updatedBackendCart = {
-        ...(backendCart || {}),
-        cart: mergedCart,
-      };
-      addItemsToLocalstorage("cart", updatedBackendCart);
+      // const updatedBackendCart = {
+      //   ...(backendCart || {}),
+      //   cart: mergedCart,
+      // };
+      // addItemsToLocalstorage("cart", updatedBackendCart);
       localStorage.removeItem("guest");
   
       return { user: decodedUser, cart: mergedCart };
     } catch (error) {
+      console.log(error)
       console.error("Login error:", error.message);
       return null;
     }

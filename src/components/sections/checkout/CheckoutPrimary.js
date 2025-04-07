@@ -2,40 +2,56 @@
 "use client";
 import CheckoutProduct from "@/components/shared/checkout/CheckoutProduct";
 import Nodata from "@/components/shared/no-data/Nodata";
-import countTotalPrice from "@/libs/countTotalPrice";
-import getAllProducts from "@/libs/getAllProducts";
 import modifyAmount from "@/libs/modifyAmount";
 import { useCartContext } from "@/providers/CartContext";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 const paymnetImage3 = "/img/icons/payment-3.png";
 import useSweetAlert from "@/hooks/useSweetAlert";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useUserContext } from "@/providers/UserContext";
 
 const CheckoutPrimary = () => {
   const [isPlaceOrder, setIsPlaceOrder] = useState(false);
   const creteAlert = useSweetAlert();
-  const allProducts = getAllProducts();
-  const searchParams = useSearchParams();
-  const currentId = parseInt(searchParams.get("id"));
-  const currentQuantity = parseInt(searchParams.get("quantity"));
-  const currentColor = searchParams.get("color");
-  const currentSize = searchParams.get("size");
-  const { cartProducts: products } = useCartContext();
-  const currentProduct = {
-    ...allProducts?.find(({ id }) => id === currentId),
-    quantity: currentQuantity,
-    color: currentColor,
-    size: currentSize,
+  const { cartProducts: products, updateCart, applyCoupon } = useCartContext();
+  const [couponCode, setCouponCode] = useState(""); // coupon input
+  const [couponResponse, setCouponResponse] = useState(null); // coupon result
+  const { login, user } = useUserContext(); // Get login function from context
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState(null); // State to track errors
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent page reload
+    setError(null); // Reset previous errors
+  
+    try {
+      const result = await login(formData.email, formData.password); // Call login function
+      console.log(result)
+      if (result) {
+        updateCart(products.items);
+        // setCartProducts(result.cart); // update UI cart from merged version
+          // maybe navigate to /dashboard or /cart
+        // router.push("/"); // Redirect only if login is successful
+      } else {
+        setError("Invalid email or password"); // Show error if login fails
+      }
+    } catch (err) {
+      console.log(err)
+      setError("Something went wrong. Please try again."); // Handle unexpected errors
+    }
   };
 
-  const isProducts = currentProduct?.title || products?.length ? true : false;
-  const subtotal = countTotalPrice(
-    currentId ? [{ ...currentProduct, quantity: currentQuantity }] : products
-  );
-  const shipping = 15;
-  const totalPrice = modifyAmount(subtotal + shipping);
+  const handleApplyCoupon = async () => {
+    if (!couponCode) return;
+    const result = await applyCoupon(couponCode);
+    setCouponResponse(result); // show success or error
+  };
+
+  const isProducts = products.items.length > 0;
   // handle place order
   const handlePlaceOrder = () => {
     creteAlert("error", "Sorry! App is in demo mode.");
@@ -53,7 +69,7 @@ const CheckoutPrimary = () => {
           <div className="col-lg-12">
             <div className="ltn__checkout-inner">
               {/* login */}
-              <div className="ltn__checkout-single-content ltn__returning-customer-wrap">
+              {!user && <div className="ltn__checkout-single-content ltn__returning-customer-wrap">
                 <h5>
                   Returning customer?{" "}
                   <Link
@@ -70,40 +86,45 @@ const CheckoutPrimary = () => {
                 >
                   <div className="ltn_coupon-code-form ltn__form-box">
                     <p>Please login your accont.</p>
-                    <form action="#">
+                    <form onSubmit={handleSubmit}>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="input-item input-item-name ltn__custom-icon">
-                            <input
-                              type="text"
-                              name="ltn__name"
-                              placeholder="Enter your name"
-                            />
+                          <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter email address"
+                            value={formData.email}
+                            onChange={handleChange}
+                          />
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="input-item input-item-email ltn__custom-icon">
-                            <input
-                              type="email"
-                              name="ltn__email"
-                              placeholder="Enter email address"
-                            />
+                          <input
+                            type="password"
+                            name="password"
+                            placeholder="Password*"
+                            value={formData.password}
+                            onChange={handleChange}
+                          />
                           </div>
                         </div>
                       </div>
-                      <button className="btn theme-btn-1 btn-effect-1 text-uppercase">
+                      {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
+                      <button className="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">
                         Login
                       </button>
-                      <label className="input-info-save mb-0">
+                      {/* <label className="input-info-save mb-0">
                         <input type="checkbox" name="agree" /> Remember me
-                      </label>
+                      </label> */}
                       <p className="mt-30">
                         <Link href="/register">Lost your password?</Link>
                       </p>
                     </form>
                   </div>
                 </div>
-              </div>
+              </div>}
               {/* coupon */}
               <div className="ltn__checkout-single-content ltn__coupon-code-wrap">
                 <h5>
@@ -122,15 +143,29 @@ const CheckoutPrimary = () => {
                 >
                   <div className="ltn__coupon-code-form">
                     <p>If you have a coupon code, please apply it below.</p>
-                    <form action="#">
-                      <input
+                    <form onSubmit={handleApplyCoupon}>
+                    <input
                         type="text"
-                        name="coupon-code"
+                        name="cart-coupon"
                         placeholder="Coupon code"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
                       />
-                      <button className="btn theme-btn-2 btn-effect-2 text-uppercase">
-                        Apply Coupon
-                      </button>
+                      {couponResponse && (
+                          <p
+                            className="mt-2"
+                            style={{ color: couponResponse.status ? "#28a745" : "#dc3545" }} // green if true, red if false
+                          >
+                            {couponResponse.message}
+                          </p>
+                        )}
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      className="btn theme-btn-2 btn-effect-2"
+                    >
+                      Apply Coupon
+                    </button>
                     </form>
                   </div>
                 </div>
@@ -198,21 +233,6 @@ const CheckoutPrimary = () => {
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-lg-4 col-md-6">
-                        <h6>Country</h6>
-                        <div className="input-item">
-                          <select className="nice-select">
-                            <option>Select Country</option>
-                            <option>Australia</option>
-                            <option>Canada</option>
-                            <option>China</option>
-                            <option>Morocco</option>
-                            <option>Saudi Arabia</option>
-                            <option>United Kingdom (UK)</option>
-                            <option>United States (US)</option>
-                          </select>
-                        </div>
-                      </div>
                       <div className="col-lg-12 col-md-12">
                         <h6>Address</h6>
                         <div className="row">
@@ -253,12 +273,12 @@ const CheckoutPrimary = () => {
                         </div>
                       </div>
                     </div>
-                    <p>
+                    {/* <p>
                       <label className="input-info-save mb-0">
                         <input type="checkbox" name="agree" /> Create an
                         account?
                       </label>
-                    </p>
+                    </p> */}
                     <h6>Order Notes (optional)</h6>
                     <div className="input-item input-item-textarea ltn__custom-icon">
                       <textarea
@@ -278,7 +298,7 @@ const CheckoutPrimary = () => {
 
               <div id="checkoutAccordion" className="accordion">
                 {/* <!-- card --> */}
-                <div className="card ">
+                {/* <div className="card ">
                   <h5
                     className="collapsed ltn__card-title"
                     data-bs-toggle="collapse"
@@ -299,7 +319,7 @@ const CheckoutPrimary = () => {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* <!-- card --> */}
                 <div className="card">
                   <h5
@@ -327,7 +347,7 @@ const CheckoutPrimary = () => {
                   </div>
                 </div>
                 {/* <!-- card --> */}
-                <div className="card">
+                {/* <div className="card">
                   <h5
                     className="ltn__card-title"
                     data-bs-toggle="collapse"
@@ -351,7 +371,7 @@ const CheckoutPrimary = () => {
                       <p>Apple Pay is the modern way to pay.</p>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* <!-- card --> */}
                 <div className="card">
                   <h5
@@ -410,17 +430,15 @@ const CheckoutPrimary = () => {
                 <h4 className="title-2">Cart Totals</h4>
                 <table className="table">
                   <tbody>
-                    {currentProduct?.title ? (
-                      <CheckoutProduct product={currentProduct} />
-                    ) : (
-                      products?.map((product, idx) => (
+
+                      {products?.items?.map((product, idx) => (
                         <CheckoutProduct key={idx} product={product} />
                       ))
-                    )}
+                    }
 
                     <tr>
                       <td>Shipping and Handing</td>
-                      <td>${modifyAmount(shipping)}</td>
+                      <td>${modifyAmount(products.shipping)}</td>
                     </tr>
                     <tr>
                       <td>Vat</td>
@@ -431,7 +449,7 @@ const CheckoutPrimary = () => {
                         <strong>Order Total</strong>
                       </td>
                       <td>
-                        <strong>${totalPrice}</strong>
+                        <strong>${products.totalPrice}</strong>
                       </td>
                     </tr>
                   </tbody>

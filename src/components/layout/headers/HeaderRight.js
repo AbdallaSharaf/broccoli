@@ -11,7 +11,7 @@ import { useUserContext } from "@/providers/UserContext";
 
 const HeaderRight = () => {
   const { headerStyle } = useHeaderContex();
-  const { user } = useUserContext();
+  const { user, logout } = useUserContext();
 
   return (
     <div
@@ -64,6 +64,12 @@ const HeaderRight = () => {
               <li>
                 <Link href="/wishlist">Wishlist</Link>
               </li>
+              {user?.name &&
+                <li>
+                  <Link href="#" onClick={(e) => { e.preventDefault(); logout(); }}>
+                  Log out</Link>
+                </li>
+              }
             </ul>
           </li>
         </ul>

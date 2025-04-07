@@ -11,7 +11,7 @@ const languages = [
   { code: "ar", name: "Arabic", flag: "img/flags/ar.png" },
 
 ];
-  const { user } = useUserContext();
+  const { user, logout } = useUserContext();
 
 const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
 
@@ -140,6 +140,12 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
                     <li>
                       <Link href="/wishlist">Wishlist</Link>
                     </li>
+                    {user?.name &&
+                    <li>
+                      <Link href="#" onClick={(e) => { e.preventDefault(); logout(); }}>
+                      Log out</Link>
+                    </li>
+                    }
                   </ul>
                 </li>
               </ul>
