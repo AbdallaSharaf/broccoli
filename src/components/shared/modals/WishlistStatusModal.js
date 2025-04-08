@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useWishlistContext } from "@/providers/WshlistContext";
 import controlModal from "@/libs/controlModal";
 const WishlistStatusModal = ({ product }) => {
-  const { id, title, image } = product;
+  const { _id, name, images } = product;
   const { wishlistStatus } = useWishlistContext();
 
   return (
@@ -29,15 +29,15 @@ const WishlistStatusModal = ({ product }) => {
                   <div className="row">
                     <div className="col-12">
                       <div className="modal-product-img">
-                        <Image src={image} alt="#" width={1000} height={1000} />
+                        <Image src={images[0] || "/img/product/1.png"} alt="#" width={1000} height={1000} />
                       </div>
                       <div className="modal-product-info">
                         <h5>
                           <Link
                             onClick={() => controlModal()}
-                            href={`/products/${id}`}
+                            href={`/products/${_id}`}
                           >
-                            {title}
+                            {name["en"] ?? name["ar"] ?? "N/A"}
                           </Link>
                         </h5>
                         <p className="added-cart">

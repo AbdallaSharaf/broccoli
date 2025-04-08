@@ -1,59 +1,154 @@
 "use client";
 import useSweetAlert from "@/hooks/useSweetAlert";
 import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
-import getItemsFromLocalstorage from "@/libs/getItemsFromLocalstorage";
 import { createContext, useContext, useEffect, useState } from "react";
-import getAllProducts from "@/libs/getAllProducts";
+import { useUserContext } from "./UserContext";
+import { getGuestWishlist, getUserWishlist } from "@/libs/wishlistApi";
 
 const wishlistContext = createContext(null);
 const WishlistContextProvider = ({ children }) => {
+  const { user } = useUserContext(); // Get login function from context
   const [wishlistStatus, setWishlistStatus] = useState(null);
   const [wishlistProducts, setWishlistProducts] = useState([]);
   const creteAlert = useSweetAlert();
-  useEffect(() => {
-    const demoProducts = getAllProducts()
-      ?.slice(0, 2)
-      ?.map((product, idx) => ({ ...product, quantity: 1 }));
 
-    const wishlistProductFromLocalStorage =
-      getItemsFromLocalstorage("wishlist");
+    useEffect(() => {
+      const fetchWishlist = async () => {
+        try {
+          if (user) {
+            // Case 1: Logged in user
+            const token = localStorage.getItem("token");
+            const userWishlist = await getUserWishlist(token);
+    
+            if (userWishlist && userWishlist.items) {
+              setWishlistProducts(userWishlist);
+            }
+          } else {
+            // Case 2: Guest user
+            const guestId = localStorage.getItem("guest");
+            if (guestId) {
+              const guestWishlist = await getGuestWishlist(guestId);
+              if (guestWishlist && guestWishlist.items) {
+                console.log("Guest wishlist fetched:", guestWishlist);
+                setWishlistProducts(guestWishlist);
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Failed to fetch wishlist:", error);
+        }
+      };
+    
+      fetchWishlist();
+    }, [user]);
 
-    if (!wishlistProductFromLocalStorage) {
-      setWishlistProducts(demoProducts);
-      addItemsToLocalstorage("wishlist", demoProducts);
-    } else [setWishlistProducts(wishlistProductFromLocalStorage)];
-  }, []);
-  // add  product from localstorage cart
-  const addProductToWishlist = (currentProduct) => {
-    const { id: currentId, title: currentTitle } = currentProduct;
-
-    const modifyableProduct = wishlistProducts?.find(
-      ({ id, title }) => id === currentId && title === currentTitle
+  // add  product from localstorage wishlist
+  const addProductToWishlist = async (currentProduct) => {
+    try {
+    const { _id: currentId } = currentProduct;
+  
+    const token = localStorage.getItem("token");
+    const guestId = localStorage.getItem("guest");
+    const existingItem = wishlistProducts?.items?.find(
+      (item) => item._id === currentId
     );
+    const headers = {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(!token && guestId && { tempId: guestId }),
+    };
 
-    const isAlreadyExist = modifyableProduct ? true : false;
+    const body = JSON.stringify({
+        product: currentId,
+    });
 
-    if (isAlreadyExist) {
-      // creteAlert("error", "Failed ! Already exist in wishlist.");
+    if (existingItem) {
+      creteAlert("error", "Failed ! Already exist in wishlist.");
       setWishlistStatus("exist");
-    } else {
-      let currentProducts = [...wishlistProducts, currentProduct];
-      setWishlistProducts(currentProducts);
-      addItemsToLocalstorage("wishlist", currentProducts);
-      // creteAlert("success", "Success! added to wishlist.");
-      setWishlistStatus("added");
+      return
     }
+
+    const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/wishlist", {
+      method: "PATCH",
+      headers,
+      body,
+    });
+
+    const data = await response.json();
+
+    if (data.message === "Success" && data.wishlist) {
+      const { wishlist } = data;
+  
+      // Store guest ID if new
+      if (wishlist?.guest && !guestId) {
+        localStorage.setItem("guest", wishlist.guest);
+      }
+      setWishlistProducts(wishlist);
+      addItemsToLocalstorage("wishlist", wishlist);
+      creteAlert("success", "Success! Wishlist updated.");
+
+    } 
+    else {
+      creteAlert("error", data.error || "Failed to update wishlist.");
+    }
+  } catch (error) {
+    console.error("Add to wishlist error:", error);
+    creteAlert("error", "An error occurred while updating the wishlist.");
+  }
   };
 
-  // delete product from localstorage cart
-  const deleteProductFromWishlist = (currentId, currentTitle) => {
-    const currentProducts = wishlistProducts?.filter(
-      ({ id, title }) => id !== currentId || title !== currentTitle
-    );
-    setWishlistProducts(currentProducts);
-    addItemsToLocalstorage("wishlist", currentProducts);
-    creteAlert("success", "Success! deleted from wishlist.");
-    setWishlistStatus("deleted");
+  // delete product from localstorage wishlist
+  const deleteProductFromWishlist = async (currentId) => {
+    try {
+      const isGuest = !user;
+      const token = localStorage.getItem("token");
+      const guest = localStorage.getItem("guest");
+
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(!token && guest && { tempId: guest }),      
+      };
+  
+      if (isGuest && !guest) return;
+
+      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/wishlist/${currentId}`, {
+        method: "DELETE",
+        headers,
+      });
+  
+      const data = await response.json();
+      if (data.message === "Success") {
+        let newWishlistProducts;
+
+        if (data.wishlist) {
+          // ✅ If the backend returns a wishlist, use it directly
+          newWishlistProducts = data.wishlist;
+        } else {
+          // 🧹 Fallback to filtering the local wishlist
+          const updatedWishlistItems = wishlistProducts?.items?.filter(
+            ( product ) => product._id !== currentId
+          );
+
+          newWishlistProducts =
+            updatedWishlistItems.length === 0
+              ? { _id: "", items: [] }
+              : { ...wishlistProducts, items: updatedWishlistItems };
+        }
+
+        setWishlistProducts(newWishlistProducts);
+        addItemsToLocalstorage("wishlist", newWishlistProducts);
+
+        creteAlert("success", "Item successfully deleted from wishlist.");
+        setWishlistStatus("deleted");
+      }
+      else {
+        creteAlert("error", "Failed to delete item from backend.");
+      }
+      } catch (error) {
+      creteAlert("error", "An error occurred while deleting the item.");
+      console.error(error);
+    }
   };
   return (
     <wishlistContext.Provider

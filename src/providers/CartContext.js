@@ -51,7 +51,8 @@ const CartContextProvider = ({ children }) => {
   
       const token = localStorage.getItem("token");
       const guestId = localStorage.getItem("guest");
-  
+      // console.log("guestId", guestId)
+      // console.log("user", user._id)
       // Check existing product in cart
       const existingItem = cartProducts?.items?.find(
         (item) => item.product._id === currentId

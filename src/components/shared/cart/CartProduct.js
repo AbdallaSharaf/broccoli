@@ -89,8 +89,8 @@ const CartProduct = ({
         className="cart-product-remove"
         onClick={() =>
           isWishlist
-            ? deleteProductFromWishlist(_id, name?.["en"] ?? name?.["ar"])
-            : deleteProductFromCart(_id, name)
+            ? deleteProductFromWishlist(_id)
+            : deleteProductFromCart(_id)
         }
       >
         x
@@ -132,10 +132,7 @@ const CartProduct = ({
         <td
           className="cart-product-add-cart"
           onClick={() =>
-            addProductToCart({
-              ...product,
-              quantity,
-            })
+            addProductToCart(productData)
           }
         >
           <Link

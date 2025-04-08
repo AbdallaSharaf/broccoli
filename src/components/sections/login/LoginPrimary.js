@@ -8,7 +8,7 @@ import { useCartContext } from "@/providers/CartContext";
 const LoginPrimary = () => {
   const { login } = useUserContext(); // Get login function from context
   const router = useRouter(); // To navigate after successful login
-  const { setCartProducts } = useCartContext(); // Get login function from context
+  const { setCartProducts, updateCart } = useCartContext(); // Get login function from context
   
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null); // State to track errors
@@ -27,6 +27,7 @@ const LoginPrimary = () => {
       const result = await login(formData.email, formData.password); // Call login function
       console.log(result)
       if (result) {
+        updateCart(result.cart);
         setCartProducts(result.cart); // update UI cart from merged version
           // maybe navigate to /dashboard or /cart
         router.push("/"); // Redirect only if login is successful
