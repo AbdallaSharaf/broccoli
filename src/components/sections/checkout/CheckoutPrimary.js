@@ -18,18 +18,38 @@ const CheckoutPrimary = () => {
   const [couponCode, setCouponCode] = useState(""); // coupon input
   const [couponResponse, setCouponResponse] = useState(null); // coupon result
   const { login, user } = useUserContext(); // Get login function from context
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null); // State to track errors
+  const [firstName = "", lastName = ""] = user?.name?.split(" ") || [];
+  const [formData, setFormData] = useState({
+    firstName,
+    lastName,
+    email: user?.email || "",
+    phone: "",
+    companyName: "",
+    companyAddress: "",
+    houseNumber: "",
+    apartment: "",
+    city: "",
+    state: "",
+    zip: "",
+    notes: "",
+  });
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleLoginChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
   
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault(); // Prevent page reload
     setError(null); // Reset previous errors
   
     try {
-      const result = await login(formData.email, formData.password); // Call login function
+      const result = await login(loginData.email, loginData.password); // Call login function
       console.log(result)
       if (result) {
         updateCart(products.items);
@@ -54,7 +74,22 @@ const CheckoutPrimary = () => {
   const isProducts = products.items.length > 0;
   // handle place order
   const handlePlaceOrder = () => {
-    creteAlert("error", "Sorry! App is in demo mode.");
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "houseNumber",
+      "city",
+      "state",
+    ];
+  
+    const missingFields = requiredFields.filter(field => !formData[field]?.trim());
+  
+    if (missingFields.length > 0) {
+      creteAlert("error", "Please fill in all required fields.");
+      return;
+    }
     setIsPlaceOrder(false);
   };
   useEffect(() => {
@@ -62,6 +97,20 @@ const CheckoutPrimary = () => {
       setIsPlaceOrder(true);
     }
   }, [isProducts]);
+
+  useEffect(() => {
+    if (user) {
+      const [firstName = "", lastName = ""] = user.name?.split(" ") || [];
+  
+      setFormData((prev) => ({
+        ...prev,
+        firstName,
+        lastName,
+        email: user.email || "",
+      }));
+    }
+  }, [user]);
+
   return (
     <div className="ltn__checkout-area mb-105">
       <div className="container">
@@ -86,7 +135,7 @@ const CheckoutPrimary = () => {
                 >
                   <div className="ltn_coupon-code-form ltn__form-box">
                     <p>Please login your accont.</p>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleLogin}>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="input-item input-item-name ltn__custom-icon">
@@ -94,8 +143,8 @@ const CheckoutPrimary = () => {
                             type="email"
                             name="email"
                             placeholder="Enter email address"
-                            value={formData.email}
-                            onChange={handleChange}
+                            value={loginData.email}
+                            onChange={handleLoginChange}
                           />
                           </div>
                         </div>
@@ -105,8 +154,8 @@ const CheckoutPrimary = () => {
                             type="password"
                             name="password"
                             placeholder="Password*"
-                            value={formData.password}
-                            onChange={handleChange}
+                            value={loginData.password}
+                            onChange={handleLoginChange}
                           />
                           </div>
                         </div>
@@ -174,15 +223,18 @@ const CheckoutPrimary = () => {
               <div className="ltn__checkout-single-content mt-50">
                 <h4 className="title-2">Billing Details</h4>
                 <div className="ltn__checkout-single-content-info">
-                  <form action="#">
+                  <form>
                     <h6>Personal Information</h6>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="input-item input-item-name ltn__custom-icon">
                           <input
                             type="text"
-                            name="ltn__name"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
                             placeholder="First name"
+                            required
                           />
                         </div>
                       </div>
@@ -190,8 +242,11 @@ const CheckoutPrimary = () => {
                         <div className="input-item input-item-name ltn__custom-icon">
                           <input
                             type="text"
-                            name="ltn__lastname"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleChange}
                             placeholder="Last name"
+                            required
                           />
                         </div>
                       </div>
@@ -199,8 +254,11 @@ const CheckoutPrimary = () => {
                         <div className="input-item input-item-email ltn__custom-icon">
                           <input
                             type="email"
-                            name="ltn__email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             placeholder="email address"
+                            required
                           />
                         </div>
                       </div>
@@ -208,8 +266,11 @@ const CheckoutPrimary = () => {
                         <div className="input-item input-item-phone ltn__custom-icon">
                           <input
                             type="text"
-                            name="ltn__phone"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
                             placeholder="phone number"
+                            required
                           />
                         </div>
                       </div>
@@ -217,7 +278,9 @@ const CheckoutPrimary = () => {
                         <div className="input-item input-item-website ltn__custom-icon">
                           <input
                             type="text"
-                            name="ltn__company"
+                            name="companyName"
+                            value={formData.companyName}
+                            onChange={handleChange}
                             placeholder="Company name (optional)"
                           />
                         </div>
@@ -226,7 +289,9 @@ const CheckoutPrimary = () => {
                         <div className="input-item input-item-website ltn__custom-icon">
                           <input
                             type="text"
-                            name="ltn__phone"
+                            name="companyAddress"
+                            value={formData.companyAddress}
+                            onChange={handleChange}
                             placeholder="Company address (optional)"
                           />
                         </div>
@@ -240,7 +305,11 @@ const CheckoutPrimary = () => {
                             <div className="input-item">
                               <input
                                 type="text"
+                                name="houseNumber"
+                                value={formData.houseNumber}
+                                onChange={handleChange}
                                 placeholder="House number and street name"
+                                required
                               />
                             </div>
                           </div>
@@ -248,6 +317,9 @@ const CheckoutPrimary = () => {
                             <div className="input-item">
                               <input
                                 type="text"
+                                name="apartment"
+                                value={formData.apartment}
+                                onChange={handleChange}
                                 placeholder="Apartment, suite, unit etc. (optional)"
                               />
                             </div>
@@ -257,19 +329,39 @@ const CheckoutPrimary = () => {
                       <div className="col-lg-4 col-md-6">
                         <h6>Town / City</h6>
                         <div className="input-item">
-                          <input type="text" placeholder="City" />
+                          <input 
+                            type="text" 
+                            name="city"
+                            value={formData.city}
+                            onChange={handleChange}
+                            placeholder="City" 
+                            required
+                          />
                         </div>
                       </div>
                       <div className="col-lg-4 col-md-6">
                         <h6>State </h6>
                         <div className="input-item">
-                          <input type="text" placeholder="State" />
+                          <input 
+                            type="text" 
+                            name="state"
+                            value={formData.state}
+                            onChange={handleChange}
+                            placeholder="State" 
+                            required
+                          />
                         </div>
                       </div>
                       <div className="col-lg-4 col-md-6">
                         <h6>Zip</h6>
                         <div className="input-item">
-                          <input type="text" placeholder="Zip" />
+                          <input 
+                            type="text" 
+                            name="zip"
+                            value={formData.zip}
+                            onChange={handleChange}
+                            placeholder="Zip" 
+                          />
                         </div>
                       </div>
                     </div>
@@ -282,7 +374,10 @@ const CheckoutPrimary = () => {
                     <h6>Order Notes (optional)</h6>
                     <div className="input-item input-item-textarea ltn__custom-icon">
                       <textarea
-                        name="ltn__message"
+                        type="text" 
+                        name="notes"
+                        value={formData.notes}
+                        onChange={handleChange}
                         placeholder="Notes about your order, e.g. special notes for delivery."
                       ></textarea>
                     </div>

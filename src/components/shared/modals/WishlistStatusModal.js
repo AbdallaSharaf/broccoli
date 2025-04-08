@@ -29,7 +29,7 @@ const WishlistStatusModal = ({ product }) => {
                   <div className="row">
                     <div className="col-12">
                       <div className="modal-product-img">
-                        <Image src={images[0] || "/img/product/1.png"} alt="#" width={1000} height={1000} />
+                        <Image src={images?.[0] || "/img/product/1.png"} alt="#" width={1000} height={1000} />
                       </div>
                       <div className="modal-product-info">
                         <h5>
