@@ -209,7 +209,7 @@ const CheckoutPrimary = () => {
               {/* coupon */}
               <div className="ltn__checkout-single-content ltn__coupon-code-wrap">
                 {products.coupon ? <h5>
-                  Coupon "{products?.coupon?.code}" applied {" "}
+                  {`Coupon "${products?.coupon?.code}" applied `} {" "}
                   <Link
                     className="ltn__secondary-color"
                     href="#ltn__coupon-code"
