@@ -132,7 +132,7 @@ const CheckoutPrimary = () => {
 
   useEffect(() => {
     if (user) {
-      const [firstName = "", lastName = ""] = user?.name?.split(" ") || [];
+      const [firstName = "", lastName = ""] = user.name?.split(" ") || [];
   
       setFormData((prev) => ({
         ...prev,
