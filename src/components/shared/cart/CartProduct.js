@@ -75,7 +75,7 @@ const CartProduct = ({
   useEffect(() => {
     if (!isWishlist) {
       const newUptedProducts = [...updateProducts]?.map((product) =>
-        _id === product?.product._id ? { ...product, quantity } : product
+        _id === product?.product?._id ? { ...product, quantity } : product
       );
       setUpdateProducts(newUptedProducts);
       // console.log(newUptedProducts)

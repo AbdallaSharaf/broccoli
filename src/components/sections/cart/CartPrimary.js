@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 const CartPrimary = () => {
   const { cartProducts: currentProducts, updateCart, applyCoupon } = useCartContext();
-  const [couponCode, setCouponCode] = useState(""); // coupon input
+  const [couponCode, setCouponCode] = useState(currentProducts?.coupon?.code || ""); // coupon input
   const [couponResponse, setCouponResponse] = useState(null); // coupon result
   const cartProducts = currentProducts?.items ?? [];
   // stats
@@ -30,6 +30,11 @@ const CartPrimary = () => {
 
   useEffect(() => {
       setUpdateProducts([...cartProducts]);
+      // console.log("called")
+  }, [cartProducts]);
+
+  useEffect(() => {
+      setCouponCode(currentProducts?.coupon?.code || "");
       // console.log("called")
   }, [cartProducts]);
   // console.log(modifyAmount(currentProducts?.totalPrice))
@@ -78,12 +83,17 @@ const CartPrimary = () => {
                               >
                                 Apply Coupon
                               </button>
-                              {couponResponse && (
+                              {(couponResponse || currentProducts?.coupon) && (
                                 <p
                                   className="mt-2"
-                                  style={{ color: couponResponse.status ? "#28a745" : "#dc3545" }} // green if true, red if false
+                                  style={{
+                                    color:
+                                      couponResponse?.status === false
+                                        ? "#dc3545" // red if error
+                                        : "#28a745", // green if success or already applied
+                                  }}
                                 >
-                                  {couponResponse.message}
+                                  {couponResponse?.message || "Coupon already applied"}
                                 </p>
                               )}
                             </div>
@@ -111,19 +121,19 @@ const CartPrimary = () => {
                   <table className="table">
                     <tbody>
                       <tr>
-                        <td>Cart Subtotal</td>
-                        <td>{modifyAmount(currentProducts?.totalPrice)} SAR</td>
+                        <td>Items Price</td>
+                        <td>{modifyAmount(currentProducts?.subTotal)} SAR</td>
                       </tr>
-                      <tr>
-                        <td>Vat</td>
-                        <td>$00.00</td>
-                      </tr>
+                      {currentProducts?.discount &&<tr>
+                        <td>Discount</td>
+                        <td>{modifyAmount(currentProducts?.discount)} SAR</td>
+                      </tr>}
                       <tr>
                         <td>
-                          <strong>Order Total</strong>
+                          <strong>Net Total</strong>
                         </td>
                         <td>
-                          <strong>{currentProducts?.subTotal} SAR</strong>
+                          <strong>{currentProducts?.totalPrice} SAR</strong>
                         </td>
                       </tr>
                     </tbody>

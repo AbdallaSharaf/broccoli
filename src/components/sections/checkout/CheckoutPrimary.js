@@ -10,11 +10,13 @@ import useSweetAlert from "@/hooks/useSweetAlert";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useUserContext } from "@/providers/UserContext";
+import { useRouter } from "next/navigation";
 
 const CheckoutPrimary = () => {
   const [isPlaceOrder, setIsPlaceOrder] = useState(false);
   const creteAlert = useSweetAlert();
-  const { cartProducts: products, updateCart, applyCoupon } = useCartContext();
+  const router = useRouter();
+  const { cartProducts: products, updateCart, applyCoupon, setCartProducts } = useCartContext();
   const [couponCode, setCouponCode] = useState(products?.coupon?.code || ""); // coupon input
   const [couponResponse, setCouponResponse] = useState(null); // coupon result
   const { login, user } = useUserContext(); // Get login function from context
@@ -90,32 +92,75 @@ const CheckoutPrimary = () => {
       creteAlert("error", "Please fill in all required fields.");
       return;
     }
-    
-    console.log(formData)
+  
+    // 🔁 Format the main payload
+    const formattedPayload = {
+      address: {
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        phone: formData.phone,
+        email: formData.email,
+        country: formData.state,
+        city: formData.city,
+        street: formData.houseNumber,
+        zipCode: formData.zip,
+      },
+    };
+  
     try {
-      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/order/${products._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData), // or customize if your backend needs a different shape
-      });
+      const token = localStorage.getItem("token");
+      const guest = localStorage.getItem("guest");
+
+      if (formData.notes?.trim()) {
+        const responseNote = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/note`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+            ...(!token && guest && { tempId: guest }),     
+          },
+          body: JSON.stringify({
+            note: formData.notes.trim(),
+          }),
+        });
+        if (!responseNote.ok) {
+          throw new Error(data.message || "Something went wrong");
+        }
+      }
+
+      // ✅ 1. Place the order
+      const response = await fetch(
+        `https://fruits-heaven-api.vercel.app/api/v1/order/${products._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+            ...(!token && guest && { tempId: guest }),    
+          },
+          body: JSON.stringify(formattedPayload),
+        }
+      );
+  
       const data = await response.json();
   
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
   
-      creteAlert("success", "Order placed successfully!");
-      setIsPlaceOrder(false);
+      // ✅ 2. Send the note in a separate API call (if exists)
+
+
   
-      // Optional: reset the form or redirect
-      // setFormData(initialValues);
-      // router.push("/thank-you");
+      creteAlert("success", "Order placed successfully!");
+      setCartProducts({_id: "" ,items: [] });
+      setIsPlaceOrder(false);
+      router.push("/"); // 👈 Route to home
     } catch (error) {
       creteAlert("error", error.message || "Failed to place order");
     }
   };
+  
+  
   
 
   useEffect(() => {

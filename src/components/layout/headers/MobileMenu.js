@@ -12,7 +12,7 @@ const MobileMenu = () => {
   const { cartProducts } = useCartContext();
   const { user } = useUserContext();
   const totalCartProduct = cartProducts?.items?.length;
-  const totalWishlistProduct = countDataLength(wishlistProducts);
+  const totalWishlistProduct = wishlistProducts?.wishlist?.length;
   const navItems = [
     {
       name: "Home",

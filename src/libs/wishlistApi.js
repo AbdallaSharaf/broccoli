@@ -10,7 +10,7 @@ export const getUserWishlist = async (token) => {
     const data = await res.json();
     if (!res.ok) throw new Error("Failed to fetch wishlist");
     console.log(data)
-    return data.wishlist;
+    return data;
   };
 
 export const getGuestWishlist = async (token) => {
@@ -23,5 +23,5 @@ export const getGuestWishlist = async (token) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error("Failed to fetch wishlist");
-    return data.wishlist;
+    return data;
   };

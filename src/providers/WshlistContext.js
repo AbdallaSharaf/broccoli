@@ -9,7 +9,7 @@ const wishlistContext = createContext(null);
 const WishlistContextProvider = ({ children }) => {
   const { user } = useUserContext(); // Get login function from context
   const [wishlistStatus, setWishlistStatus] = useState(null);
-  const [wishlistProducts, setWishlistProducts] = useState([]);
+  const [wishlistProducts, setWishlistProducts] = useState({wishlist:[]});
   const creteAlert = useSweetAlert();
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const WishlistContextProvider = ({ children }) => {
             const token = localStorage.getItem("token");
             const userWishlist = await getUserWishlist(token);
     
-            if (userWishlist && userWishlist.items) {
+            if (userWishlist && userWishlist.wishlist) {
               setWishlistProducts(userWishlist);
             }
           } else {
@@ -28,7 +28,7 @@ const WishlistContextProvider = ({ children }) => {
             const guestId = localStorage.getItem("guest");
             if (guestId) {
               const guestWishlist = await getGuestWishlist(guestId);
-              if (guestWishlist && guestWishlist.items) {
+              if (guestWishlist && guestWishlist.wishlist) {
                 console.log("Guest wishlist fetched:", guestWishlist);
                 setWishlistProducts(guestWishlist);
               }
@@ -49,7 +49,7 @@ const WishlistContextProvider = ({ children }) => {
   
     const token = localStorage.getItem("token");
     const guestId = localStorage.getItem("guest");
-    const existingItem = wishlistProducts?.items?.find(
+    const existingItem = wishlistProducts?.wishlist?.find(
       (item) => item._id === currentId
     );
     const headers = {
@@ -112,9 +112,10 @@ const WishlistContextProvider = ({ children }) => {
   
       if (isGuest && !guest) return;
 
-      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/wishlist/${currentId}`, {
+      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/wishlist`, {
         method: "DELETE",
         headers,
+        body: JSON.stringify({ product: currentId }),
       });
   
       const data = await response.json();
@@ -126,19 +127,18 @@ const WishlistContextProvider = ({ children }) => {
           newWishlistProducts = data.wishlist;
         } else {
           // 🧹 Fallback to filtering the local wishlist
-          const updatedWishlistItems = wishlistProducts?.items?.filter(
+          const updatedWishlistItems = wishlistProducts?.wishlist?.filter(
             ( product ) => product._id !== currentId
           );
 
           newWishlistProducts =
             updatedWishlistItems.length === 0
-              ? { _id: "", items: [] }
-              : { ...wishlistProducts, items: updatedWishlistItems };
+              ? { wishlist: [] }
+              : { ...wishlistProducts, wishlist: updatedWishlistItems };
         }
-
+        console.log(newWishlistProducts)
         setWishlistProducts(newWishlistProducts);
-        addItemsToLocalstorage("wishlist", newWishlistProducts);
-
+c
         creteAlert("success", "Item successfully deleted from wishlist.");
         setWishlistStatus("deleted");
       }

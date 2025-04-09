@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 const WishlistPrimary = () => {
   const { wishlistProducts } = useWishlistContext();
   const [isClient, setIsClient] = useState(false);
-  const iswishlistProducts = wishlistProducts?.length ? true : false;
+  const iswishlistProducts = wishlistProducts?.wishlist?.length ? true : false;
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -22,17 +22,17 @@ const WishlistPrimary = () => {
                 {isClient ? (
                   <table className="table">
                     <tbody>
-                      {!iswishlistProducts ? (
+                      {iswishlistProducts?.wishlist?.length === 0 ? (
                         <tr>
                           <td>
                             <Nodata text={"Empty Wishlist!"} />
                           </td>
                         </tr>
                       ) : (
-                        wishlistProducts?.map((product, idx) => (
+                        wishlistProducts?.wishlist?.map((product, idx) => (
                           <CartProduct
                             key={idx}
-                            product={product}
+                            product={{product: product, price: product.price}}
                             isWishlist={true}
                           />
                         ))
