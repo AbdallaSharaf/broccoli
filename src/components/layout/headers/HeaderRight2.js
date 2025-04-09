@@ -90,7 +90,7 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
                   <Link href="#" >
                     <img
                       src={activeLang.flag}
-                      alt={activeLang.name}
+                      alt={activeLang?.name}
                       style={{ width: "24px", height: "24px"}}
                     />
                   </Link>
@@ -102,10 +102,10 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
                         >
                           <img
                             src={lang.flag}
-                            alt={lang.name}
+                            alt={lang?.name}
                             style={{ width: "20px", height: "14px", marginRight: "5px" }}
                           />
-                          {lang.name}
+                          {lang?.name}
                         </Link>
                       </li>
                     ))}

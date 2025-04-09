@@ -144,7 +144,7 @@ const ProductDetailsRight = ({ product }) => {
             <span>
               {Array.isArray(category) && category?.map((cat) => (
                 <Link key={cat.category._id} href={`/shop?category=${cat.category._id}`}>
-                  {cat.category.name?.["en"] ?? cat.category.name?.["ar"] ?? "N/A"}
+                  {cat.category?.name?.["en"] ?? cat.category?.name?.["ar"] ?? "N/A"}
                 </Link>
               ))}
             </span>

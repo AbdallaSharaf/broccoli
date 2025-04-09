@@ -48,7 +48,7 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
       throw new Error("Failed to fetch filtered items");
     }
     const data = await response.json();
-    setCategoryName(data.Category.name?.["en"]);
+    setCategoryName(data?.Category?.name?.["en"]);
   } catch (error) {
     console.error("Error fetching filtered items:", error);
     return [];
