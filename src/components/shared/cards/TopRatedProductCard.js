@@ -52,7 +52,7 @@ const TopRatedProductCard = ({ product, isShowDisc }) => {
           </ul>
         </div>
         <h6>
-          <Link href={`/products/${_id}`}>{sliceText(name["en"] ?? name["ar"], 25)}</Link>
+          <Link href={`/products/${_id}`}>{sliceText(name?.["en"] ?? name?.["ar"], 25)}</Link>
         </h6>
         <div className="product-price">
           <span>${netPriceModified}</span>

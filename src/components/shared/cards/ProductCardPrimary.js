@@ -126,7 +126,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           </ul>
         </div>
         <h2 className="product-title">
-          <Link href={`/products/${_id}`}>{name["en"] || name["ar"] || "N/A"}</Link>
+          <Link href={`/products/${_id}`}>{name?.["en"] || name?.["ar"] || "N/A"}</Link>
         </h2>
         <div className="product-price">
           <span>${netPriceModified}</span> 

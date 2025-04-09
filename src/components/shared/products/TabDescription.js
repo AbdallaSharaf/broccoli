@@ -8,7 +8,7 @@ const TabDescription = () => {
     <div className="ltn__shop-details-tab-content-inner">
       {/* <h4 className="title-2">Lorem ipsum dolor sit amet elit.</h4> */}
       <p>
-        {product?.description["en"] || product?.description["ar"] || "N/A"}
+        {product?.description?.["en"] || product?.description?.["ar"] || "N/A"}
       </p>
     </div>
   );

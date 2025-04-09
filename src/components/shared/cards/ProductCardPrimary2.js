@@ -50,7 +50,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
       </div>
       <div className="product-info">
         <h2 className="product-title">
-          <Link href={`/products/${_id}`}>{name["en"] ?? name["ar"]}</Link>
+          <Link href={`/products/${_id}`}>{name?.["en"] ?? name?.["ar"]}</Link>
         </h2>
         <div className="product-ratting">
           <ul>
@@ -87,7 +87,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
         </div>
 
         <div className="product-brief">
-          <p>{sliceText(description["en"] ?? description["ar"], 140)}</p>
+          <p>{sliceText(description?.["en"] ?? description?.["ar"], 140)}</p>
         </div>
         <div className="product-hover-action">
           <ul>

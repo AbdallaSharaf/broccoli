@@ -37,7 +37,7 @@ const WishlistStatusModal = ({ product }) => {
                             onClick={() => controlModal()}
                             href={`/products/${_id}`}
                           >
-                            {name["en"] ?? name["ar"] ?? "N/A"}
+                            {name?.["en"] ?? name?.["ar"] ?? "N/A"}
                           </Link>
                         </h5>
                         <p className="added-cart">

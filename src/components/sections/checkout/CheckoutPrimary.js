@@ -15,7 +15,7 @@ const CheckoutPrimary = () => {
   const [isPlaceOrder, setIsPlaceOrder] = useState(false);
   const creteAlert = useSweetAlert();
   const { cartProducts: products, updateCart, applyCoupon } = useCartContext();
-  const [couponCode, setCouponCode] = useState(""); // coupon input
+  const [couponCode, setCouponCode] = useState(products?.coupon?.code || ""); // coupon input
   const [couponResponse, setCouponResponse] = useState(null); // coupon result
   const { login, user } = useUserContext(); // Get login function from context
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -26,10 +26,7 @@ const CheckoutPrimary = () => {
     lastName,
     email: user?.email || "",
     phone: "",
-    companyName: "",
-    companyAddress: "",
     houseNumber: "",
-    apartment: "",
     city: "",
     state: "",
     zip: "",
@@ -72,8 +69,9 @@ const CheckoutPrimary = () => {
   };
 
   const isProducts = products.items.length > 0;
+
   // handle place order
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     const requiredFields = [
       "firstName",
       "lastName",
@@ -84,19 +82,53 @@ const CheckoutPrimary = () => {
       "state",
     ];
   
-    const missingFields = requiredFields.filter(field => !formData[field]?.trim());
+    const missingFields = requiredFields.filter(
+      (field) => !formData[field]?.trim()
+    );
   
     if (missingFields.length > 0) {
       creteAlert("error", "Please fill in all required fields.");
       return;
     }
-    setIsPlaceOrder(false);
+    
+    console.log(formData)
+    try {
+      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/order/${products._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // or customize if your backend needs a different shape
+      });
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+  
+      creteAlert("success", "Order placed successfully!");
+      setIsPlaceOrder(false);
+  
+      // Optional: reset the form or redirect
+      // setFormData(initialValues);
+      // router.push("/thank-you");
+    } catch (error) {
+      creteAlert("error", error.message || "Failed to place order");
+    }
   };
+  
+
   useEffect(() => {
     if (isProducts) {
       setIsPlaceOrder(true);
     }
   }, [isProducts]);
+
+  useEffect(() => {
+    if (products) {
+      setCouponCode(products.coupon?.code || "");
+    }
+  }, [products]);
 
   useEffect(() => {
     if (user) {
@@ -176,6 +208,16 @@ const CheckoutPrimary = () => {
               </div>}
               {/* coupon */}
               <div className="ltn__checkout-single-content ltn__coupon-code-wrap">
+                {products.coupon ? <h5>
+                  Coupon "{products?.coupon?.code}" applied {" "}
+                  <Link
+                    className="ltn__secondary-color"
+                    href="#ltn__coupon-code"
+                    data-bs-toggle="collapse"
+                  >
+                    Do you want to change/remove it?
+                  </Link>
+                </h5>: 
                 <h5>
                   Have a coupon?{" "}
                   <Link
@@ -185,7 +227,7 @@ const CheckoutPrimary = () => {
                   >
                     Click here to enter your code
                   </Link>
-                </h5>
+                </h5>}
                 <div
                   id="ltn__coupon-code"
                   className="collapse ltn__checkout-single-content-info"
@@ -274,34 +316,12 @@ const CheckoutPrimary = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div className="input-item input-item-website ltn__custom-icon">
-                          <input
-                            type="text"
-                            name="companyName"
-                            value={formData.companyName}
-                            onChange={handleChange}
-                            placeholder="Company name (optional)"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="input-item input-item-website ltn__custom-icon">
-                          <input
-                            type="text"
-                            name="companyAddress"
-                            value={formData.companyAddress}
-                            onChange={handleChange}
-                            placeholder="Company address (optional)"
-                          />
-                        </div>
-                      </div>
                     </div>
                     <div className="row">
                       <div className="col-lg-12 col-md-12">
-                        <h6>Address</h6>
                         <div className="row">
                           <div className="col-md-6">
+                            <h6>Street and House</h6>
                             <div className="input-item">
                               <input
                                 type="text"
@@ -314,32 +334,21 @@ const CheckoutPrimary = () => {
                             </div>
                           </div>
                           <div className="col-md-6">
+                            <h6>Town / City</h6>
                             <div className="input-item">
-                              <input
-                                type="text"
-                                name="apartment"
-                                value={formData.apartment}
+                              <input 
+                                type="text" 
+                                name="city"
+                                value={formData.city}
                                 onChange={handleChange}
-                                placeholder="Apartment, suite, unit etc. (optional)"
+                                placeholder="City" 
+                                required
                               />
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-4 col-md-6">
-                        <h6>Town / City</h6>
-                        <div className="input-item">
-                          <input 
-                            type="text" 
-                            name="city"
-                            value={formData.city}
-                            onChange={handleChange}
-                            placeholder="City" 
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-4 col-md-6">
+                      <div className="col-md-6">
                         <h6>State </h6>
                         <div className="input-item">
                           <input 
@@ -352,7 +361,7 @@ const CheckoutPrimary = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-lg-4 col-md-6">
+                      <div className="col-md-6">
                         <h6>Zip</h6>
                         <div className="input-item">
                           <input 
@@ -531,14 +540,14 @@ const CheckoutPrimary = () => {
                       ))
                     }
 
-                    <tr>
+                    {products.shipping && <tr>
                       <td>Shipping and Handing</td>
                       <td>${modifyAmount(products.shipping)}</td>
-                    </tr>
-                    <tr>
+                    </tr>}
+                    {/* <tr>
                       <td>Vat</td>
                       <td>$00.00</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td>
                         <strong>Order Total</strong>

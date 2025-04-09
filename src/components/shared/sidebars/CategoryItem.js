@@ -13,7 +13,7 @@ const CategoryItem = ({ item, isMore }) => {
     >
       <Link href={`/shop?category=${_id}`}>
 
-        {name["en"]}{" "}
+        {name?.["en"] ?? name?.["ar"]}{" "}
       </Link>
       {/* dropdown */}
       {/* {dropdown ? (

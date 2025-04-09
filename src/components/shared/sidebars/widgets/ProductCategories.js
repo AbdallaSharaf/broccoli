@@ -26,7 +26,7 @@ const ProductCategories = () => {
                 href={`${currentPath || "/shop"}?category=${category._id}`}
                 className={isActive ? "active" : ""}
               >
-                {category.name["en"] ?? category.name["ar"] ?? "N/A"}{" "}
+                {category.name?.["en"] ?? category.name?.["ar"] ?? "N/A"}{" "}
                 <span>
                   <i className="fas fa-long-arrow-alt-right"></i>
                 </span>
