@@ -3,6 +3,7 @@ import Features4 from "@/components/sections/features/Features4";
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import ProductDetailsPrimary from "@/components/sections/product-details/ProductDetailsPrimary";
 import Products5 from "@/components/sections/products/Products5";
+import getTranslatedName from "@/libs/getTranslatedName";
 import CommonContext from "@/providers/CommonContext";
 import { useProductContext } from "@/providers/ProductContext";
 import { useEffect } from "react";
@@ -28,7 +29,7 @@ const ProductDetailsMain = ({ title, text, type, isNotSidebar, product }) => {
       <CommonContext value={{ type, isNotSidebar }}>
         <ProductDetailsPrimary />
       </CommonContext>
-      <Products5 isRelated={true} title="Related Products" tag={product?.category?.[0].category?.name?.["en"] ?? product?.category?.[0].category?.name?.["ar"]} />
+      <Products5 isRelated={true} title="Related Products" tag={getTranslatedName(product?.category?.[0].category?.name)} />
       <Features4 />
     </main>
   );

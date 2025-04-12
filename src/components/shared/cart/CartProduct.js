@@ -3,6 +3,7 @@
 
 import countDiscount from "@/libs/countDiscount";
 import countTotalPrice from "@/libs/countTotalPrice";
+import getTranslatedName from "@/libs/getTranslatedName";
 import modifyAmount from "@/libs/modifyAmount";
 import sliceText from "@/libs/sliceText";
 import { useCartContext } from "@/providers/CartContext";
@@ -102,7 +103,7 @@ const CartProduct = ({
       </td>
       <td className="cart-product-info">
         <h4>
-          <Link href={`/products/${_id}`}>{sliceText(name?.["en"] ?? name?.["ar"], 30)}</Link>
+          <Link href={`/products/${_id}`}>{sliceText(getTranslatedName(name), 30)}</Link>
         </h4>
       </td>
       <td className="cart-product-price">${price}</td>

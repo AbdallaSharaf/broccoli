@@ -9,6 +9,7 @@ import getRangeValue from "@/libs/getRangeValue";
 import makeText from "@/libs/makeText";
 import CommonContext from "@/providers/CommonContext";
 import { useProductContext } from "@/providers/ProductContext";
+import getTranslatedName from "@/libs/getTranslatedName";
 
 const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   const searchParams = useSearchParams();
@@ -48,7 +49,7 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
       throw new Error("Failed to fetch filtered items");
     }
     const data = await response.json();
-    setCategoryName(data?.Category?.name?.["en"]);
+    setCategoryName(getTranslatedName(data?.Category?.name));
   } catch (error) {
     console.error("Error fetching filtered items:", error);
     return [];

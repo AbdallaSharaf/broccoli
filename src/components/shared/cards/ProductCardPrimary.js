@@ -1,5 +1,6 @@
 "use client";
 import countDiscount from "@/libs/countDiscount";
+import getTranslatedName from "@/libs/getTranslatedName";
 import modifyAmount from "@/libs/modifyAmount";
 import { useCartContext } from "@/providers/CartContext";
 import { useProductContext } from "@/providers/ProductContext";
@@ -126,7 +127,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           </ul>
         </div>
         <h2 className="product-title">
-          <Link href={`/products/${_id}`}>{name?.["en"] || name?.["ar"] || "N/A"}</Link>
+          <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
         </h2>
         <div className="product-price">
           <span>${netPriceModified}</span> 

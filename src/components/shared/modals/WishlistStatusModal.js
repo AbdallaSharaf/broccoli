@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useWishlistContext } from "@/providers/WshlistContext";
 import controlModal from "@/libs/controlModal";
+import getTranslatedName from "@/libs/getTranslatedName";
 const WishlistStatusModal = ({ product }) => {
   const { _id, name, images } = product;
   const { wishlistStatus } = useWishlistContext();
@@ -37,7 +38,7 @@ const WishlistStatusModal = ({ product }) => {
                             onClick={() => controlModal()}
                             href={`/products/${_id}`}
                           >
-                            {name?.["en"] ?? name?.["ar"] ?? "N/A"}
+                            {getTranslatedName(name)}
                           </Link>
                         </h5>
                         <p className="added-cart">

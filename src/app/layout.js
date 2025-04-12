@@ -1,6 +1,7 @@
 import { Open_Sans, Rajdhani } from "next/font/google";
 import "@/assets/css/font-icons.css";
 import "@/assets/css/plugins.css";
+// import "./globals-rtl.css";
 import "./globals.css";
 import "@/assets/css/responsive.css";
 import Script from "next/script";
@@ -33,7 +34,6 @@ export default function RootLayout({ children }) {
       <body className={open_sans.className}>
         <Suspense fallback={<div></div>}>
           {children}
-
           <Script src="/plugins.js" />
           <Script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeeHDCOXmUMja1CFg96RbtyKgx381yoBU"

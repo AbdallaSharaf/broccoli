@@ -5,6 +5,7 @@ import { useCommonContext } from "@/providers/CommonContext";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import React from "react";
+import getTranslatedName from "@/libs/getTranslatedName";
 
 const ProductCategories = () => {
   const searchParams = useSearchParams();
@@ -26,7 +27,7 @@ const ProductCategories = () => {
                 href={`${currentPath || "/shop"}?category=${category._id}`}
                 className={isActive ? "active" : ""}
               >
-                {category?.name?.["en"] ?? category?.name?.["ar"] ?? "N/A"}{" "}
+                {getTranslatedName(category.name)}{" "}
                 <span>
                   <i className="fas fa-long-arrow-alt-right"></i>
                 </span>

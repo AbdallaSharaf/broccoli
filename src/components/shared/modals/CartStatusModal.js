@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartContext } from "@/providers/CartContext";
 import controlModal from "@/libs/controlModal";
+import getTranslatedName from "@/libs/getTranslatedName";
 
 const CartStatusModal = ({ product }) => {
   const { _id, name, images } = product;
@@ -32,7 +33,7 @@ const CartStatusModal = ({ product }) => {
                       </div>
                       <div className="modal-product-info">
                         <h5 onClick={() => controlModal()}>
-                          <Link href={`/products/${_id}`}>{name?.["en"] ?? name?.["ar"] ?? "N/A"}</Link>
+                          <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
                         </h5>
                         <p className="added-cart">
                           <i className="fa fa-check-circle"></i> Successfully{" "}

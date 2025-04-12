@@ -3,18 +3,22 @@ import React from "react";
 import HeaderCartShow from "./HeaderCartShow";
 import Link from "next/link";
 import { useUserContext } from "@/providers/UserContext";
+import { useLanguageContext } from "@/providers/LanguageContext";
 
 const HeaderRight2 = () => {
+
+const { isRtl, toggleLanguage } = useLanguageContext(); // Get direction state and toggle function
 
 const languages = [
   { code: "en", name: "English", flag: "img/flags/en.png" },
   { code: "ar", name: "Arabic", flag: "img/flags/ar.png" },
 
 ];
-  const { user, logout } = useUserContext();
+const { user, logout } = useUserContext();
 
-const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
-
+  // Set active language based on current direction
+  const activeLang = isRtl ? languages[1] : languages[0];
+  console.log(isRtl)
   return (
     <div className="col">
       {/* <!-- header-options --> */}
@@ -83,15 +87,17 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
               </div>
             </div>
           </li>{" "}
-          <li className="d-none---" style={{ marginRight: "5px" }}>
-            <div className="ltn__drop-menu ltn__currency-menu ltn__language-menu" >
+          <li className="d-none---" style={{...(!isRtl
+                              ? { marginLeft: "5px", marginRight: "0px" }
+                              : { marginRight: "5px", marginLeft: "0px" })}}>
+            <div className="ltn__drop-menu ltn__currency-menu ltn__language-menu">
               <ul>
                 <li>
-                  <Link href="#" >
+                  <Link href="#" className="flex items-center">
                     <img
                       src={activeLang.flag}
-                      alt={activeLang?.name}
-                      style={{ width: "24px", height: "24px"}}
+                      alt={activeLang.name}
+                      style={{ width: "24px", height: "24px" }}
                     />
                   </Link>
                   <ul>
@@ -99,13 +105,19 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
                       <li key={lang.code}>
                         <Link
                           href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleLanguage(lang.code);
+                          }}
                         >
                           <img
                             src={lang.flag}
-                            alt={lang?.name}
-                            style={{ width: "20px", height: "14px", marginRight: "5px" }}
+                            alt={lang.name}
+                            style={{ width: "20px", height: "14px", ...(isRtl
+                              ? { marginLeft: "5px" }
+                              : { marginRight: "5px"}), }}
                           />
-                          {lang?.name}
+                          {lang.name}
                         </Link>
                       </li>
                     ))}
@@ -114,7 +126,9 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
               </ul>
             </div>
           </li>{" "}
-          <li className="d-none---" style={{ marginRight: "5px" }}>
+          <li className="d-none---" style={{...(!isRtl
+                              ? { marginLeft: "5px", marginRight: "0px" }
+                              : { marginRight: "5px", marginLeft: "0px" })}}>
             {/* <!-- user-menu --> */}
             <div className="ltn__drop-menu user-menu" >
               <ul>
@@ -151,7 +165,7 @@ const activeLang =   { code: "en", name: "English", flag: "img/flags/en.png" }
               </ul>
             </div>
           </li>{" "}
-          <li style={{ marginRight: 0 }}>
+          <li style={{ marginRight: 0, marginLeft: 0 }}>
             {/* <!-- mini-cart 2 --> */}
             <HeaderCartShow />
           </li>{" "}

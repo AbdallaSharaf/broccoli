@@ -11,6 +11,7 @@ import { useCommonContext } from "@/providers/CommonContext";
 import moment from "moment";
 import countCommentLength from "@/libs/countCommentLength";
 import modifyNumber from "@/libs/modifyNumber";
+import getTranslatedName from "@/libs/getTranslatedName";
 const ProductDetailsRight = ({ product }) => {
   // destructure current product
   
@@ -121,8 +122,7 @@ const ProductDetailsRight = ({ product }) => {
           </li>
         </ul>
       </div>
-      {/* name["en"] */}
-      <h3>{name?.["en"] ?? name?.["ar"] ?? "N/A"}</h3>
+      <h3>{getTranslatedName(name)}</h3>
       {/* price */}
       <div className="product-price text-nowrap">
         <span>{(priceAfterDiscount && !isNaN(priceAfterDiscount) ? priceAfterDiscount : price) * quantity} SAR</span>
@@ -144,7 +144,7 @@ const ProductDetailsRight = ({ product }) => {
             <span>
               {Array.isArray(category) && category?.map((cat) => (
                 <Link key={cat.category._id} href={`/shop?category=${cat.category._id}`}>
-                  {cat.category?.name?.["en"] ?? cat.category?.name?.["ar"] ?? "N/A"}
+                  {getTranslatedName(cat.category?.name)}
                 </Link>
               ))}
             </span>

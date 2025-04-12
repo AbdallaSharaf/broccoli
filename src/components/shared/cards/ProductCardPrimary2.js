@@ -1,6 +1,7 @@
 "use client";
 
 import countDiscount from "@/libs/countDiscount";
+import getTranslatedName from "@/libs/getTranslatedName";
 import modifyAmount from "@/libs/modifyAmount";
 import sliceText from "@/libs/sliceText";
 import { useCartContext } from "@/providers/CartContext";
@@ -50,7 +51,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
       </div>
       <div className="product-info">
         <h2 className="product-title">
-          <Link href={`/products/${_id}`}>{name?.["en"] ?? name?.["ar"]}</Link>
+          <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
         </h2>
         <div className="product-ratting">
           <ul>
@@ -87,7 +88,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
         </div>
 
         <div className="product-brief">
-          <p>{sliceText(description?.["en"] ?? description?.["ar"], 140)}</p>
+          <p>{sliceText(getTranslatedName(description), 140)}</p>
         </div>
         <div className="product-hover-action">
           <ul>

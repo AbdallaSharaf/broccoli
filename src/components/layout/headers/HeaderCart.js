@@ -2,8 +2,7 @@
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import ButtonSecondary from "@/components/shared/buttons/ButtonSecondary";
 import Nodata from "@/components/shared/no-data/Nodata";
-import countDiscount from "@/libs/countDiscount";
-import countTotalPrice from "@/libs/countTotalPrice";
+import getTranslatedName from "@/libs/getTranslatedName";
 import modifyAmount from "@/libs/modifyAmount";
 
 import { useCartContext } from "@/providers/CartContext";
@@ -53,7 +52,9 @@ const HeaderCart = () => {
                       <h6>
                         <Link href={`/products/${_id}`}>
                           {" "}
-                          {(name?.["en"] ?? name?.["ar"] ?? "N/A")?.length > 22 ? (name?.["en"] ?? name?.["ar"] ?? "N/A")?.slice(0, 22) : (name?.["en"] ?? name?.["ar"] ?? "N/A")}
+                          {getTranslatedName(name)?.length > 22
+                          ? getTranslatedName(name).slice(0, 22)
+                          : getTranslatedName(name)}
                         </Link>
                       </h6>
                       <span className="mini-cart-quantity">

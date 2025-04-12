@@ -1,3 +1,6 @@
+"use client"
+import getTranslatedName from "@/libs/getTranslatedName";
+import { useLanguageContext } from "@/providers/LanguageContext";
 import Link from "next/link";
 import React from "react";
 
@@ -13,7 +16,7 @@ const CategoryItem = ({ item, isMore }) => {
     >
       <Link href={`/shop?category=${_id}`}>
 
-        {name?.["en"] ?? name?.["ar"]}{" "}
+        {getTranslatedName(name)}{" "}
       </Link>
       {/* dropdown */}
       {/* {dropdown ? (

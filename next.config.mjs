@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
     reactStrictMode: false,
     images: {
@@ -6,4 +7,5 @@ const nextConfig = {
       },
 };
 
+// Apply the next-intl plugin to the Next.js config
 export default nextConfig;

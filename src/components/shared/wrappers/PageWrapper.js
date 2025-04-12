@@ -12,6 +12,7 @@ import WishlistContextProvider from "@/providers/WshlistContext";
 import ProductContextProvider from "@/providers/ProductContext";
 import CategoryContextProvider from "@/providers/CategoryContext";
 import UserContextProvider from "@/providers/UserContext";
+import LanguageProvider from "@/providers/LanguageContext";
 
 const PageWrapper = ({
   children,
@@ -41,6 +42,7 @@ const PageWrapper = ({
       ) : (
         <UserContextProvider>
         <CartContextProvider>
+          <LanguageProvider>
           <WishlistContextProvider>
             <HeaderContex
               value={{
@@ -73,6 +75,7 @@ const PageWrapper = ({
           <FooterContexProvider value={{ footerBg }}>
             <Footer />
           </FooterContexProvider>
+        </LanguageProvider>
         </CartContextProvider>
         </UserContextProvider>
       )}
