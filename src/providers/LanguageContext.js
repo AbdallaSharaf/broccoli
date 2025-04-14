@@ -18,9 +18,10 @@ export default function LanguageProvider({ children }) {
 
     const finalLocale = isArabic ? 'ar' : 'en'
     setLocale(finalLocale)
-    
-    // Set <html dir=""> and <html lang="">
+    // Set <html> attributes
+    // main()
     document.documentElement.lang = finalLocale
+    document.documentElement.dir = isArabic ? 'rtl' : 'ltr' // Add this line
   }, [])
 
   // Toggle between languages
@@ -32,8 +33,9 @@ export default function LanguageProvider({ children }) {
     setLocale(newLocale)
     localStorage.setItem('locale', newLocale)
 
-    // Set <html dir=""> and <html lang="">
+    // Set <html> attributes
     document.documentElement.lang = newLocale
+    document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr' // Add this line
   }
 
   return (
@@ -44,7 +46,7 @@ export default function LanguageProvider({ children }) {
         isRtl: locale === 'ar',
       }}
     >
-      <div key={locale}>
+      <div key={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
         {children}
       </div>
     </LanguageContext.Provider>

@@ -532,13 +532,21 @@ const main = () => {
           const waitForProductSliders = setInterval(() => {
             const $sliderOne = $(".ltn__tab-product-slider-one-active");
             const $sliderFour = $(".ltn__product-slider-item-four-active");
-    
+            const isRtl = document.documentElement.dir === 'rtl'; // Check current direction
+
             if (
               $sliderOne.length > 0 &&
               $sliderOne.children().length > 0 &&
-              !$sliderOne.hasClass("slick-initialized")
-            ) {
+              (!$sliderOne.hasClass("slick-initialized")|| 
+              $sliderOne.data('slick-rtl') !== isRtl)
+             ) // Check if RTL status changed
+             {
+               // Destroy existing slider if it needs to be reinitialized
+              if ($sliderOne.hasClass("slick-initialized")) {
+                $sliderOne.slick('unslick');
+              }
               $sliderOne.slick({
+                rtl: isRtl, // Set RTL based on document direction
                 arrows: true,
                 dots: false,
                 infinite: true,
@@ -546,9 +554,9 @@ const main = () => {
                 slidesToShow: 4,
                 slidesToScroll: 1,
                 prevArrow:
-                  '<a class="slick-prev"><i class="fas fa-arrow-left"></i></a>',
+                '<a class="slick-prev"><i class="fas fa-arrow-left" alt="Arrow Icon"></i></a>',
                 nextArrow:
-                  '<a class="slick-next"><i class="fas fa-arrow-right"></i></a>',
+                '<a class="slick-next"><i class="fas fa-arrow-right" alt="Arrow Icon"></i></a>',
                 responsive: [
                   {
                     breakpoint: 1200,
@@ -586,14 +594,20 @@ const main = () => {
                   },
                 ],
               });
+              $sliderOne.data('slick-rtl', isRtl); // Store current RTL state
             }
     
             if (
               $sliderFour.length > 0 &&
               $sliderFour.children().length > 0 &&
-              !$sliderFour.hasClass("slick-initialized")
+              (!$sliderFour.hasClass("slick-initialized") || 
+              $sliderFour.data('slick-rtl') !== isRtl)
             ) {
+              if ($sliderFour.hasClass("slick-initialized")) {
+                $sliderFour.slick('unslick');
+              }
               $sliderFour.slick({
+                rtl: isRtl,
                 arrows: true,
                 dots: false,
                 infinite: true,
@@ -601,9 +615,9 @@ const main = () => {
                 slidesToShow: 4,
                 slidesToScroll: 1,
                 prevArrow:
-                  '<a class="slick-prev"><i class="fas fa-arrow-left"></i></a>',
+                '<a class="slick-prev"><i class="fas fa-arrow-left" alt="Arrow Icon"></i></a>',
                 nextArrow:
-                  '<a class="slick-next"><i class="fas fa-arrow-right"></i></a>',
+                '<a class="slick-next"><i class="fas fa-arrow-right" alt="Arrow Icon"></i></a>',
                 responsive: [
                   {
                     breakpoint: 992,
@@ -634,6 +648,7 @@ const main = () => {
                   },
                 ],
               });
+              $sliderFour.data('slick-rtl', isRtl);
             }
     
             if (
