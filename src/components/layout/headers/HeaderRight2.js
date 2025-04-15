@@ -24,44 +24,6 @@ const { user, logout } = useUserContext();
       {/* <!-- header-options --> */}
       <div className="ltn__header-options">
         <ul>
-          <li className="d-none">
-            {/* <!-- ltn__currency-menu --> */}
-            <div className="ltn__drop-menu ltn__currency-menu">
-              <ul>
-                <li>
-                  <Link href="#" className="dropdown-toggle">
-                    <span className="active-currency">USD</span>
-                  </Link>
-                  <ul>
-                    <li>
-                      <Link href="#">USD - US Dollar</Link>
-                    </li>
-                    <li>
-                      <Link href="#">CAD - Canada Dollar</Link>
-                    </li>
-                    <li>
-                      <Link href="#">EUR - Euro</Link>
-                    </li>
-                    <li>
-                      <Link href="#">GBP - British Pound</Link>
-                    </li>
-                    <li>
-                      <Link href="#">INR - Indian Rupee</Link>
-                    </li>
-                    <li>
-                      <Link href="#">BDT - Bangladesh Taka</Link>
-                    </li>
-                    <li>
-                      <Link href="#">JPY - Japan Yen</Link>
-                    </li>
-                    <li>
-                      <Link href="#">AUD - Australian Dollar</Link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </li>{" "}
           <li className="d-lg-none">
             {/* <!-- header-search-1 --> */}
             <div className="header-search-wrap">
