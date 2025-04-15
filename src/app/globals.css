@@ -1855,7 +1855,7 @@ ul {
 .bg-overlay-theme-black-90:before {
   position: absolute;
   content: "";
-  inset-inline-start: 0;
+  left: 0;
   top: 0;
   height: 100%;
   width: 100%;
@@ -6431,8 +6431,8 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   position: fixed;
   z-index: 1000;
   top: 0;
-  right: 0;
-  left: auto;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
   display: block;
   overflow: hidden;
   width: 400px;
@@ -6444,23 +6444,39 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   -webkit-transition: all 0.5s ease 0s;
   -o-transition: all 0.5s ease 0s;
   transition: all 0.5s ease 0s;
-  -webkit-transform: translateX(100%);
-  -ms-transform: translateX(100%);
-  transform: translateX(100%);
   background-color: var(--white);
   -webkit-box-shadow: none;
   box-shadow: none;
   z-index: 99999;
 }
 
+/* LTR specific styles */
+[dir="ltr"] .ltn__utilize {
+  transform: translateX(100%); /* Hide off-screen to the right */
+}
+
+/* RTL specific styles */
+[dir="rtl"] .ltn__utilize {
+  transform: translateX(200%); /* Hide off-screen to the left */
+}
+
+
 .ltn__utilize.ltn__utilize-mobile-menu {
   right: auto;
   left: 0;
   padding: 50px 40px;
-  -webkit-transform: translateX(-100%);
-  -ms-transform: translateX(-100%);
-  transform: translateX(-100%);
 }
+
+/* LTR specific styles */
+[dir="ltr"] .ltn__utilize.ltn__utilize-mobile-menu {
+  transform: translateX(-100%); /* Hide off-screen to the right */
+}
+
+/* RTL specific styles */
+[dir="rtl"] .ltn__utilize.ltn__utilize-mobile-menu {
+  transform: translateX(-100%); /* Hide off-screen to the left */
+}
+
 
 .ltn__utilize-menu-inner {
   position: relative;
@@ -6596,20 +6612,24 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   position: fixed;
   z-index: 9999;
   top: 0;
-  inset-inline-end: 0;
+  right: 0;
   bottom: 0;
-  inset-inline-start: 0;
+  left: 0;
   display: none;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.ltn__utilize.ltn__utilize-open {
+/* For LTR (default) */
+[dir="ltr"] .ltn__utilize.ltn__utilize-open,
+[dir="ltr"] .ltn__utilize.ltn__utilize-mobile-menu.ltn__utilize-open {
   -webkit-transform: translateX(0);
   -ms-transform: translateX(0);
   transform: translateX(0);
 }
 
-.ltn__utilize.ltn__utilize-mobile-menu.ltn__utilize-open {
+/* For RTL */
+[dir="rtl"] .ltn__utilize.ltn__utilize-open,
+[dir="rtl"] .ltn__utilize.ltn__utilize-mobile-menu.ltn__utilize-open {
   -webkit-transform: translateX(0);
   -ms-transform: translateX(0);
   transform: translateX(0);
@@ -6634,7 +6654,7 @@ ul.wp-block-latest-posts.is-grid.alignwide {
 .mobile-menu-toggle svg {
   position: absolute;
   top: 50%;
-  inset-inline-start: 50%;
+  left: 50%;
   width: 50px;
   height: 60px;
   margin-top: -2px;

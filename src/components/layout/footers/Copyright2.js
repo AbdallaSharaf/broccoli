@@ -1,9 +1,11 @@
+import { useTranslations } from "@/hooks/useTranslate";
 import { useFooterContex } from "@/providers/FooterContext";
 import Link from "next/link";
-import React from "react";
 
 const Copyright2 = () => {
   const { footerBg } = useFooterContex();
+  const t = useTranslations("footer");
+
   return (
     <div
       className={`ltn__copyright-area ltn__copyright-2 ${
@@ -15,7 +17,7 @@ const Copyright2 = () => {
           <div className="col-md-6 col-12">
             <div className="ltn__copyright-design clearfix">
               <p>
-                All Rights Reserved @ {" AM Software developers "}
+                {t("All Rights Reserved...")}
                 <span className="current-year"></span>
               </p>
             </div>
@@ -24,13 +26,13 @@ const Copyright2 = () => {
             <div className="ltn__copyright-menu text-end">
               <ul>
                 <li>
-                  <Link href="#">Terms & Conditions</Link>
+                  <Link href="#">{t("Terms & Conditions")}</Link>
                 </li>{" "}
                 <li>
-                  <Link href="#">Claim</Link>
+                  <Link href="#">{t("Claim")}</Link>
                 </li>{" "}
                 <li>
-                  <Link href="#">Privacy & Policy</Link>
+                  <Link href="#">{t("Privacy & Policy")}</Link>
                 </li>
               </ul>
             </div>

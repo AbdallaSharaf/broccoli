@@ -80,8 +80,8 @@ const WishlistContextProvider = ({ children }) => {
       const { wishlist } = data;
   
       // Store guest ID if new
-      if (wishlist?.guest && !guestId) {
-        localStorage.setItem("guest", wishlist.guest);
+      if (data?.guest && !guestId) {
+        localStorage.setItem("guest", data.guest);
       }
       setWishlistProducts(wishlist);
       addItemsToLocalstorage("wishlist", wishlist);
@@ -111,7 +111,7 @@ const WishlistContextProvider = ({ children }) => {
       };
   
       if (isGuest && !guest) return;
-
+      console.log(wishlistProducts)
       const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/wishlist`, {
         method: "DELETE",
         headers,

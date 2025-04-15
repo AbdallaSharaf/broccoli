@@ -19,13 +19,15 @@ import NavItem from "./NavItem";
 import Link from "next/link";
 import { useHeaderContex } from "@/providers/HeaderContex";
 import Logo from "./Logo";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const Navbar = () => {
   const { headerStyle, headerSize, isNavbarAppointmentBtn, isTextWhite } =
     useHeaderContex();
+  const t = useTranslations("header");
   const navItemsRaw = [
     {
-      name: "Home",
+      name: t("home"),
       path: "/",
       dropdown: null,
       // dropdownSection: [
@@ -158,7 +160,7 @@ const Navbar = () => {
     //   ],
     // },
     {
-      name: "Shop",
+      name: t("shop"),
       path: "/shop",
       dropdown: null,
       isNestedDropdown: null,
@@ -442,7 +444,7 @@ const Navbar = () => {
               headerStyle === 2 ||
               headerStyle === 4 ? (
                 <li className="special-link text-uppercase">
-                  <Link href="/contact">GET A Quote</Link>
+                  <Link href="/contact">{t("GETAQuote")}</Link>
                 </li>
               ) : (
                 ""

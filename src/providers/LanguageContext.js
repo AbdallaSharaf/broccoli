@@ -6,36 +6,38 @@ import { createContext, useState, useContext, useEffect } from 'react'
 const LanguageContext = createContext(null)
 
 export default function LanguageProvider({ children }) {
-  const [locale, setLocale] = useState('en')
+  const [locale, setLocale] = useState('en') // Default to English
 
-  // Initialize from localStorage or browser language
+  // Initialize from localStorage or default to English
   useEffect(() => {
     const savedLocale = localStorage.getItem('locale')
-    const browserLang = navigator.language
-    const isArabic = savedLocale
-      ? savedLocale === 'ar'
-      : ['ar', 'he', 'fa'].some(lang => browserLang.startsWith(lang))
+    
+    // If no saved locale, default to English
+    if (!savedLocale) {
+      setLocale('en')
+      localStorage.setItem('locale', 'en')
+      document.documentElement.lang = 'en'
+      document.documentElement.dir = 'ltr'
+      return
+    }
 
+    // If there is a saved locale, use it
+    const isArabic = savedLocale === 'ar'
     const finalLocale = isArabic ? 'ar' : 'en'
     setLocale(finalLocale)
-    // Set <html> attributes
-    // main()
     document.documentElement.lang = finalLocale
-    document.documentElement.dir = isArabic ? 'rtl' : 'ltr' // Add this line
+    document.documentElement.dir = isArabic ? 'rtl' : 'ltr'
   }, [])
 
   // Toggle between languages
   const toggleLanguage = (newLocale) => {
-    if (newLocale === locale) {
-      return
-    }
+    if (newLocale === locale) return
+    
     main()
     setLocale(newLocale)
     localStorage.setItem('locale', newLocale)
-
-    // Set <html> attributes
     document.documentElement.lang = newLocale
-    document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr' // Add this line
+    document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr'
   }
 
   return (

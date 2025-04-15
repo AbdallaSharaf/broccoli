@@ -2,6 +2,7 @@
 import ButtonPrimary from "@/components/shared/buttons/ButtonPrimary";
 import ButtonSecondary from "@/components/shared/buttons/ButtonSecondary";
 import Nodata from "@/components/shared/no-data/Nodata";
+import { useTranslations } from "@/hooks/useTranslate";
 import getTranslatedName from "@/libs/getTranslatedName";
 import modifyAmount from "@/libs/modifyAmount";
 
@@ -11,6 +12,8 @@ import Link from "next/link";
 
 const HeaderCart = () => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
+  const t = useTranslations("common");
+  const threshold = "100";
   if (!cartProducts?.items) return
   return (
     <div
@@ -19,12 +22,12 @@ const HeaderCart = () => {
     >
       <div className="ltn__utilize-menu-inner ltn__scrollbar">
         <div className="ltn__utilize-menu-head">
-          <span className="ltn__utilize-menu-title">Cart</span>
+          <span className="ltn__utilize-menu-title">{t("Cart")}</span>
           <button className="ltn__utilize-close">×</button>
         </div>
         <div className="mini-cart-product-area ltn__scrollbar">
         {cartProducts?.items?.length === 0 ? (
-             <Nodata text={"Empty Cart!"} />
+             <Nodata text={t("Empty Cart!")} />
                       ) : (
                         <>
             {cartProducts?.items?.map(
@@ -72,15 +75,15 @@ const HeaderCart = () => {
         <div className="mini-cart-footer">
           <div className="mini-cart-sub-total">
             <h5>
-              Subtotal: <span>${cartProducts?.totalPrice?.toFixed(2)}</span>
+              {t("Subtotal")}: <span>{cartProducts?.totalPrice?.toFixed(2)} {t("SAR")}</span>
             </h5>
           </div>
           <div className="btn-wrapper">
-            <ButtonPrimary text={"View Cart"} path={"/cart"} />
-            <ButtonSecondary text={"Checkout"} path={"/checkout"} />
+            <ButtonPrimary text={t("viewCart")} path={"/cart"} />
+            <ButtonSecondary text={t("checkout")} path={"/checkout"} />
           </div>
           </div>
-          <p>Free Shipping on All Orders Over $100!</p>
+          <p>{t("Free Shipping on All Orders Over")}{" "}{threshold} {t("SAR")}!</p>
           </>}
         </div>
     </div>

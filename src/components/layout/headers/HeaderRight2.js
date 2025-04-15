@@ -4,21 +4,21 @@ import HeaderCartShow from "./HeaderCartShow";
 import Link from "next/link";
 import { useUserContext } from "@/providers/UserContext";
 import { useLanguageContext } from "@/providers/LanguageContext";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const HeaderRight2 = () => {
 
 const { isRtl, toggleLanguage } = useLanguageContext(); // Get direction state and toggle function
-
+const t = useTranslations("header");
+const {locale} = useLanguageContext()
 const languages = [
-  { code: "en", name: "English", flag: "img/flags/en.png" },
-  { code: "ar", name: "Arabic", flag: "img/flags/ar.png" },
+  { code: "en", name: t("english"), flag: "img/flags/en.png" },
+  { code: "ar", name: t("arabic"), flag: "img/flags/ar.png" },
 
 ];
 const { user, logout } = useUserContext();
-
   // Set active language based on current direction
   const activeLang = isRtl ? languages[1] : languages[0];
-  console.log(isRtl)
   return (
     <div className="col">
       {/* <!-- header-options --> */}
@@ -74,9 +74,10 @@ const { user, logout } = useUserContext();
               <div className="header-search-1-form">
                 <form id="#" method="get" action="#">
                   <input
+                    key={locale} // This forces re-render when locale changes
                     type="text"
                     name="search"
-                    placeholder="Search here..."
+                    placeholder={t("searchHere")}
                   />
                   <button type="submit">
                     <span>
@@ -139,25 +140,25 @@ const { user, logout } = useUserContext();
                   <ul>
                   {user?.name ?
                     <li>
-                      <Link href="/account">My Account</Link>
+                      <Link href="/account">{t("myAccount")}</Link>
                     </li>
                     :
                     <>
                     <li>
-                      <Link href="/login">Sign in</Link>
+                      <Link href="/login">{t("signIn")}</Link>
                     </li>
                     <li>
-                      <Link href="/register">Register</Link>
+                      <Link href="/register">{t("register")}</Link>
                     </li>
                     </>
                     }
                     <li>
-                      <Link href="/wishlist">Wishlist</Link>
+                      <Link href="/wishlist">{t("wishlist")}</Link>
                     </li>
                     {user?.name &&
                     <li>
                       <Link href="#" onClick={(e) => { e.preventDefault(); logout(); }}>
-                      Log out</Link>
+                      {t("logOut")}</Link>
                     </li>
                     }
                   </ul>

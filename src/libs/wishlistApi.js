@@ -9,7 +9,6 @@ export const getUserWishlist = async (token) => {
     // console.log(await res.json())
     const data = await res.json();
     if (!res.ok) throw new Error("Failed to fetch wishlist");
-    console.log(data)
     return data;
   };
 

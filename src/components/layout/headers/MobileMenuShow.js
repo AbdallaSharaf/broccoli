@@ -1,6 +1,9 @@
+import { useTranslations } from "@/hooks/useTranslate";
 import React from "react";
 
 const MobileMenuShow = () => {
+  const t = useTranslations("header");
+
   return (
     <div className="mobile-header-menu-fullwidth">
       <div className="container">
@@ -8,7 +11,7 @@ const MobileMenuShow = () => {
           <div className="col-lg-12">
             {/* <!-- Mobile Menu Button --> */}
             <div className="mobile-menu-toggle d-lg-none">
-              <span>MENU</span>
+              <span>{t("menu")}</span>
               <a
                 href="#ltn__utilize-mobile-menu"
                 className="ltn__utilize-toggle"

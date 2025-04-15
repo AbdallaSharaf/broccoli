@@ -12,6 +12,7 @@ import { useUserContext } from "@/providers/UserContext";
 const HeaderRight = () => {
   const { headerStyle } = useHeaderContex();
   const { user, logout } = useUserContext();
+  const t = useTranslations("header");
 
   return (
     <div
@@ -30,7 +31,7 @@ const HeaderRight = () => {
         </div>
         <div className="header-search-1-form">
           <form id="#" method="get" action="#">
-            <input type="text" name="search" placeholder="Search here..." />
+            <input type="text" name="search" placeholder={t("searchHere")} />
             <button type="submit">
               <span>
                 <i className="icon-search"></i>
@@ -49,25 +50,25 @@ const HeaderRight = () => {
             <ul>
               {user?.name ?
               <li>
-                <Link href="/account">My Account</Link>
+                <Link href="/account">{t("myAccount")}</Link>
               </li>
               :
               <>
               <li>
-                <Link href="/login">Sign in</Link>
+                <Link href="/login">{t("signIn")}</Link>
               </li>
               <li>
-                <Link href="/register">Register</Link>
+                <Link href="/register">{t("register")}</Link>
               </li>
               </>
               }
               <li>
-                <Link href="/wishlist">Wishlist</Link>
+                <Link href="/wishlist">{t("wishlist")}</Link>
               </li>
               {user?.name &&
                 <li>
                   <Link href="#" onClick={(e) => { e.preventDefault(); logout(); }}>
-                  Log out</Link>
+                  {t("logOut")}</Link>
                 </li>
               }
             </ul>

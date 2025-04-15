@@ -1,3 +1,4 @@
+import { useTranslations } from "@/hooks/useTranslate";
 import countTotalPrice from "@/libs/countTotalPrice";
 import modifyAmount from "@/libs/modifyAmount";
 import { useCartContext } from "@/providers/CartContext";
@@ -10,6 +11,8 @@ const HeaderCartShow = () => {
   const { cartProducts } = useCartContext();
   const totalProduct = cartProducts?.items?.length;
   // console.log(totalProduct)
+  const t = useTranslations("header");
+
   if(!cartProducts?.items) return
   return (
     <>
@@ -24,9 +27,9 @@ const HeaderCartShow = () => {
             </span>
             {headerStyle === 5 ? (
               <h6>
-                <span>Your Cart</span>{" "}
+                <span>{t("yourCart")}</span>{" "}
                 <span className="ltn__secondary-color">
-                  {cartProducts?.totalPrice && modifyAmount(cartProducts?.totalPrice)}
+                  {cartProducts?.totalPrice && modifyAmount(cartProducts?.totalPrice)} {t("SAR")}
                 </span>
               </h6>
             ) : (

@@ -6,6 +6,7 @@ import { useWishlistContext } from "@/providers/WshlistContext";
 import { useCartContext } from "@/providers/CartContext";
 import countDataLength from "@/libs/countDataLength";
 import { useUserContext } from "@/providers/UserContext";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const MobileMenu = () => {
   const { wishlistProducts } = useWishlistContext();
@@ -13,9 +14,11 @@ const MobileMenu = () => {
   const { user } = useUserContext();
   const totalCartProduct = cartProducts?.items?.length;
   const totalWishlistProduct = wishlistProducts?.wishlist?.length;
+  const t = useTranslations("header");
+  
   const navItems = [
     {
-      name: "Home",
+      name: t("home"),
       path: "#",
       accordion: null,
       // accordionItems: [
@@ -135,7 +138,7 @@ const MobileMenu = () => {
     //   ],
     // },
     {
-      name: "Shop",
+      name: t("shop"),
       path: "/shop",
       accordion: null,
       isNestedaccordion: null,
@@ -343,7 +346,7 @@ const MobileMenu = () => {
         </div>
         <div className="ltn__utilize-menu-search-form">
           <form action="#">
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder={t("search")} />
             <button>
               <i className="fas fa-search"></i>
             </button>
@@ -386,7 +389,7 @@ const MobileMenu = () => {
                 <span className="utilize-btn-icon">
                   <i className="far fa-user"></i>
                 </span>
-                My Account
+                {t("myAccount")}
               </Link>
             </li>
             :
@@ -395,7 +398,7 @@ const MobileMenu = () => {
                 <span className="utilize-btn-icon">
                   <i className="far fa-user"></i>
                 </span>
-                Sign in
+                {t("signIn")}
               </Link>
             </li>
             }
@@ -405,7 +408,7 @@ const MobileMenu = () => {
                   <i className="far fa-heart"></i>{" "}
                   <sup>{totalWishlistProduct}</sup>
                 </span>
-                Wishlist
+                {t("wishlist")}
               </Link>
             </li>
             <li>
@@ -414,7 +417,7 @@ const MobileMenu = () => {
                   <i className="fas fa-shopping-cart"></i>{" "}
                   <sup>{totalCartProduct}</sup>
                 </span>
-                Shoping Cart
+                {t("shoppingCart")}
               </Link>
             </li>
           </ul>

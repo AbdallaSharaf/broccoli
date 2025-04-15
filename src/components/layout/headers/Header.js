@@ -103,10 +103,10 @@ const Header = () => {
         {/* <!-- ltn__header-bottom --> */}
         {headerStyle === 5 ? <HeaderBottom /> : ""}
       </header>
-      <HeaderCart />
-      <MobileMenu />
+      {/* <HeaderCart /> */}
+      {/* <MobileMenu />
       <div className="ltn__utilize-overlay"></div>
-      {headerStyle === 5 ? <MobileMenuShow /> : ""}
+      {headerStyle === 5 ? <MobileMenuShow /> : ""} */}
     </>
   );
 };
