@@ -3,6 +3,11 @@ import enTranslations from '../translations/en.json';
 import arTranslations from '../translations/ar.json'; // Import Arabic translations
 
 export function useTranslations(scope) {
+  // Handle server-side case
+  if (typeof window === 'undefined') {
+    return (key) => key; // Fallback during SSR
+  }
+
   const { locale } = useLanguageContext();
 
   // Select the correct translations based on locale
