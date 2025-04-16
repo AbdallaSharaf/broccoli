@@ -1,8 +1,9 @@
 import FaqMain from "@/components/layout/main/FaqMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
+import { TranslationWrapper } from "@/components/shared/wrappers/translationWrapper";
 import React from "react";
 
-const Faq = () => {
+const Faq = ({translations }) => {
   return (
     <PageWrapper
       isNotHeaderTop={true}
@@ -10,7 +11,9 @@ const Faq = () => {
       isTextWhite={true}
       isNavbarAppointmentBtn={true}
     >
-      <FaqMain />
+      <TranslationWrapper scope="faq" serverTranslations={translations}>  
+      {({ t }) => <FaqMain t={t} />}
+      </TranslationWrapper>
     </PageWrapper>
   );
 };
