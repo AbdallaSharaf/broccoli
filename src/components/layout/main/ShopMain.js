@@ -10,13 +10,15 @@ import makeText from "@/libs/makeText";
 import CommonContext from "@/providers/CommonContext";
 import { useProductContext } from "@/providers/ProductContext";
 import getTranslatedName from "@/libs/getTranslatedName";
+import { useTranslations } from "@/hooks/useTranslate"; // ✅ import hook
 
 const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
+  const t = useTranslations("header"); // ✅ use translation namespace
+
   const searchParams = useSearchParams();
   const currentPath = usePathname();
   const { products, setProducts } = useProductContext();
 
-  // Extract filters from URL params
   const category = searchParams.get("category");
   const keyword = searchParams.get("search");
 
@@ -26,13 +28,12 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   const intLowerLimit = 50;
   const intUpperLimit = 1500;
 
-  // Fetch filtered products when filters change
   useEffect(() => {
     const fetchFilteredProducts = async () => {
       const filters = {
         category,
         keyword,
-        range: rangeValue ? rangeValue.join(",") : undefined, // Format range if available
+        range: rangeValue ? rangeValue.join(",") : undefined,
       };
       const data = await filterItems(filters);
       setProducts(data);
@@ -42,40 +43,36 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
 
   useEffect(() => {
     const fetchCategoryName = async () => {
-  try {
-    // Fetch data from backend
-    const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/category/${category}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch filtered items");
-    }
-    const data = await response.json();
-    setCategoryName(getTranslatedName(data?.Category?.name));
-  } catch (error) {
-    console.error("Error fetching filtered items:", error);
-    return [];
-  }
-};
+      try {
+        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/category/${category}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch filtered items");
+        }
+        const data = await response.json();
+        setCategoryName(getTranslatedName(data?.Category?.name));
+      } catch (error) {
+        console.error("Error fetching filtered items:", error);
+        return [];
+      }
+    };
     fetchCategoryName();
   }, [category]);
 
-  // Get range value
   useEffect(() => {
     getRangeValue(setRangeValue, maxSize, intLowerLimit, intUpperLimit);
   }, [intLowerLimit, intUpperLimit, maxSize]);
-  // console.log(products)
+
   return (
     <main>
       <HeroPrimary
         title={
           category
-            ? `Category: ${makeText(categoryName)}`
-            :  keyword
-            ? `Keyword: ${makeText(keyword)}`
-            : title
-            ? title
-            : "Shop"
+            ? `${t("category")}: ${makeText(categoryName)}`
+            : keyword
+            ? `${t("keyword")}: ${makeText(keyword)}`
+            : title || t("shop")
         }
-        text={text || "Shop"}
+        text={text || t("shop")}
         type={isSidebar === "primary" ? 2 : 3}
       />
       <CommonContext value={{ products, isShop: true, currentPath }}>

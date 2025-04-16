@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useCartContext } from "@/providers/CartContext";
 import controlModal from "@/libs/controlModal";
 import getTranslatedName from "@/libs/getTranslatedName";
+import { useTranslations } from "@/hooks/useTranslate"; // Import translation hook
 
 const CartStatusModal = ({ product }) => {
   const { _id, name, images } = product;
   const { cartStatus } = useCartContext();
+  const t = useTranslations("common"); // Using the translations
+
   return (
     <div className="ltn__modal-area ltn__add-to-cart-modal-area">
       <div className="modal fade" id="add_to_cart_modal" tabIndex="-1">
@@ -36,15 +39,10 @@ const CartStatusModal = ({ product }) => {
                           <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
                         </h5>
                         <p className="added-cart">
-                          <i className="fa fa-check-circle"></i> Successfully{" "}
-                          {cartStatus ? cartStatus : "added"}{" "}
+                          <i className="fa fa-check-circle"></i> {t("cartStatus")}{" "}
+                          {cartStatus ? t(cartStatus) : t("cartStatus")}{" "}
                           {cartStatus === "increased" ||
-                          cartStatus === "decreased"
-                            ? "in"
-                            : cartStatus === "deleted"
-                            ? "from"
-                            : "to"}{" "}
-                          your Cart
+                          cartStatus === "decreased"}
                         </p>
                         <div
                           className="btn-wrapper"
@@ -54,13 +52,13 @@ const CartStatusModal = ({ product }) => {
                             href="/cart"
                             className="theme-btn-1 btn btn-effect-1"
                           >
-                            View Cart
+                            {t("viewCart")}
                           </Link>{" "}
                           <Link
                             href="/checkout"
                             className="theme-btn-2 btn btn-effect-2"
                           >
-                            Checkout
+                            {t("checkout")}
                           </Link>
                         </div>
                       </div>

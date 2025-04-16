@@ -1,7 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "@/hooks/useTranslate";
+import Countdown from "./countdown";
 
 const HotDeal2 = ({ type }) => {
+  const t = useTranslations("common");
+  
   return (
     <div
       className={`ltn__call-to-action-area ltn__call-to-action-4 ltn__call-to-action-4-2  ${
@@ -17,22 +23,17 @@ const HotDeal2 = ({ type }) => {
                 type === 2 ? "" : "text-color-white "
               } text-center`}
             >
-              <h2 className="ltn__secondary-color">Hurry Up!</h2>
-              <h1 className="h1">Hot Deal! Sale Up To 20% off</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. <br />{" "}
-                Explicabo id, unde hic molestias omnis.
-              </p>
-              <div
-                className="ltn__countdown ltn__countdown-3 "
-                data-countdown="2025/12/01"
-              ></div>
+              <h2 className="ltn__secondary-color">{t("Hurry Up!")}</h2>
+              <h1 className="h1">
+                {t("Hot Deal! Sale Up To")} 20% {t("off")}
+              </h1>
+              <Countdown date="2025-12-01" fullFormat={false} />
               <div className="btn-wrapper animated">
                 <Link
                   href="/shop"
                   className="theme-btn-1 btn btn-effect-1 text-uppercase"
                 >
-                  Shop now
+                  {t("shopNow")}
                 </Link>
               </div>
             </div>

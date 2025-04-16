@@ -4,10 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { useWishlistContext } from "@/providers/WshlistContext";
 import controlModal from "@/libs/controlModal";
+import { useTranslations } from "@/hooks/useTranslate"; // Import translation hook
 import getTranslatedName from "@/libs/getTranslatedName";
+
 const WishlistStatusModal = ({ product }) => {
   const { _id, name, images } = product;
   const { wishlistStatus } = useWishlistContext();
+  const t = useTranslations("common"); // Using the translations
 
   return (
     <div className="ltn__modal-area ltn__add-to-cart-modal-area">
@@ -50,16 +53,8 @@ const WishlistStatusModal = ({ product }) => {
                             }`}
                           ></i>{" "}
                           {wishlistStatus === "exist"
-                            ? `Already exist`
-                            : `Successfully ${
-                                wishlistStatus ? wishlistStatus : "added"
-                              }`}{" "}
-                          {wishlistStatus === "exist"
-                            ? "in"
-                            : wishlistStatus === "deleted"
-                            ? "from"
-                            : "to"}{" "}
-                          your Wishlist
+                            ? t("alreadyInWishlist")
+                            : `${t("cartStatus")} ${wishlistStatus ? t(wishlistStatus) : t("added")}`}
                         </p>
                         <div className="btn-wrapper">
                           <Link
@@ -67,7 +62,7 @@ const WishlistStatusModal = ({ product }) => {
                             href="/wishlist"
                             className="theme-btn-1 btn btn-effect-1"
                           >
-                            View Wishlist
+                            {t("viewWishlist")}
                           </Link>
                         </div>
                       </div>

@@ -15,7 +15,7 @@ const ShopLeftSidebar = () => {
       isTextWhite={true}
       isNavbarAppointmentBtn={true}
       >
-      <ShopMain isSidebar="left" title={"Shop"} />
+      <ShopMain isSidebar="left" />
     </PageWrapper>
     </Suspense>
   );

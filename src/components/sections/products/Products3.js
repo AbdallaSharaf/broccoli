@@ -1,5 +1,6 @@
 "use client";
 import ProductCardPrimary from "@/components/shared/cards/ProductCardPrimary";
+import { useTranslations } from "@/hooks/useTranslate";
 import getAllProducts from "@/libs/getAllProducts";
 import makePath from "@/libs/makePath";
 import { useProductContext } from "@/providers/ProductContext";
@@ -16,12 +17,12 @@ const Products3 = ({
   isDouble,
 }) => {
   const { topProducts } = useProductContext();
-
+  const t = useTranslations("common");
 
   if (!topProducts || topProducts.length === 0) {
     return null;
   }
-  
+  console.log(t("topProducts"));
   return (
     <section>
       <div
@@ -42,12 +43,11 @@ const Products3 = ({
                 }`}
               >
                 <h1 className="section-title">
-                  {title ? title : "Top Products"}
+                  {title ? title : t("topProducts")}
                 </h1>
                 {desc ? (
                   <p>
-                    A highly efficient slip-ring scanner for {"today's"}{" "}
-                    diagnostic requirements.
+                    {t("A highly efficient slip-ring scanner for today's diagnostic requirements.")}
                   </p>
                 ) : (
                   ""

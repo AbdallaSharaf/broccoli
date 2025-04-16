@@ -1,6 +1,10 @@
+"use client"
 import HeroSidebar from "@/components/shared/sidebars/HeroSidebar";
+import { useTranslations } from "@/hooks/useTranslate"; // 👈 Import translation hook
 
 const Hero15 = ({ type }) => {
+  const t = useTranslations("common"); // 👈 Use "common" namespace
+
   return (
     <div className="ltn__slider-area  mt-30">
       <div className="container">
@@ -41,7 +45,7 @@ const Hero15 = ({ type }) => {
                                 href="/shop"
                                 className="theme-btn-1 btn btn-effect-1 text-uppercase"
                               >
-                                Shop now
+                                {t("shopNow")}
                               </a>
                             </div>
                           </div>
@@ -85,7 +89,7 @@ const Hero15 = ({ type }) => {
                                 href="/shop"
                                 className="theme-btn-1 btn btn-effect-1 text-uppercase"
                               >
-                                Shop now
+                                {t("shopNow")}
                               </a>
                             </div>
                           </div>

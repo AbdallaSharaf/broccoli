@@ -12,6 +12,7 @@ import { useWishlistContext } from "@/providers/WshlistContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "@/hooks/useTranslate"; // Use translation hook
 
 const CartProduct = ({
   product,
@@ -30,8 +31,9 @@ const CartProduct = ({
   const { deleteProductFromWishlist } = useWishlistContext();
   const [quantity, setQuantity] = useState(Number(quantity1) ?? 1);
   const { setCurrentProduct } = useProductContext();
-  // variables
-  // console.log(quantity)
+  const t = useTranslations("common"); // Use translation hook for "common" keys
+
+  // handle quantity change
   useEffect(() => {
     if (!isWishlist) {
       const inputParent = inputRef.current;
@@ -71,7 +73,6 @@ const CartProduct = ({
     }
   }, [isWishlist, quantity, setIsUpdate]);
   
-  
   // handle updated products
   useEffect(() => {
     if (!isWishlist) {
@@ -79,7 +80,6 @@ const CartProduct = ({
         _id === product?.product?._id ? { ...product, quantity } : product
       );
       setUpdateProducts(newUptedProducts);
-      // console.log(newUptedProducts)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWishlist, quantity]);
@@ -106,9 +106,9 @@ const CartProduct = ({
           <Link href={`/products/${_id}`}>{sliceText(getTranslatedName(name), 30)}</Link>
         </h4>
       </td>
-      <td className="cart-product-price">${price}</td>
+      <td className="cart-product-price">{price} {t("SAR")}</td>
       {isWishlist ? (
-        <td className="cart-product-stock">In Stock</td>
+        <td className="cart-product-stock">{t("In Stock")}</td>
       ) : (
         <td className="cart-product-quantity">
           <div className="cart-plus-minus" ref={inputRef}>
@@ -139,15 +139,15 @@ const CartProduct = ({
           <Link
             className="submit-button-1"
             href="#"
-            title="Add to Cart"
+            title={t("addToCart")} 
             data-bs-toggle="modal"
             data-bs-target="#add_to_cart_modal"
           >
-            Add to Cart
+            {t("addToCart")}  {/* Translated "Add to Cart" */}
           </Link>
         </td>
       ) : (
-        <td className="cart-product-subtotal">${quantity*price}</td>
+        <td className="cart-product-subtotal">{quantity * price} {t("SAR")} </td>
       )}
     </tr>
   );

@@ -1,7 +1,10 @@
+"use client"
+import { useTranslations } from "@/hooks/useTranslate";
 import Link from "next/link";
 
 const HeroPrimary = ({ text, title, item, type, mb, isCapitalize, bg }) => {
   const { name, path } = item ? item : {};
+  const t = useTranslations("common");
   return (
     <div
       className={`ltn__breadcrumb-area ${
@@ -21,7 +24,7 @@ const HeroPrimary = ({ text, title, item, type, mb, isCapitalize, bg }) => {
             <div className="ltn__breadcrumb-inner ltn__breadcrumb-inner-2 justify-content-between">
               <div className="section-title-area ltn__section-title-2">
                 <h6 className="section-subtitle ltn__secondary-color">
-                  {"//"} Welcome to our company
+                  {"//"} {t("Welcome to our company")}
                 </h6>
                 <h1
                   className={`section-title white-color ${
@@ -34,7 +37,7 @@ const HeroPrimary = ({ text, title, item, type, mb, isCapitalize, bg }) => {
               <div className="ltn__breadcrumb-list">
                 <ul>
                   <li>
-                    <Link href="/">Home</Link>
+                    <Link href="/">{t("home")}</Link>
                   </li>{" "}
                   {item ? (
                     <li>

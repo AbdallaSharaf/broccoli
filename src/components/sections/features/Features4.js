@@ -1,6 +1,10 @@
+"use client";
 import Image from "next/image";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const Features4 = ({ type, mb }) => {
+  const t = useTranslations("common");
+
   return (
     <div
       className={`ltn__feature-area  ${type === 2 ? "" : ""}  ${
@@ -24,10 +28,8 @@ const Features4 = ({ type, mb }) => {
                       />
                     </div>
                     <div className="ltn__feature-info">
-                      <h4>Curated Products</h4>
-                      <p>
-                        Provide free home delivery for all product over $100
-                      </p>
+                      <h4>{t("Curated Products")}</h4>
+                      <p>{t("Provide free home delivery for all product over")} 100 {t("SAR")}</p>
                     </div>
                   </div>
                 </div>
@@ -43,8 +45,8 @@ const Features4 = ({ type, mb }) => {
                       />
                     </div>
                     <div className="ltn__feature-info">
-                      <h4>Handmade</h4>
-                      <p>We ensure the product quality that is our main goal</p>
+                      <h4>{t("Handmade")}</h4>
+                      <p>{t("We ensure the product quality that is our main goal")}</p>
                     </div>
                   </div>
                 </div>
@@ -60,10 +62,8 @@ const Features4 = ({ type, mb }) => {
                       />
                     </div>
                     <div className="ltn__feature-info">
-                      <h4>Natural Food</h4>
-                      <p>
-                        Return product within 3 days for any product you buy
-                      </p>
+                      <h4>{t("Natural Food")}</h4>
+                      <p>{t("Return product within 3 days for any product you buy")}</p>
                     </div>
                   </div>
                 </div>
@@ -79,10 +79,8 @@ const Features4 = ({ type, mb }) => {
                       />
                     </div>
                     <div className="ltn__feature-info">
-                      <h4>Free home delivery</h4>
-                      <p>
-                        We ensure the product quality that you can trust easily
-                      </p>
+                      <h4>{t("Free home delivery")}</h4>
+                      <p>{t("We ensure the product quality that you can trust easily")}</p>
                     </div>
                   </div>
                 </div>

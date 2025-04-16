@@ -1,6 +1,7 @@
 import { useCommonContext } from "@/providers/CommonContext";
 import React from "react";
 import QuickSearchItems from "../../others/QuickSearchItems";
+import { useTranslations } from "@/hooks/useTranslate"; // Assuming a translation hook
 
 const SidebarSearch = () => {
   const {
@@ -13,16 +14,18 @@ const SidebarSearch = () => {
     searchedItems,
   } = useCommonContext();
 
+  const t = useTranslations("common");  // Access translations for common terms
+
   return (
     <div className="widget ltn__search-widget">
       <h4 className="ltn__widget-title ltn__widget-title-border">
-        Search Objects
+        {t("Search Objects")}
       </h4>
       <form style={{ position: "relative" }} onSubmit={(e) => handleSearch(e)}>
         <input
           type="text"
           name="search"
-          placeholder="Search your keyword..."
+          placeholder={t("Search your keyword...")}
           onBlur={() => setIsShowQuickSearchResult(false)}
           onChange={(e) => handleSearchString(e)}
           onKeyDown={closeSearch}

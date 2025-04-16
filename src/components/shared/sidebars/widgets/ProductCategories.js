@@ -6,21 +6,23 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 import getTranslatedName from "@/libs/getTranslatedName";
+import { useTranslations } from "@/hooks/useTranslate"; // Translation hook
 
 const ProductCategories = () => {
+  const t = useTranslations("common");
   const searchParams = useSearchParams();
-  const selectedCategory = searchParams.get("category"); // Get category from URL
+  const selectedCategory = searchParams.get("category");
   const { currentPath } = useCommonContext();
   const { categories } = useCategoryContext();
 
   return (
     <div className="widget ltn__menu-widget">
       <h4 className="ltn__widget-title ltn__widget-title-border">
-        Product categories
+        {t("Product categories")}
       </h4>
       <ul>
         {categories?.map((category, idx) => {
-          const isActive = selectedCategory === category._id; // Compare with category._id
+          const isActive = selectedCategory === category._id;
           return (
             <li key={idx}>
               <Link

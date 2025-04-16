@@ -7,16 +7,19 @@ import modifyAmount from "@/libs/modifyAmount";
 import { useCartContext } from "@/providers/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslations } from "@/hooks/useTranslate"; // import translation hook
 
 const CartPrimary = () => {
   const { cartProducts: currentProducts, updateCart, applyCoupon } = useCartContext();
-  const [couponCode, setCouponCode] = useState(currentProducts?.coupon?.code || ""); // coupon input
-  const [couponResponse, setCouponResponse] = useState(null); // coupon result
+  const [couponCode, setCouponCode] = useState(currentProducts?.coupon?.code || "");
+  const [couponResponse, setCouponResponse] = useState(null);
   const cartProducts = currentProducts?.items ?? [];
-  // stats
+
   const [updateProducts, setUpdateProducts] = useState(cartProducts);
   const [isUpdate, setIsUpdate] = useState(false);
-  // update cart
+
+  const t = useTranslations("common"); // use "common" namespace
+
   const handleUpdateCart = () => {
     updateCart(updateProducts);
     setIsUpdate(false);
@@ -25,20 +28,17 @@ const CartPrimary = () => {
   const handleApplyCoupon = async () => {
     if (!couponCode) return;
     const result = await applyCoupon(couponCode);
-    setCouponResponse(result); // show success or error
+    setCouponResponse(result);
   };
 
   useEffect(() => {
-      setUpdateProducts([...cartProducts]);
-      // console.log("called")
+    setUpdateProducts([...cartProducts]);
   }, [cartProducts]);
 
   useEffect(() => {
-      setCouponCode(currentProducts?.coupon?.code || "");
-      // console.log("called")
+    setCouponCode(currentProducts?.coupon?.code || "");
   }, [cartProducts]);
-  // console.log(modifyAmount(currentProducts?.totalPrice))
-  
+
   return (
     <div className="liton__shoping-cart-area mb-120">
       <div className="container">
@@ -46,33 +46,32 @@ const CartPrimary = () => {
           <div className="col-lg-12">
             <div className="shoping-cart-inner">
               <div className="shoping-cart-table table-responsive">
-                  <table className="table">
-                    <tbody>
+                <table className="table">
+                  <tbody>
                     {cartProducts.length === 0 ? (
-                        <tr>
-                          <td>
-                            <Nodata text={"Empty Cart!"} />
-                          </td>
-                        </tr>
-                      ) : (
-                        <>
-                      {cartProducts?.length > 0 &&
-                        cartProducts?.map((product, idx) => (
+                      <tr>
+                        <td>
+                          <Nodata text={t("Empty Cart!")} />
+                        </td>
+                      </tr>
+                    ) : (
+                      <>
+                        {cartProducts.map((product, idx) => (
                           <CartProduct
                             key={idx}
                             product={product}
                             updateProducts={updateProducts}
                             setUpdateProducts={setUpdateProducts}
                             setIsUpdate={setIsUpdate}
-                            />
+                          />
                         ))}
-                      <tr className="cart-coupon-row">
-                        <td colSpan="6">
-                        <div className="cart-coupon">
+                        <tr className="cart-coupon-row">
+                          <td colSpan="6">
+                            <div className="cart-coupon">
                               <input
                                 type="text"
                                 name="cart-coupon"
-                                placeholder="Coupon code"
+                                placeholder={t("Coupon code")}
                                 value={couponCode}
                                 onChange={(e) => setCouponCode(e.target.value)}
                               />
@@ -81,7 +80,7 @@ const CartPrimary = () => {
                                 onClick={handleApplyCoupon}
                                 className="btn theme-btn-2 btn-effect-2"
                               >
-                                Apply Coupon
+                                {t("Apply coupon")}
                               </button>
                               {(couponResponse || currentProducts?.coupon) && (
                                 <p
@@ -89,65 +88,68 @@ const CartPrimary = () => {
                                   style={{
                                     color:
                                       couponResponse?.status === false
-                                        ? "#dc3545" // red if error
-                                        : "#28a745", // green if success or already applied
+                                        ? "#dc3545"
+                                        : "#28a745",
                                   }}
                                 >
-                                  {couponResponse?.message || "Coupon already applied"}
+                                  {couponResponse?.message || t("Coupon already applied")}
                                 </p>
                               )}
                             </div>
-                        </td>
-                        <td>
-                          <button
-                            onClick={handleUpdateCart}
-                            type="button"
-                            className={`btn theme-btn-2  ${
-                              isUpdate ? "" : "disabled"
-                            }`}
-                            disabled={isUpdate ? false : true}
+                          </td>
+                          <td>
+                            <button
+                              onClick={handleUpdateCart}
+                              type="button"
+                              className={`btn theme-btn-2 ${isUpdate ? "" : "disabled"}`}
+                              disabled={!isUpdate}
                             >
-                            Update Cart
-                          </button>
-                        </td>
-                      </tr>
+                              {t("update cart")}
+                            </button>
+                          </td>
+                        </tr>
                       </>
                     )}
-                    </tbody>
-                  </table>
+                  </tbody>
+                </table>
               </div>
-              {cartProducts.length > 0 && <div className="shoping-cart-total mt-50">
-                <h4>Cart Totals</h4>
+
+              {cartProducts.length > 0 && (
+                <div className="shoping-cart-total mt-50">
+                  <h4>{t("Cart Totals")}</h4>
                   <table className="table">
                     <tbody>
                       <tr>
-                        <td>Items Price</td>
-                        <td>{modifyAmount(currentProducts?.subTotal)} SAR</td>
+                        <td>{t("Items Price")}</td>
+                        <td>{modifyAmount(currentProducts?.subTotal)} {t("SAR")}</td>
                       </tr>
-                      {currentProducts?.discount &&<tr>
-                        <td>Discount</td>
-                        <td>{modifyAmount(currentProducts?.discount)} SAR</td>
-                      </tr>}
+                      {currentProducts?.discount && (
+                        <tr>
+                          <td>{t("Discount")}</td>
+                          <td>{modifyAmount(currentProducts?.discount)} {t("SAR")}</td>
+                        </tr>
+                      )}
                       <tr>
                         <td>
-                          <strong>Net Total</strong>
+                          <strong>{t("Net Total")}</strong>
                         </td>
                         <td>
-                          <strong>{currentProducts?.totalPrice} SAR</strong>
+                          <strong>{currentProducts?.totalPrice} {t("SAR")}</strong>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                <div className="btn-wrapper text-right">
-                  <Link
-                    href="/checkout"
-                    className="theme-btn-1 btn btn-effect-1"
-                    disabled={isUpdate ? false : true}
-                  >
-                    Proceed to checkout
-                  </Link>
+                  <div className="btn-wrapper text-right">
+                    <Link
+                      href="/checkout"
+                      className="theme-btn-1 btn btn-effect-1"
+                      disabled={isUpdate}
+                    >
+                      {t("Proceed to checkout")}
+                    </Link>
+                  </div>
                 </div>
-              </div>}
+              )}
             </div>
           </div>
         </div>

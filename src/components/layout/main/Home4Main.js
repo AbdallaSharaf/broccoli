@@ -1,3 +1,7 @@
+"use client"
+
+
+import { useTranslations } from "@/hooks/useTranslate";
 import Blogs2 from "@/components/sections/blogs/Blogs2";
 import Brands3 from "@/components/sections/brands/Brands3";
 import Categories3 from "@/components/sections/categories/Categories3";
@@ -10,7 +14,8 @@ import Products5 from "@/components/sections/products/Products5";
 
 import React from "react";
 
-const Home4Main = () => {
+const Home4Main = () => { 
+  const t = useTranslations("common");
   return (
     <main>
       <Hero15 type={2} />
@@ -18,7 +23,7 @@ const Home4Main = () => {
       <Products3
         isSmallTitle={true}
         isDouble={true}
-        desc="A highly efficient slip-ring scanner for today's diagnostic requirements."
+        desc={t("A highly efficient slip-ring scanner for today's diagnostic requirements.")}
       />
       {/* <Categories3 type={3} /> */}
       <HotDeal2 type={2} />

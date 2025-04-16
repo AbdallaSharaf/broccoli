@@ -1,34 +1,39 @@
 "use client";
 import getNiceSelectValue from "@/libs/getNiceSelectValue";
 import { useEffect } from "react";
+import { useTranslations } from "@/hooks/useTranslate"; // assuming you're using this hook
 
-const selectInputs = [
-  {
-    value: "default",
-    name: "Default Sorting",
-  },
-  {
-    value: "popularity",
-    name: "Sort by popularity",
-  },
-  {
-    value: "new",
-    name: "Sort by new arrivals",
-  },
-  {
-    value: "price ascending",
-    name: "Sort by price: low to high",
-  },
-  {
-    value: "price descending",
-    name: "Sort by price: high to low",
-  },
-];
 const ShopShortSelect = ({ setArrangeInput }) => {
+  const t = useTranslations("common");
+
+  const selectInputs = [
+    {
+      value: "default",
+      name: t("default sorting"),
+    },
+    {
+      value: "popularity",
+      name: t("sort by popularity"),
+    },
+    {
+      value: "new",
+      name: t("sort by new arrivals"),
+    },
+    {
+      value: "price ascending",
+      name: t("sort by price: low to high"),
+    },
+    {
+      value: "price descending",
+      name: t("sort by price: high to low"),
+    },
+  ];
+
   useEffect(() => {
     getNiceSelectValue(setArrangeInput);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="short-by text-center">
       <select className="nice-select">

@@ -1,11 +1,18 @@
+"use client"
+
+import { useTranslations } from "@/hooks/useTranslate";
+
+
 import Features4 from "@/components/sections/features/Features4";
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import LoginPrimary from "@/components/sections/login/LoginPrimary";
 
 const LoginMain = () => {
+  
+  const t = useTranslations("common");
   return (
     <main>
-      <HeroPrimary title={"Sign In"} text="Login" />
+      <HeroPrimary title={t("Sign In")} text={t("Login")} />
       <LoginPrimary />
       <Features4 />
     </main>
