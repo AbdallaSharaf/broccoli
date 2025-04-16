@@ -6,6 +6,7 @@ import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import NavItem from "@/components/layout/headers/NavItem";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function VerifyUserPage({ params }) {
   const router = useRouter();
@@ -46,29 +47,33 @@ export default function VerifyUserPage({ params }) {
   }, [token]);
 
   return (
+
+
+
+    <Suspense fallback={<>Loading...</>}>
     <PageWrapper
       isNotHeaderTop={true}
       isHeaderRight={true}
       isTextWhite={true}
       isNavbarAppointmentBtn={true}
-    >
+      >
       <HeroPrimary
         title={
           loading
-            ? "Verifying Your Account..."
-            : success
-            ? "Account Verified!"
-            : "Verification Failed"
+          ? "Verifying Your Account..."
+          : success
+          ? "Account Verified!"
+          : "Verification Failed"
         }
         text={
           loading
-            ? "Please wait while we verify your account."
-            : success
-            ? "Your account has been successfully verified. You can now proceed."
-            : error || "Something went wrong. Please try again later."
+          ? "Please wait while we verify your account."
+          : success
+          ? "Your account has been successfully verified. You can now proceed."
+          : error || "Something went wrong. Please try again later."
         }
         type={2}
-      />
+        />
 
       {!loading && success && (
         <div className="special-link text-uppercase">
@@ -76,5 +81,6 @@ export default function VerifyUserPage({ params }) {
         </div>
       )}
     </PageWrapper>
+    </Suspense>
   );
 }

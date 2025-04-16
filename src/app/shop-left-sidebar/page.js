@@ -1,9 +1,10 @@
 import ShopMain from "@/components/layout/main/ShopMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
-import React from "react";
+import React, { Suspense } from "react";
 
 const ShopLeftSidebar = () => {
   return (
+    <Suspense fallback={<>Loading...</>}>
     <PageWrapper
       isNotHeaderTop={true}
       isHeaderRight={true}
@@ -12,6 +13,7 @@ const ShopLeftSidebar = () => {
     >
       <ShopMain isSidebar="left" title={"Shop Left Sidebar"} />
     </PageWrapper>
+    </Suspense>
   );
 };
 
