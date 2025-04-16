@@ -40,9 +40,9 @@ const PageWrapper = ({
       {isCommingSoon ? (
         children
       ) : (
+        <LanguageProvider>
         <UserContextProvider>
         <CartContextProvider>
-          <LanguageProvider>
           <WishlistContextProvider>
             <HeaderContex
               value={{
@@ -75,9 +75,9 @@ const PageWrapper = ({
           <FooterContexProvider value={{ footerBg }}>
             <Footer />
           </FooterContexProvider>
-        </LanguageProvider>
         </CartContextProvider>
         </UserContextProvider>
+        </LanguageProvider>
       )}
 
       <Preloader />
