@@ -261,7 +261,7 @@ const CheckoutPrimary = () => {
               <div className="ltn__checkout-single-content ltn__coupon-code-wrap">
     {products.coupon ? (
       <h5>
-        {t('Coupon')} "{products?.coupon?.code}" {t('applied')}{" "}
+        {t('Coupon')} {products?.coupon?.code} {t('applied')}{" "}
         <Link
           className="ltn__secondary-color"
           href="#ltn__coupon-code"
