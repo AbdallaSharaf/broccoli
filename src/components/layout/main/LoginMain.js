@@ -12,7 +12,7 @@ const LoginMain = () => {
   const t = useTranslations("common");
   return (
     <main>
-      <HeroPrimary title={t("Sign In")} text={t("Login")} />
+      <HeroPrimary title={t("Sign In")} text={t("Sign In")} />
       <LoginPrimary />
       <Features4 />
     </main>

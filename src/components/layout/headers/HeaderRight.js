@@ -9,11 +9,19 @@ import countTotalPrice from "@/libs/countTotalPrice";
 import HeaderCartShow from "./HeaderCartShow";
 import { useUserContext } from "@/providers/UserContext";
 import { useTranslations } from "@/hooks/useTranslate";
+import { useLanguageContext } from "@/providers/LanguageContext";
 
 const HeaderRight = () => {
   const { headerStyle } = useHeaderContex();
   const { user, logout } = useUserContext();
   const t = useTranslations("header");
+  const { locale, toggleLanguage } = useLanguageContext();
+  const nextLocale = locale === "ar" ? "en" : "ar";
+
+  const handleLanguageChange = (e) => {
+    e.preventDefault();
+    toggleLanguage(nextLocale);
+  };
 
   return (
     <div
@@ -78,6 +86,14 @@ const HeaderRight = () => {
       </div>
       {/* <!-- mini-cart --> */}
       {<HeaderCartShow />}
+      <div className="mini-cart-icon">
+
+      <Link href="#" onClick={handleLanguageChange} title={t("switchLanguage")}>
+                <span className="utilize-btn-icon">
+                <i className="fas fa-globe"></i>{" "}
+                </span>
+              </Link>
+      </div>
       {/* <!-- mini-cart --> */}
       {/* <!-- Mobile Menu Button --> */}
       <ButtonOpenMobileMenu />

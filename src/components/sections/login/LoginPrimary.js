@@ -1,44 +1,41 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Use router to redirect after login
+import { useRouter } from "next/navigation";
 import { useUserContext } from "@/providers/UserContext";
 import { useCartContext } from "@/providers/CartContext";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const LoginPrimary = () => {
-  const { login } = useUserContext(); // Get login function from context
-  const router = useRouter(); // To navigate after successful login
-  const { setCartProducts, updateCart } = useCartContext(); // Get login function from context
-  
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState(null); // State to track errors
+  const t = useTranslations("common");
+  const { login } = useUserContext();
+  const router = useRouter();
+  const { setCartProducts, updateCart } = useCartContext();
 
-  // Handle input change
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState(null);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
-    setError(null); // Reset previous errors
-  
+    e.preventDefault();
+    setError(null);
+
     try {
-      const result = await login(formData.email, formData.password); // Call login function
-      console.log(result)
+      const result = await login(formData.email, formData.password);
       if (result) {
         updateCart(result.cart);
-        setCartProducts(result.cart); // update UI cart from merged version
-          // maybe navigate to /dashboard or /cart
-        router.push("/"); // Redirect only if login is successful
+        setCartProducts(result.cart);
+        router.push("/");
       } else {
-        setError("Invalid email or password"); // Show error if login fails
+        setError(t("Invalid email or password"));
       }
     } catch (err) {
-      setError("Something went wrong. Please try again."); // Handle unexpected errors
+      setError(t("Something went wrong. Please try again."));
     }
   };
-  
 
   return (
     <div className="ltn__login-area pb-65">
@@ -47,8 +44,8 @@ const LoginPrimary = () => {
           <div className="col-lg-12">
             <div className="section-title-area text-center">
               <h1 className="section-title">
-                Sign In <br />
-                To Your Account
+                {t("Sign In")} <br />
+                {t("To Your Account")}
               </h1>
             </div>
           </div>
@@ -60,26 +57,26 @@ const LoginPrimary = () => {
                 <input
                   type="text"
                   name="email"
-                  placeholder="Email*"
+                  placeholder={`${t("Email")}*`}
                   value={formData.email}
                   onChange={handleChange}
                 />
                 <input
                   type="password"
                   name="password"
-                  placeholder="Password*"
+                  placeholder={`${t("password*")}`}
                   value={formData.password}
                   onChange={handleChange}
                 />
                 {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
                 <div className="btn-wrapper mt-0">
                   <button className="theme-btn-1 btn btn-block w-100" type="submit">
-                    SIGN IN
+                    {t("Sign In")}
                   </button>
                 </div>
                 <div className="go-to-btn mt-20">
                   <Link href="#">
-                    <small>FORGOTTEN YOUR PASSWORD?</small>
+                    <small>{t("FORGOTTEN YOUR PASSWORD?")}</small>
                   </Link>
                 </div>
               </form>
@@ -87,14 +84,14 @@ const LoginPrimary = () => {
           </div>
           <div className="col-lg-6">
             <div className="account-create text-center pt-50">
-              <h4>{"DON'T"} HAVE AN ACCOUNT?</h4>
+              <h4>{t("DON'T HAVE AN ACCOUNT?")}</h4>
               <p>
-                Add items to your wishlist, get personalized recommendations, <br />
-                check out more quickly, and track your orders by registering.
+                {t("Add items to your wishlist, get personalized recommendations,")} <br />
+                {t("check out more quickly, and track your orders by registering.")}
               </p>
               <div className="btn-wrapper">
                 <Link href="/register" className="theme-btn-1 btn black-btn">
-                  CREATE ACCOUNT
+                  {t("Create account")}
                 </Link>
               </div>
             </div>

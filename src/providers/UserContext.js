@@ -83,6 +83,27 @@ export const UserContext = ({ children }) => {
   };
   
 
+  // ✅ Register function with full name merge
+const register = async ({ firstname, lastname, email, password, phone }) => {
+  try {
+    const fullName = `${firstname} ${lastname}`.trim(); // 👈 Merge and clean up
+
+    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/SignUp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: fullName, email, password }), // 👈 Send `name` instead of separate first/last
+    });
+
+    const data = await res.json();
+    console.log(res)
+    if (!res.ok) throw new Error(data.message || "Registration failed");
+    return true;
+  } catch (error) {
+    console.error("Registration error:", error.message);
+    return null;
+  }
+};
+
   // ✅ Logout function
   const logout = () => {
     setUser(null);
@@ -90,7 +111,7 @@ export const UserContext = ({ children }) => {
   };
 
   return (
-    <userContext.Provider value={{ user, login, logout }}>
+    <userContext.Provider value={{ user, login, logout, register }}>
       {children}
     </userContext.Provider>
   );
