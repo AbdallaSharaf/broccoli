@@ -1,7 +1,7 @@
 // components/TranslationWrapper.js
 'use client';
 
-import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslations } from '@/hooks/useTranslate';
 
 export const TranslationWrapper = ({ children, scope, serverTranslations }) => {
   const [isClient, setIsClient] = useState(false);
