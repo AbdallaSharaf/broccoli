@@ -1,3 +1,4 @@
+"use client"
 const getTranslatedName = (nameObj) => {
     const locale = localStorage.getItem("locale");
     if (!nameObj) return "N/A";
