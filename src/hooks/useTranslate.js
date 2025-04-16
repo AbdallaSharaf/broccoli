@@ -4,12 +4,13 @@ import enTranslations from '../translations/en.json';
 import arTranslations from '../translations/ar.json'; // Import Arabic translations
 
 export function useTranslations(scope) {
+
+  const locale = useLanguageContext();
+
   // Handle server-side case
   if (typeof window === 'undefined') {
     return (key) => key; // Fallback during SSR
   }
-
-  const locale = useLanguageContext();
 
   // Select the correct translations based on locale
   const currentTranslations = locale === 'ar' ? arTranslations : enTranslations;
