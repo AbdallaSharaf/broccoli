@@ -8,6 +8,7 @@ import HeaderCurrency from "./HeaderCurrency";
 import countTotalPrice from "@/libs/countTotalPrice";
 import HeaderCartShow from "./HeaderCartShow";
 import { useUserContext } from "@/providers/UserContext";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const HeaderRight = () => {
   const { headerStyle } = useHeaderContex();

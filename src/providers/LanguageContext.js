@@ -6,7 +6,7 @@ import { createContext, useState, useContext, useEffect } from 'react'
 const LanguageContext = createContext(null)
 
 export default function LanguageProvider({ children }) {
-  const [locale, setLocale] = useState('en') // Default to English
+  const [locale, setLocale] = useState('ar') // Default to English
 
   // Initialize from localStorage or default to English
   useEffect(() => {
@@ -14,8 +14,8 @@ export default function LanguageProvider({ children }) {
     
     // If no saved locale, default to English
     if (!savedLocale) {
-      setLocale('en')
-      localStorage.setItem('locale', 'en')
+      setLocale('ar')
+      localStorage.setItem('locale', 'ar')
       document.documentElement.lang = 'en'
       document.documentElement.dir = 'ltr'
       return
