@@ -1,3 +1,4 @@
+"use client";
 import FaqMain from "@/components/layout/main/FaqMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import React from "react";
