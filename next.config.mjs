@@ -5,6 +5,9 @@ const nextConfig = {
     images: {
         domains: ["res.cloudinary.com"], // Allow images from Cloudinary
       },
+      experimental: {
+        missingSuspenseWithCSRBailout: false,
+      },    
 };
 
 // Apply the next-intl plugin to the Next.js config
