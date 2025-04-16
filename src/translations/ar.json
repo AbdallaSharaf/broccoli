@@ -16,7 +16,9 @@
         "SAR": "ر.س",
         "menu": "القائمة",
         "shoppingCart": "سلة التسوق",
-        "GETAQuote": "احصل على عرض سعر"
+        "GETAQuote": "احصل على عرض سعر",
+        "switchLanguage": "العربية"
+
     },
     "common": {
         "home": "الرئيسية",

@@ -7,6 +7,7 @@ import { useCartContext } from "@/providers/CartContext";
 import countDataLength from "@/libs/countDataLength";
 import { useUserContext } from "@/providers/UserContext";
 import { useTranslations } from "@/hooks/useTranslate";
+import { useLanguageContext } from "@/providers/LanguageContext";
 
 const MobileMenu = () => {
   const { wishlistProducts } = useWishlistContext();
@@ -15,7 +16,14 @@ const MobileMenu = () => {
   const totalCartProduct = cartProducts?.items?.length;
   const totalWishlistProduct = wishlistProducts?.wishlist?.length;
   const t = useTranslations("header");
-  
+  const { locale, toggleLanguage } = useLanguageContext();
+  const nextLocale = locale === "ar" ? "en" : "ar";
+
+  const handleLanguageChange = (e) => {
+    e.preventDefault();
+    toggleLanguage(nextLocale);
+  };
+
   const navItems = [
     {
       name: t("home"),
@@ -385,7 +393,7 @@ const MobileMenu = () => {
           <ul>
             {user?.name ?
               <li>
-              <Link href="/account" title="My Account">
+              <Link href="/account" title={t("myAccount")}>
                 <span className="utilize-btn-icon">
                   <i className="far fa-user"></i>
                 </span>
@@ -394,7 +402,7 @@ const MobileMenu = () => {
             </li>
             :
             <li>
-              <Link href="/login" title="Sign in">
+              <Link href="/login" title={t("signIn")}>
                 <span className="utilize-btn-icon">
                   <i className="far fa-user"></i>
                 </span>
@@ -403,7 +411,7 @@ const MobileMenu = () => {
             </li>
             }
             <li>
-              <Link href="/wishlist" title="Wishlist">
+              <Link href="/wishlist" title={t("wishlist")}>
                 <span className="utilize-btn-icon">
                   <i className="far fa-heart"></i>{" "}
                   <sup>{totalWishlistProduct}</sup>
@@ -412,12 +420,20 @@ const MobileMenu = () => {
               </Link>
             </li>
             <li>
-              <Link href="/cart" title="Shopping Cart">
+              <Link href="/cart" title={t("shoppingCart")}>
                 <span className="utilize-btn-icon">
                   <i className="fas fa-shopping-cart"></i>{" "}
                   <sup>{totalCartProduct}</sup>
                 </span>
                 {t("shoppingCart")}
+              </Link>
+            </li>
+            <li>
+              <Link href="#" onClick={handleLanguageChange} title={t("switchLanguage")}>
+                <span className="utilize-btn-icon">
+                <i className="fas fa-globe"></i>{" "}
+                </span>
+                {t("switchLanguage")}
               </Link>
             </li>
           </ul>

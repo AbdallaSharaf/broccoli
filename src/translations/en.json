@@ -16,7 +16,8 @@
         "SAR": "SAR",
         "english": "English",
         "arabic": "Arabic",
-        "GETAQuote": "GET A QUOTE"
+        "GETAQuote": "GET A QUOTE",
+        "switchLanguage": "English"
     },
     "common": {
         "home": "Home",
