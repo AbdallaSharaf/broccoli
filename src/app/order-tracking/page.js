@@ -1,6 +1,7 @@
 import OrderTrackingMain from "@/components/layout/main/OrderTrackingMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import React from "react";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const OrderTracking = () => {
   return (
@@ -14,5 +15,7 @@ const OrderTracking = () => {
     </PageWrapper>
   );
 };
+
+
 
 export default OrderTracking;
