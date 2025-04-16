@@ -1,3 +1,4 @@
+"use client"
 import { useTranslations } from "@/hooks/useTranslate";
 import React from "react";
 

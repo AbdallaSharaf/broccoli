@@ -1,3 +1,4 @@
+"use client"
 import { useTranslations } from "@/hooks/useTranslate";
 import countTotalPrice from "@/libs/countTotalPrice";
 import modifyAmount from "@/libs/modifyAmount";

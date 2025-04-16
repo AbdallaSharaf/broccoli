@@ -1,3 +1,4 @@
+"use client"
 import { useTranslations } from "@/hooks/useTranslate";
 import { useFooterContex } from "@/providers/FooterContext";
 import Link from "next/link";

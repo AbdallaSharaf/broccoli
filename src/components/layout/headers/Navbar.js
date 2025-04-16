@@ -1,3 +1,4 @@
+"use client"
 const Image = "next/image";
 const homeImage1 = "/img/home-demos/home-1.jpg";
 const homeImage2 = "/img/home-demos/home-2.jpg";
