@@ -1,22 +1,24 @@
+"use client"
 import { useLanguageContext } from '@/providers/LanguageContext';
 import enTranslations from '../translations/en.json';
-import arTranslations from '../translations/ar.json';
+import arTranslations from '../translations/ar.json'; // Import Arabic translations
 
 export function useTranslations(scope) {
-  // Get the context unconditionally at the top level
-  const { locale } = useLanguageContext();
-  
   // Handle server-side case
-  const isServer = typeof window === 'undefined';
-  
-  // Return translation function
+  if (typeof window === 'undefined') {
+    return (key) => key; // Fallback during SSR
+  }
+
+  const { locale } = useLanguageContext();
+
+  // Select the correct translations based on locale
+  const currentTranslations = locale === 'ar' ? arTranslations : enTranslations;
+
+  // Return translation function for the specified scope
   return (key) => {
-    if (isServer) {
-      return key; // Fallback during SSR
-    }
-    
-    // Client-side only
-    const currentTranslations = locale === 'ar' ? arTranslations : enTranslations;
-    return currentTranslations[scope]?.[key] || enTranslations[scope]?.[key] || key;
+    // Try current locale first, then English fallback, then return key as last resort
+    return currentTranslations[scope]?.[key] 
+           || enTranslations[scope]?.[key] 
+           || key;
   };
 }
