@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { notFound, useRouter } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { notFound } from "next/navigation";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
-import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
-import NavItem from "@/components/layout/headers/NavItem";
-import Link from "next/link";
-import { Suspense } from "react";
+import { verifyUserToken } from "../../api/auth";
+import VerifyUserMain from "@/components/layout/main/VerifyUserMain";
 
 export default function VerifyUserPage({ params }) {
-  const router = useRouter();
   const { token } = params;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,67 +17,31 @@ export default function VerifyUserPage({ params }) {
       notFound();
     }
 
-    const verifyUser = async () => {
-      try {
-        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/auth/verify/${token}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+    const verify = async () => {
+      const result = await verifyUserToken(token);
 
-        const data = await response.json();
-
-        if (response.ok) {
-          setSuccess(true); // Show success message and button
-        } else {
-          setError(data.message || "Verification failed.");
-        }
-      } catch (err) {
-        setError("An error occurred while verifying.");
-      } finally {
-        setLoading(false);
+      if (result.success) {
+        setSuccess(true);
+      } else {
+        setError(result.error);
       }
+
+      setLoading(false);
     };
 
-    verifyUser();
+    verify();
   }, [token]);
 
   return (
-
-
-
     <Suspense fallback={<>Loading...</>}>
-    <PageWrapper
-      isNotHeaderTop={true}
-      isHeaderRight={true}
-      isTextWhite={true}
-      isNavbarAppointmentBtn={true}
+      <PageWrapper
+        isNotHeaderTop={true}
+        isHeaderRight={true}
+        isTextWhite={true}
+        isNavbarAppointmentBtn={true}
       >
-      <HeroPrimary
-        title={
-          loading
-          ? "Verifying Your Account..."
-          : success
-          ? "Account Verified!"
-          : "Verification Failed"
-        }
-        text={
-          loading
-          ? "Please wait while we verify your account."
-          : success
-          ? "Your account has been successfully verified. You can now proceed."
-          : error || "Something went wrong. Please try again later."
-        }
-        type={2}
-        />
-
-      {!loading && success && (
-        <div className="special-link text-uppercase">
-          <Link className="special-link" href="/">Go to homepage</Link>
-        </div>
-      )}
-    </PageWrapper>
+        <VerifyUserMain loading={loading} success={success} error={error} />
+      </PageWrapper>
     </Suspense>
   );
 }
