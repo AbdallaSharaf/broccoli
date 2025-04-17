@@ -104,6 +104,67 @@ const register = async ({ firstname, lastname, email, password, phone }) => {
   }
 };
 
+const verifyResetCode = async (email, otp) => {
+  try {
+    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/verifyRessetCode", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Something went wrong. Please try again.");
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
+
+const forgotPassword = async (email) => {
+  try {
+    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/forgotPassword", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Something went wrong. Please try again.");
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
+const assignNewPassword = async (email, newPassword) => {
+  try {
+    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/resetPassword", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, newPassword }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Something went wrong. Please try again.");
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
   // ✅ Logout function
   const logout = () => {
     setUser(null);
@@ -111,7 +172,7 @@ const register = async ({ firstname, lastname, email, password, phone }) => {
   };
 
   return (
-    <userContext.Provider value={{ user, login, logout, register }}>
+    <userContext.Provider value={{ user, login, logout, register, forgotPassword, verifyResetCode, assignNewPassword }}>
       {children}
     </userContext.Provider>
   );

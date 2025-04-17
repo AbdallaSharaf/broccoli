@@ -75,7 +75,7 @@ const LoginPrimary = () => {
                   </button>
                 </div>
                 <div className="go-to-btn mt-20">
-                  <Link href="#">
+                  <Link href="/forget-password">
                     <small>{t("FORGOTTEN YOUR PASSWORD?")}</small>
                   </Link>
                 </div>
