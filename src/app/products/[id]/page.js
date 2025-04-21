@@ -45,13 +45,11 @@ const ProductDetails = async ({ params }) => {
 };
 export async function generateStaticParams() {
   try {
-    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product");
+    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product?PageCount=1000&deleted=false&available=true");
     if (!res.ok) throw new Error("Failed to fetch products");
 
     const data = await res.json();
     const products = data.Products; // Adjust this based on your API response
-    console.log(products)
-    console.log(products?.map(({ id }) => ({ id: id.toString() })))
     return products?.map(({ id }) => ({ id: id.toString() })) || [];
   } catch (error) {
     console.error("Error fetching products:", error);

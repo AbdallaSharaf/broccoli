@@ -9,7 +9,7 @@ import { useTranslations } from "@/hooks/useTranslate"; // Assuming useTranslati
 
 const TopRatedProductCard = ({ product, isShowDisc }) => {
   const t = useTranslations("common");  // Access translations for common terms
-  const { name, price, images, _id, discount } = product;
+  const { name, price, images, imgCover, _id, discount } = product;
   
   // Calculate the discounted price if applicable
   const { netPrice } = countDiscount(price, discount);
@@ -24,7 +24,7 @@ const TopRatedProductCard = ({ product, isShowDisc }) => {
       <div className="top-rated-product-img">
         <Link href={`/products/${_id}`}>
           <Image 
-            src={images?.[0] || '/img/product/1.png'}
+            src={imgCover || '/img/product/1.png'}
             alt={getTranslatedName(name)}
             width={1000} 
             height={1000}
@@ -32,7 +32,7 @@ const TopRatedProductCard = ({ product, isShowDisc }) => {
         </Link>
       </div>
       <div className="top-rated-product-info">
-        <div className="product-ratting">
+        {/* <div className="product-ratting">
           <ul>
             <li><Link href="#"><i className="fas fa-star"></i></Link></li>
             <li><Link href="#"><i className="fas fa-star"></i></Link></li>
@@ -40,7 +40,7 @@ const TopRatedProductCard = ({ product, isShowDisc }) => {
             <li><Link href="#"><i className="fas fa-star"></i></Link></li>
             <li><Link href="#"><i className="fas fa-star"></i></Link></li>
           </ul>
-        </div>
+        </div> */}
         <h6>
           <Link href={`/products/${_id}`}>{sliceText(getTranslatedName(name), 25)}</Link>
         </h6>

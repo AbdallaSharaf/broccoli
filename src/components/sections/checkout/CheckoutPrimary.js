@@ -151,12 +151,11 @@ const CheckoutPrimary = () => {
   
       // ✅ 2. Send the note in a separate API call (if exists)
 
-
-  
+      console.log(data)
       creteAlert("success", "Order placed successfully!");
       setCartProducts({_id: "" ,items: [] });
       setIsPlaceOrder(false);
-      router.push("/"); // 👈 Route to home
+      router.push(`/order-placed/${data._id}`); // 👈 Route to home
     } catch (error) {
       creteAlert("error", error.message || "Failed to place order");
     }

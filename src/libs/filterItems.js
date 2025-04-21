@@ -13,6 +13,8 @@ const filterItems = async (filters) => {
   });
 
   queryParams.append("PageCount", 10000);
+  queryParams.append("deleted", false);
+  queryParams.append("available", true);
 
   // Determine API URL based on category presence
   const apiUrl = filters.category

@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { useTranslations } from "@/hooks/useTranslate";
 
-const VerifyUserPrimary = ({ type = "loading" }) => {
+const VerifyUserPrimary = ({ type = "loading", orderID }) => {
   const t = useTranslations("common");
 
   const renderContent = () => {
@@ -32,6 +32,12 @@ const VerifyUserPrimary = ({ type = "loading" }) => {
           title: t("Please check your email to verify your account."),
           showButton: false,
         };
+      case "orderPlaced":
+        return {
+          icon: "🎉",
+          title: t("Your order has been placed successfully!"),
+          showButton: true,
+        };
       default:
         return {
           icon: "❓",
@@ -52,8 +58,16 @@ const VerifyUserPrimary = ({ type = "loading" }) => {
               <h1 className="error-404-title">{icon}</h1>
               <h2>{title}</h2>
 
+              {/* Order tracking info */}
+              {type === "orderPlaced" && orderID && (
+                <p className="mt-3">
+                  {t("You can track your order using the following ID:")}{" "}
+                  <strong>{orderID}</strong>
+                </p>
+              )}
+
               {showButton && (
-                <div className="btn-wrapper">
+                <div className="btn-wrapper mt-3">
                   <Link href="/" className="btn btn-transparent">
                     <i className="fas fa-long-arrow-alt-left"></i> {t("BACK TO HOME")}
                   </Link>

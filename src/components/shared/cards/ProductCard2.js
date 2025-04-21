@@ -24,7 +24,7 @@ const ProductCard2 = ({ product }) => {
         </Link>
       </div>
       <div className="small-product-item-info">
-        <div className="product-ratting">
+        {/* <div className="product-ratting">
           <ul>
             <li>
               <Link href="#">
@@ -52,7 +52,7 @@ const ProductCard2 = ({ product }) => {
               </Link>
             </li>
           </ul>
-        </div>
+        </div> */}
         <h2 className="product-title">
           <Link href={`/products/${id}`}>
             {title.length > 18 ? title.slice(0, 18) : title}

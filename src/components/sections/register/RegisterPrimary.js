@@ -49,9 +49,9 @@ const RegisterPrimary = () => {
     }
   
     // Password validation: min 8 chars, 1 uppercase, 1 lowercase, 1 digit
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
-      return setError(t("Password must be at least 8 characters long and include uppercase, lowercase, and a number."));
+      return setError(t("Password must be at least 8 characters long and include a letter and a number."));
     }
   
     // Confirm password match
@@ -88,8 +88,8 @@ const RegisterPrimary = () => {
         </div>
 
         <div className="row">
-          <div className="col-lg-6 offset-lg-3" style={{ marginInlineStart: "25%" }}>
-            <div className="account-login-inner">
+        <div className="col-lg-6 mx-auto">
+          <div className="account-login-inner">
               <form onSubmit={handleSubmit} className="ltn__form-box contact-form-box">
                 <input
                   type="text"

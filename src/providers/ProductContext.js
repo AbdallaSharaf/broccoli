@@ -19,7 +19,7 @@ const ProductContext = ({ children }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product"); // Replace with your API URL
+        const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/product?PageCount=1000&deleted=false&available=true"); // Replace with your API URL
         const data = await response.json();
         if (response.ok) {
           setTopRatedProducts(data.data); // Store products in state

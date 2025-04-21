@@ -16,6 +16,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
     description,
     price,
     images,
+    imgCover,
     _id,
   } = product;
   const { setCurrentProduct } = useProductContext();
@@ -31,7 +32,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
     >
       <div className="product-img">
         <Link href={`/products/${_id}`}>
-          <Image src={images?.[0] || '/img/product/1.png'} alt="#" width={1000} height={1000} />
+          <Image src={imgCover || '/img/product/1.png'} alt="#" width={1000} height={1000} />
         </Link>
         {status || isShowDisc ? (
           <div className="product-badge">
@@ -53,7 +54,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
         <h2 className="product-title">
           <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
         </h2>
-        <div className="product-ratting">
+        {/* <div className="product-ratting">
           <ul>
             <li>
               <Link href="#">
@@ -81,7 +82,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
               </Link>
             </li>
           </ul>
-        </div>
+        </div> */}
         <div className="product-price">
           <span>${netPriceModified}</span>
           {/* <del>${priceModified}</del> */}

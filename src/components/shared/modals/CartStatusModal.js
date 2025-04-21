@@ -7,7 +7,7 @@ import getTranslatedName from "@/libs/getTranslatedName";
 import { useTranslations } from "@/hooks/useTranslate"; // Import translation hook
 
 const CartStatusModal = ({ product }) => {
-  const { _id, name, images } = product;
+  const { _id, name, imgCover } = product;
   const { cartStatus } = useCartContext();
   const t = useTranslations("common"); // Using the translations
 
@@ -32,7 +32,7 @@ const CartStatusModal = ({ product }) => {
                   <div className="row">
                     <div className="col-12">
                       <div className="modal-product-img">
-                        <Image src={images?.[0] || "/img/product/1.png"} alt="#" width={1000} height={1000} />
+                        <Image src={imgCover || "/img/product/1.png"} alt="#" width={1000} height={1000} />
                       </div>
                       <div className="modal-product-info">
                         <h5 onClick={() => controlModal()}>

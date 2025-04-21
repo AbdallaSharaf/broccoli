@@ -22,7 +22,7 @@ const CartProduct = ({
   isWishlist,
 }) => {
   const { product: productData, quantity: quantity1 = 1, price } = product;
-  const { _id, name, images } = productData;
+  const { _id, name, imgCover } = productData;
   // dom referance
   const inputRef = useRef(null);
   // hooks
@@ -98,7 +98,7 @@ const CartProduct = ({
       </td>
       <td className="cart-product-image">
         <Link href={`/products/${_id}`}>
-          <Image src={images?.[0] || "/img/product/1.png"} alt="#" height={1000} width={1000} />
+          <Image src={imgCover || "/img/product/1.png"} alt="#" height={1000} width={1000} />
         </Link>
       </td>
       <td className="cart-product-info">

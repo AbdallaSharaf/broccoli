@@ -1,17 +1,17 @@
 "use client";
 import controlModal from "@/libs/controlModal";
-import countDiscount from "@/libs/countDiscount";
-import modifyAmount from "@/libs/modifyAmount";
+
 import { useCartContext } from "@/providers/CartContext";
 import { useWishlistContext } from "@/providers/WshlistContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCommonContext } from "@/providers/CommonContext";
-import moment from "moment";
+
 import countCommentLength from "@/libs/countCommentLength";
 import modifyNumber from "@/libs/modifyNumber";
 import getTranslatedName from "@/libs/getTranslatedName";
+import { useTranslations } from "@/hooks/useTranslate";
 const ProductDetailsRight = ({ product }) => {
   // destructure current product
   
@@ -20,32 +20,26 @@ const ProductDetailsRight = ({ product }) => {
     price,
     priceAfterDiscount,
     reviews = [],
-    disc = 0,
-    size = "N/A",
-    color = "N/A",
     category = []
   } = product || {};  // current Date
 
   // hooks
   const value = useCommonContext();
+  const t = useTranslations("common");
   const { addProductToCart } = useCartContext();
   const { addProductToWishlist } = useWishlistContext();
   // dom referance
   const inputRef = useRef(null);
   // states
   const [quantity, setQuantity] = useState(1);
-  const [currentSize, setCurrentSize] = useState(size?.toLowerCase());
-  const [purchaseDate, setPurchaseDate] = useState(null);
   // varriables
   const { type } = value ? value : {};
   // const netPriceModified = modifyAmount(netPrice);
   // const priceModified = modifyAmount(price);
   const reviewsLength = countCommentLength(reviews);
-  const purchaseDateMilliseconds = moment(purchaseDate)?.valueOf();
   const productToSave = {
     ...product,
     quantity,
-    purchaseDate: purchaseDateMilliseconds,
   };
 
   useEffect(() => {
@@ -90,7 +84,7 @@ const ProductDetailsRight = ({ product }) => {
   return (
     <div className="modal-product-info shop-details-info pl-0" id="details">
       {/* ratings */}
-      <div className="product-ratting">
+      {/* <div className="product-ratting">
         <ul>
           <li>
             <Link href="#">
@@ -121,13 +115,13 @@ const ProductDetailsRight = ({ product }) => {
             <Link href="#"> ( {modifyNumber(reviewsLength)} Reviews )</Link>
           </li>
         </ul>
-      </div>
+      </div> */}
       <h3>{getTranslatedName(name)}</h3>
       {/* price */}
       <div className="product-price text-nowrap">
-        <span>{(priceAfterDiscount && !isNaN(priceAfterDiscount) ? priceAfterDiscount : price) * quantity} SAR</span>
+        <span>{(priceAfterDiscount && !isNaN(priceAfterDiscount) ? priceAfterDiscount : price) * quantity} {t("SAR")}</span>
         {!isNaN(priceAfterDiscount) && priceAfterDiscount !== price && (
-          <del>{price * quantity} SAR</del>
+          <del>{price * quantity} {t("SAR")}</del>
         )}
       </div>
       {/* description */}
@@ -140,7 +134,7 @@ const ProductDetailsRight = ({ product }) => {
               if (!type) controlModal();
             }}
           >
-            <strong>Categories:</strong>{" "}
+            <strong>{t("categories")}:</strong>{" "}
             <span>
               {Array.isArray(category) && category?.map((cat) => (
                 <Link key={cat.category._id} href={`/shop?category=${cat.category._id}`}>
@@ -186,7 +180,7 @@ const ProductDetailsRight = ({ product }) => {
               data-bs-toggle="modal"
               data-bs-target="#add_to_cart_modal"
             >
-              <i className="fas fa-shopping-cart"></i> <span>ADD TO CART</span>
+              <i className="fas fa-shopping-cart"></i> <span>{t("addToCart")}</span>
             </Link>
           </li>
         </ul>
@@ -206,7 +200,7 @@ const ProductDetailsRight = ({ product }) => {
               data-bs-toggle="modal"
               data-bs-target="#liton_wishlist_modal"
             >
-              <i className="far fa-heart"></i> <span>Add to Wishlist</span>
+              <i className="far fa-heart"></i> <span>{t("Add to Wishlist")}</span>
             </Link>
           </li>{" "}
           {/* <li>
@@ -226,7 +220,7 @@ const ProductDetailsRight = ({ product }) => {
       {/* socials */}
       <div className="ltn__social-media">
         <ul>
-          <li>Share:</li>{" "}
+          <li>{t("Share")}:</li>{" "}
           <li>
             <Link href="https://www.facebook.com" title="Facebook">
               <i className="fab fa-facebook-f"></i>
@@ -254,7 +248,7 @@ const ProductDetailsRight = ({ product }) => {
         <>
           <hr />
           <div className="ltn__safe-checkout">
-            <h5>Guaranteed Safe Checkout</h5>
+            <h5>{t("Guaranteed Safe Checkout")}</h5>
             <Image
               src="/img/icons/payment-2.png"
               alt="Payment Image"

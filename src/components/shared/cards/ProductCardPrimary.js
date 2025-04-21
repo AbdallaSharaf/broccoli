@@ -10,7 +10,7 @@ import Link from "next/link";
 import React from "react";
 
 const ProductCardPrimary = ({ product, isShowDisc }) => {
-  const { name, price, images, _id, status, color } = product
+  const { name, price, images, imgCover, _id, status, color } = product
     ? product
     : {};
   const { setCurrentProduct } = useProductContext();
@@ -27,7 +27,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
       <div className="product-img">
         <Link href={`/products/${_id}`}>
           <Image
-            src={images?.[0] || '/img/product/1.png'}
+            src={imgCover|| '/img/product/1.png'}
             alt="#"
             width={1000}
             height={1000}
@@ -97,7 +97,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
         </div>
       </div>
       <div className="product-info">
-        <div className="product-ratting">
+        {/* <div className="product-ratting">
           <ul>
             <li>
               <Link href="#">
@@ -125,7 +125,7 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
               </Link>
             </li>
           </ul>
-        </div>
+        </div> */}
         <h2 className="product-title">
           <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
         </h2>

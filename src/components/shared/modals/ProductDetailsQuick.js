@@ -2,7 +2,7 @@ import Image from "next/image";
 import ProductDetailsRight from "../products/ProductDetailsRight";
 
 const ProductDetailsQuick = ({ product }) => {
-  const { images } = product;
+  const { imgCover } = product;
 
   return (
     <div className="ltn__modal-area ltn__quick-view-modal-area">
@@ -26,7 +26,7 @@ const ProductDetailsQuick = ({ product }) => {
                   <div className="row">
                     <div className="col-lg-6 col-12">
                       <div className="modal-product-img">
-                        <Image src={images?.[0] || '/img/product/1.png'} alt="#" width={1000} height={1000} />
+                        <Image src={imgCover || '/img/product/1.png'} alt="#" width={1000} height={1000} />
                       </div>
                     </div>
                     <div className="col-lg-6 col-12">

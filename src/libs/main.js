@@ -297,14 +297,16 @@ const main = () => {
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
+        rtl: false, // 👈 FORCE LTR
         fade: true,
         asNavFor: ".ltn__shop-details-small-img",
       });
       $(".ltn__shop-details-small-img").slick({
-        slidesToShow: 4,
+        slidesToShow: 5,
         slidesToScroll: 1,
         asNavFor: ".ltn__shop-details-large-img",
         dots: false,
+        rtl: false, // 👈 FORCE LTR
         arrows: true,
         focusOnSelect: true,
         prevArrow:

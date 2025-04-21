@@ -11,7 +11,7 @@ const Products5 = ({ isRelated, title, tag, pt, pb }) => {
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       try {
-        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product`);
+        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product?PageCount=1000&deleted=false&available=true`);
         if (!response.ok) {
           throw new Error("Failed to fetch filtered items");
         }
