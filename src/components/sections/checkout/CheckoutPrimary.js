@@ -150,8 +150,6 @@ const CheckoutPrimary = () => {
       }
   
       // ✅ 2. Send the note in a separate API call (if exists)
-
-      console.log(data)
       creteAlert("success", "Order placed successfully!");
       setCartProducts({_id: "" ,items: [] });
       setIsPlaceOrder(false);
