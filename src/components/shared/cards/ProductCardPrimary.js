@@ -24,15 +24,15 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
       className="ltn__product-item ltn__product-item-3 text-center"
       onMouseEnter={() => setCurrentProduct(product)}
     >
-      <div className="product-img">
+      <div className="product-img" style={{ aspectRatio: "1 / 1", width: "100%" }}>
         <Link href={`/products/${_id}`}>
-          <Image
-            src={imgCover|| '/img/product/1.png'}
-            alt="#"
-            width={1000}
-            height={1000}
-            // placeholder="blur"
-          />
+        <Image
+          src={imgCover || "/img/product/1.png"}
+          alt="#"
+          width={1000}
+          height={1000}
+          style={{ width: "100%", height: "100%", objectFit: "fill" }}
+        />
         </Link>
         {/* {status || isShowDisc ? (
           <div className="product-badge">

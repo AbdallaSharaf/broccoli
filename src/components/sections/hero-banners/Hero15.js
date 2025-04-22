@@ -43,7 +43,7 @@ const Hero15 = ({ type }) => {
                         <div className="col-lg-7 col-md-7 col-sm-7 align-self-center">
                           <div className="slide-item-info" style={{ position: "relative" }}>
                             <div className="slide-item-info-inner ltn__slide-animation" >
-                              <div className="btn-wrapper animated" style={{ position: "absolute", top: "120px" }}>
+                              <div className="btn-wrapper animated btn-positioned">
                                 <a
                                   href={slide.redirectUrl || "/shop"}
                                   className="theme-btn-1 btn btn-effect-1 text-uppercase"

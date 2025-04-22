@@ -28,6 +28,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
   return (
     <div
       className="ltn__product-item ltn__product-item-3"
+      
       onMouseEnter={() => setCurrentProduct(product)}
     >
       <div className="product-img">
