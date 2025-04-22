@@ -6039,14 +6039,14 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   }
   .header-search-1-form {
     top: 130%;
-    inset-inline-start: 150px;
+    right: 0;
   }
-  .header-search-1-form {
+  /* .header-search-1-form {
     -webkit-transform: translateX(50%);
     -ms-transform: translateX(50%);
     transform: translateX(50%);
     inset-inline-end: 50%;
-  }
+  } */
 }
 
 @media (max-width: 575px) {
