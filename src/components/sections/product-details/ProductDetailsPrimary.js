@@ -24,7 +24,6 @@ const ProductDetailsPrimary = () => {
   //     id !== parseInt(currentId) && (!currentId ? id !== 1 : true)
   // );
   // const allImages = [product, ...ohterImages?.slice(0, 6)];
-// console.log("prodcut details",product)
   return (
     <div
       className={`ltn__shop-details-area  ${
@@ -46,7 +45,7 @@ const ProductDetailsPrimary = () => {
                     <div className="ltn__shop-details-large-img" dir="ltr">
                       {/* {product?.images?.map((image, idx) => (
                         <div key={idx} className="single-large-img">
-                          <Link href={image} data-rel="lightcase:myCollection">
+                          <Link href={image} data-rel="lightcase:myCollection" dir="ltr">
                             <Image
                               src={image}
                               alt="Image"
@@ -65,7 +64,7 @@ const ProductDetailsPrimary = () => {
                     </div>
 { product?.images?.length > 0 &&                    <div className="ltn__shop-details-small-img slick-arrow-2" dir="ltr">
                       {product?.images?.map((image, idx) => (
-                        <div key={idx} className="single-small-img">
+                        <div key={idx} className="single-small-img" dir="ltr">
                           <Image
                             src={image}
                             alt="Image"
