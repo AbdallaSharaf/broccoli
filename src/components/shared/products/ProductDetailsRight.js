@@ -19,6 +19,7 @@ const ProductDetailsRight = ({ product }) => {
     name,
     price,
     priceAfterDiscount,
+    priceAfterExpiresAt,
     reviews = [],
     category = []
   } = product || {};  // current Date
@@ -41,7 +42,6 @@ const ProductDetailsRight = ({ product }) => {
     ...product,
     quantity,
   };
-
   useEffect(() => {
       const inputParent = inputRef.current;
       if (!inputParent) return;
@@ -70,11 +70,12 @@ const ProductDetailsRight = ({ product }) => {
   
       increament?.addEventListener("click", handleInc);
       decreament?.addEventListener("click", handleDec);
-  
+
       return () => {
         increament?.removeEventListener("click", handleInc);
         decreament?.removeEventListener("click", handleDec);
       };
+
   }, [inputRef.current]);
 
   if (!product) {
@@ -119,10 +120,21 @@ const ProductDetailsRight = ({ product }) => {
       <h3>{getTranslatedName(name)}</h3>
       {/* price */}
       <div className="product-price text-nowrap">
-        <span>{(priceAfterDiscount && !isNaN(priceAfterDiscount) ? priceAfterDiscount : price) * quantity} {t("SAR")}</span>
-        {!isNaN(priceAfterDiscount) && priceAfterDiscount !== price && (
-          <del>{price * quantity} {t("SAR")}</del>
-        )}
+      <span>
+        {(priceAfterDiscount && 
+          !isNaN(priceAfterDiscount) && 
+          priceAfterExpiresAt && 
+          new Date(priceAfterExpiresAt) > new Date() 
+            ? priceAfterDiscount 
+            : price) * quantity} {t("SAR")}
+      </span>
+
+      {!isNaN(priceAfterDiscount) &&
+      priceAfterDiscount !== price &&
+      priceAfterExpiresAt &&
+      new Date(priceAfterExpiresAt) > new Date() && (
+        <del>{price * quantity} {t("SAR")}</del>
+      )}
       </div>
       {/* description */}
 

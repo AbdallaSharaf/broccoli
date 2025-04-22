@@ -55,12 +55,12 @@ const ProductDetailsPrimary = () => {
                           </Link>
                         </div>
                       ))} */}
-                            <Image
+{ product?.imgCover &&                           <Image
                               src={product?.imgCover}
                               alt={`${product?.title} image`}
                               width={1000}
                               height={1000}
-                            />
+                            />}
                     </div>
 { product?.images?.length > 0 &&                    <div className="ltn__shop-details-small-img slick-arrow-2" dir="ltr">
                       {product?.images?.map((image, idx) => (

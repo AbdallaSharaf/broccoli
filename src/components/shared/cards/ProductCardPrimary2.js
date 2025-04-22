@@ -7,10 +7,14 @@ import sliceText from "@/libs/sliceText";
 import { useCartContext } from "@/providers/CartContext";
 import { useProductContext } from "@/providers/ProductContext";
 import { useWishlistContext } from "@/providers/WshlistContext";
+
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "../../../hooks/useTranslate.js";
+import Link from "next/link.js";
+
 
 const ProductCardPrimary2 = ({ product, isShowDisc }) => {
+  const t = useTranslations("common"); 
   const {
     name,
     description,
@@ -18,6 +22,8 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
     images,
     imgCover,
     _id,
+    priceAfterDiscount,
+    priceAfterExpiresAt
   } = product;
   const { setCurrentProduct } = useProductContext();
   const { netPrice } = countDiscount(price, 0);
@@ -85,6 +91,15 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
           </ul>
         </div> */}
         <div className="product-price">
+        {priceAfterDiscount > 0 && priceAfterExpiresAt && new Date(priceAfterExpiresAt) > new Date() ? (
+  <>
+    <span>{priceAfterDiscount} {t("SAR")}</span>
+    <del>{price} {t("SAR")}</del>
+  </>
+) : (
+  <span>{priceModified} {t("SAR")}</span> 
+)}
+
           <span>${netPriceModified}</span>
           {/* <del>${priceModified}</del> */}
         </div>

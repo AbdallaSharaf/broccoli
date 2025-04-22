@@ -8,9 +8,11 @@ import { useWishlistContext } from "@/providers/WshlistContext";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useTranslations } from "../../../hooks/useTranslate.js";
 
 const ProductCardPrimary = ({ product, isShowDisc }) => {
-  const { name, price, images, imgCover, _id, status, color } = product
+  const t = useTranslations("common"); 
+  const { name, price, images, imgCover, _id, status, color,priceAfterDiscount,priceAfterExpiresAt } = product
     ? product
     : {};
   const { setCurrentProduct } = useProductContext();
@@ -130,8 +132,16 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
         </h2>
         <div className="product-price">
-          <span>${netPriceModified}</span> 
+          {/* <span>${netPriceModified}</span>  */}
           {/* <del>${priceModified}</del> */}
+          {priceAfterDiscount > 0 && priceAfterExpiresAt && new Date(priceAfterExpiresAt) > new Date() ? (
+  <>
+    <span>{priceAfterDiscount} {t("SAR")}</span>
+    <del>{price} {t("SAR")}</del>
+  </>
+) : (
+  <span>{priceModified} {t("SAR")}</span> 
+)}
         </div>
       </div>
     </div>

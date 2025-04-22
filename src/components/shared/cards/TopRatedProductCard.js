@@ -9,8 +9,8 @@ import { useTranslations } from "@/hooks/useTranslate"; // Assuming useTranslati
 
 const TopRatedProductCard = ({ product, isShowDisc }) => {
   const t = useTranslations("common");  // Access translations for common terms
-  const { name, price, images, imgCover, _id, discount } = product;
-  
+  const { name, price,priceAfterDiscount,priceAfterExpiresAt, images, imgCover, _id, discount } = product;
+  console.log("topRate",product)
   // Calculate the discounted price if applicable
   const { netPrice } = countDiscount(price, discount);
   const netPriceModified = modifyAmount(netPrice);
@@ -45,14 +45,15 @@ const TopRatedProductCard = ({ product, isShowDisc }) => {
           <Link href={`/products/${_id}`}>{sliceText(getTranslatedName(name), 25)}</Link>
         </h6>
         <div className="product-price">
-          {hasDiscount ? (
-            <>
-              <span>{netPriceModified} {t("SAR")}</span>
-              <del>{priceModified} {t("SAR")}</del>
-            </>
-          ) : (
-            <span>{priceModified} {t("SAR")}</span> 
-          )}
+        {priceAfterDiscount > 0 && priceAfterExpiresAt && new Date(priceAfterExpiresAt) > new Date() ? (
+          <>
+            <span>{priceAfterDiscount} {t("SAR")}</span>
+            <del>{price} {t("SAR")}</del>
+          </>
+        ) : (
+          <span>{priceModified} {t("SAR")}</span> 
+        )}
+
         </div>
       </div>
     </div>
