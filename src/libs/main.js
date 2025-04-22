@@ -64,6 +64,7 @@ const main = () => {
               Utilize Function 
           ----------------------------------- */
       (function () {
+        
         var $ltn__utilizeToggle = $(".ltn__utilize-toggle"),
           $ltn__utilize = $(".ltn__utilize"),
           $ltn__utilizeOverlay = $(".ltn__utilize-overlay"),
@@ -128,10 +129,12 @@ const main = () => {
         });
       }
       mobileltn__utilizeMenu();
+      const isRtl = document.documentElement.dir === 'rtl'; // Check current direction
 
       /* --------------------------------------------------------
               3. Mega Menu
           --------------------------------------------------------- */
+          
       $(".mega-menu").each(function () {
         if ($(this).children("li").length) {
           var ulChildren = $(this).children("li").length;
@@ -297,7 +300,7 @@ const main = () => {
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
-        rtl: false, // 👈 FORCE LTR
+        rtl: isRtl, // 👈 FORCE LTR
         fade: true,
         asNavFor: ".ltn__shop-details-small-img",
       });
@@ -306,7 +309,7 @@ const main = () => {
         slidesToScroll: 1,
         asNavFor: ".ltn__shop-details-large-img",
         dots: false,
-        rtl: false, // 👈 FORCE LTR
+        rtl: isRtl, // 👈 FORCE LTR
         arrows: true,
         focusOnSelect: true,
         prevArrow:
@@ -412,36 +415,61 @@ const main = () => {
       /* --------------------------------------------------------
               15-2. Slider Active 2
           --------------------------------------------------------- */
-      $(".ltn__slide-active-2")
-        .slick({
-          autoplay: false,
-          autoplaySpeed: 2000,
-          arrows: false,
-          dots: true,
-          fade: true,
-          cssEase: "linear",
-          infinite: true,
-          speed: 300,
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          prevArrow:
-            '<a class="slick-prev"><i class="fas fa-arrow-left" alt="Arrow Icon"></i></a>',
-          nextArrow:
-            '<a class="slick-next"><i class="fas fa-arrow-right" alt="Arrow Icon"></i></a>',
-          responsive: [
-            {
-              breakpoint: 1200,
-              settings: {
-                arrows: false,
-                dots: true,
-              },
-            },
-          ],
-        })
-        .on("afterChange", function () {
-          new WOW().init();
-        });
-
+          const waitForHeroSlider = setInterval(() => {
+            const $heroSlider = $(".ltn__slide-active-2");
+            const isRtl = document.documentElement.dir === "rtl";
+          
+            if (
+              $heroSlider.length > 0 &&
+              $heroSlider.children(".ltn__slide-item").length > 0 &&
+              (!$heroSlider.hasClass("slick-initialized") ||
+                $heroSlider.data("slick-rtl") !== isRtl)
+            ) {
+              // Re-init if needed
+              if ($heroSlider.hasClass("slick-initialized")) {
+                $heroSlider.slick("unslick");
+              }
+          
+              $heroSlider
+                .slick({
+                  autoplay: false,
+                  autoplaySpeed: 2000,
+                  arrows: false,
+                  dots: true,
+                  rtl: isRtl,
+                  fade: true,
+                  cssEase: "linear",
+                  infinite: true,
+                  speed: 300,
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                  prevArrow:
+                    '<a class="slick-prev"><i class="fas fa-arrow-left" alt="Arrow Icon"></i></a>',
+                  nextArrow:
+                    '<a class="slick-next"><i class="fas fa-arrow-right" alt="Arrow Icon"></i></a>',
+                  responsive: [
+                    {
+                      breakpoint: 1200,
+                      settings: {
+                        arrows: false,
+                        dots: true,
+                      },
+                    },
+                  ],
+                })
+                .on("afterChange", function () {
+                  new WOW().init();
+                });
+          
+              $heroSlider.data("slick-rtl", isRtl); // store current RTL status
+            }
+          
+            // Stop checking once initialized
+            if ($heroSlider.hasClass("slick-initialized")) {
+              clearInterval(waitForHeroSlider);
+            }
+          }, 100);
+          
       /* --------------------------------------------------------
               16. Product Slider One
           --------------------------------------------------------- */
