@@ -5964,7 +5964,7 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   margin-inline-end: 0;
   overflow: hidden;
   position: absolute;
-  inset-inline-end: 0;
+  inset-inline-start: 0px;
   top: 130%;
   -webkit-transition-duration: 0.4s;
   -o-transition-duration: 0.4s;
@@ -6035,10 +6035,11 @@ ul.wp-block-latest-posts.is-grid.alignwide {
 
 @media (max-width: 767px) {
   .header-search-wrap {
-    position: inherit;
+    position: relative;
   }
   .header-search-1-form {
-    top: 100%;
+    top: 130%;
+    inset-inline-start: 150px;
   }
   .header-search-1-form {
     -webkit-transform: translateX(50%);
