@@ -10,7 +10,8 @@ const getProductById = async (id) => {
     const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product/${id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Content-Type": "application/json"
       },
     });
 

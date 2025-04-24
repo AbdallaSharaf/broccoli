@@ -6042,6 +6042,21 @@ ul.wp-block-latest-posts.is-grid.alignwide {
     right: 0;
   }
   
+.single-large-img {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* Creates a 1:1 aspect ratio (square) */
+  overflow: hidden;
+}
+
+.single-large-img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or 'cover' depending on your preference */
+}
   /* .header-search-1-form {
     -webkit-transform: translateX(50%);
     -ms-transform: translateX(50%);

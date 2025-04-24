@@ -36,6 +36,7 @@ const ProductDetailsPrimary = () => {
   // Normalize imgCover to always be an array
   const getCoverImages = () => {
     if (!product?.imgCover) return [];
+    console.log(product.imgCover)
     return Array.isArray(product.imgCover) ? product.imgCover : [product.imgCover];
   };
 
@@ -45,7 +46,7 @@ const ProductDetailsPrimary = () => {
     const additionalImages = product?.images || [];
     return [...coverImages, ...additionalImages];
   };
-
+  console.log(getAllImages())
   return (
     <div
       className={`ltn__shop-details-area ${
@@ -74,7 +75,7 @@ const ProductDetailsPrimary = () => {
                         thumbs={{ swiper: thumbsSwiper.current }}
                         className="main-swiper"
                       >
-                        {getCoverImages().map((image, idx) => (
+                        {getAllImages().map((image, idx) => (
                           <SwiperSlide key={`cover-${idx}`}>
                             <div className="single-large-img">
                               <Link href={image} data-rel="lightcase:myCollection">
@@ -84,12 +85,13 @@ const ProductDetailsPrimary = () => {
                                   width={1000}
                                   height={1000}
                                   priority={idx === 0}
+                                  objectFit='cover'
                                 />
                               </Link>
                             </div>
                           </SwiperSlide>
                         ))}
-                        {product?.images?.map((image, idx) => (
+                        {getAllImages().map((image, idx) => (
                           <SwiperSlide key={`image-${idx}`}>
                             <div className="single-large-img">
                               <Link href={image} data-rel="lightcase:myCollection">
