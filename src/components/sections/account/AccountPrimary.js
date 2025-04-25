@@ -17,6 +17,11 @@ const AccountPrimary = () => {
     newPassword: '',
     confirmPassword: ''
   });
+  const [addressFormData, setAddressFormData] = useState({
+    street: '',
+    country: '',
+    city: '',
+  });
   
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +30,18 @@ const AccountPrimary = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddressFormData(prev => ({
       ...prev,
       [name]: value
     }));
@@ -110,10 +127,67 @@ const AccountPrimary = () => {
           throw new Error(passwordData.message || t('Password update failed'));
         }
       }
+      setFormData(prev => (({
+        ...prev,
+        newPassword: '',
+        confirmPassword: ''
+      })))
+      setSuccessMessage(t('Account updated successfully'));
+      setTimeout(() => setSuccessMessage(''), 5000);
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        serverError: error.message || t('An error occurred. Please try again.'),
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const handleAddressSubmit = async (e) => {
+    e.preventDefault();
+    
+    setIsSubmitting(true);
+    setErrors({});
+    setSuccessMessage('');
+  
+    const token = localStorage.getItem('token');
+  
+    try {
+      // --- Update Name/Email if changed ---
+      if (
+        addressFormData.city !== userData?.address?.[0]?.city ||
+        addressFormData.street !== userData?.address?.[0]?.street ||
+        addressFormData.country !== userData?.address?.[0]?.country
+      ) {
+        const res = await fetch('https://fruits-heaven-api.vercel.app/api/v1/user/updateMyData', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            address: [
+              {
+                city: addressFormData.city,
+                street: addressFormData.street,
+                country: addressFormData.country
+              }
+            ]
+          }),
+        });
+        console.log(res)
+  
+        const nameEmailData = await res.json();
+  
+        if (!res.ok) {
+          throw new Error(nameEmailData.message || t('Update failed'));
+        }
+      }
   
       setSuccessMessage(t('Account updated successfully'));
       setTimeout(() => setSuccessMessage(''), 5000);
     } catch (error) {
+      console.log(error)
       setErrors((prev) => ({
         ...prev,
         serverError: error.message || t('An error occurred. Please try again.'),
@@ -164,6 +238,11 @@ const AccountPrimary = () => {
         name: userData.name || '',
         email: userData.email || ''
       }));
+      setAddressFormData({
+        street: userData.address?.[0]?.street || '',
+        country: userData.address?.[0]?.country || '',
+        city: userData.address?.[0]?.city || ''
+      });
     }
   }, [userData]);
 
@@ -271,23 +350,63 @@ const AccountPrimary = () => {
                             {t("The following addresses will be used on the checkout page by default.")}
                           </p>
                           <div className="row">
-                            <div className="col-md-6 col-12 learts-mb-30">
+                            <div className=" learts-mb-30">
+                            <form onSubmit={handleAddressSubmit}>
                               <h4>
                                 {t("Shipping Address")}{" "}
-                                <small>
-                                  <Link href="#">{t("edit")}</Link>
-                                </small>
                               </h4>
-                              <address>
-                                <p>
-                                  <strong>Alex Tuntuni</strong>
-                                </p>
-                                <p>
-                                  1355 Market St, Suite 900 <br />
-                                  San Francisco, CA 94103
-                                </p>
-                                <p>{t("Mobile")}: (123) 456-7890</p>
-                              </address>
+                              <div className="row">
+                              <div className="col-md-12">
+                                <label>{t("Street and House")}:</label>
+                                <input
+                                  type="text"
+                                  name="street"
+                                  value={addressFormData.street}
+                                  onChange={handleAddressChange}
+                                  placeholder={t("Street and House")}
+                                />
+                              </div>
+                              
+                              <div className="col-md-12">
+                                <label>{t("Town / City")}:</label>
+                                <input
+                                  type="text"
+                                  name="city"
+                                  value={addressFormData.city}
+                                  onChange={handleAddressChange}
+                                  placeholder={t("Town / City")}
+                                />
+                              </div>
+
+                              <div className="col-md-12">
+                                <label>{t("state")}:</label>
+                                <input
+                                  type="text"
+                                  name="country"
+                                  value={addressFormData.country}
+                                  onChange={handleAddressChange}
+                                  placeholder={t("state")}
+                                />
+                              </div>
+                            </div>
+                            {errors.serverError && (
+                              <div className="alert alert-danger">{errors.serverError}</div>
+                            )}
+                            
+                            {successMessage && (
+                              <div className="alert alert-success">{successMessage}</div>
+                            )}
+                            
+                            <div className="btn-wrapper">
+                              <button
+                                type="submit"
+                                className="btn theme-btn-1 btn-effect-1 text-uppercase"
+                                disabled={isSubmitting}
+                              >
+                                {isSubmitting ? t('Saving...') : t('Save Changes')}
+                              </button>
+                            </div>
+                            </form>
                             </div>
                           </div>
                         </div>

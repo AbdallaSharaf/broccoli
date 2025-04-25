@@ -21,14 +21,15 @@ const CheckoutPrimary = () => {
   const { cartProducts: products, updateCart, applyCoupon, setCartProducts } = useCartContext();
   const [couponCode, setCouponCode] = useState(products?.coupon?.code || ""); // coupon input
   const [couponResponse, setCouponResponse] = useState(null); // coupon result
-  const { login, user } = useUserContext(); // Get login function from context
+  const { login, userData } = useUserContext(); // Get login function from context
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null); // State to track errors
-  const [firstName = "", lastName = ""] = user?.name?.split(" ") || [];
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [firstName = "", lastName = ""] = userData?.name?.split(" ") || [];
   const [formData, setFormData] = useState({
     firstName,
     lastName,
-    email: user?.email || "",
+    email: userData?.email || "",
     phone: "",
     houseNumber: "",
     city: "",
@@ -91,10 +92,17 @@ const CheckoutPrimary = () => {
     );
   
     if (missingFields.length > 0) {
-      creteAlert("error", "Please fill in all required fields.");
+      const newErrors = {};
+      missingFields.forEach(field => {
+        newErrors[field] = t("This field is required");
+      });
+      setFieldErrors(newErrors);
+      creteAlert("error", t("Please fill in all required fields"));
       return;
+    } else {
+      setFieldErrors({}); // Clear errors if all fields are valid
     }
-  
+
     // 🔁 Format the main payload
     const formattedPayload = {
       address: {
@@ -175,18 +183,21 @@ const CheckoutPrimary = () => {
   }, [products]);
 
   useEffect(() => {
-    if (user) {
-      const [firstName = "", lastName = ""] = user.name?.split(" ") || [];
+    if (userData) {
+      const [firstName = "", lastName = ""] = userData.name?.split(" ") || [];
   
       setFormData((prev) => ({
         ...prev,
         firstName,
         lastName,
-        email: user.email || "",
+        email: userData.email || "",
+        houseNumber: userData.address?.[0]?.street || "",
+        city: userData.address?.[0]?.city || "",
+        state: userData.address?.[0]?.country || "",
       }));
     }
-  }, [user]);
-
+  }, [userData]);
+  console.log(formData)
   return (
     <div className="ltn__checkout-area mb-105">
       <div className="container">
@@ -194,7 +205,7 @@ const CheckoutPrimary = () => {
           <div className="col-lg-12">
             <div className="ltn__checkout-inner">
               {/* login */}
-              {!user && <div className="ltn__checkout-single-content ltn__returning-customer-wrap">
+              {!userData && <div className="ltn__checkout-single-content ltn__returning-customer-wrap">
                 <h5>
                 {t("Returning customer?")}{" "}
                   <Link
@@ -328,6 +339,8 @@ const CheckoutPrimary = () => {
                 onChange={handleChange}
                 placeholder={t("first name")}
                 required
+                className={fieldErrors.firstName ? "input-error" : ""}
+
               />
             </div>
           </div>
@@ -340,6 +353,8 @@ const CheckoutPrimary = () => {
                 onChange={handleChange}
                 placeholder={t("last name")}
                 required
+                className={fieldErrors.lastName ? "input-error" : ""}
+
               />
             </div>
           </div>
@@ -352,6 +367,7 @@ const CheckoutPrimary = () => {
                 onChange={handleChange}
                 placeholder={t("email address")}
                 required
+                className={fieldErrors.email ? "input-error" : ""}
               />
             </div>
           </div>
@@ -364,6 +380,8 @@ const CheckoutPrimary = () => {
                 onChange={handleChange}
                 placeholder={t("phone number")}
                 required
+                className={fieldErrors.phone ? "input-error" : ""}
+
               />
             </div>
           </div>
@@ -382,6 +400,7 @@ const CheckoutPrimary = () => {
                     onChange={handleChange}
                     placeholder={t("House number and street name")}
                     required
+                    className={fieldErrors.houseNumber ? "input-error" : ""}
                   />
                 </div>
               </div>
@@ -395,6 +414,8 @@ const CheckoutPrimary = () => {
                     onChange={handleChange}
                     placeholder={t("city")}
                     required
+                    className={fieldErrors.city ? "input-error" : ""}
+
                   />
                 </div>
               </div>
@@ -410,6 +431,8 @@ const CheckoutPrimary = () => {
                 onChange={handleChange}
                 placeholder={t("state")}
                 required
+                className={fieldErrors.state ? "input-error" : ""}
+
               />
             </div>
           </div>
@@ -422,6 +445,7 @@ const CheckoutPrimary = () => {
                 value={formData.zip}
                 onChange={handleChange}
                 placeholder={t("zip")}
+                className={fieldErrors.zip ? "input-error" : ""}
               />
             </div>
           </div>
@@ -440,6 +464,7 @@ const CheckoutPrimary = () => {
             value={formData.notes}
             onChange={handleChange}
             placeholder={t("notes about your order...")}
+            className={fieldErrors.notes ? "input-error" : ""}
           ></textarea>
         </div>
       </form>

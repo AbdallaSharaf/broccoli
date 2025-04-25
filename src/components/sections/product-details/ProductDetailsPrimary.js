@@ -17,10 +17,14 @@ import ProductDetailsRight from "@/components/shared/products/ProductDetailsRigh
 import { useCommonContext } from "@/providers/CommonContext";
 import ProductDetailsTab from "@/components/shared/products/ProductDetailsTab";
 import ProductDetailsTab2 from "@/components/shared/products/ProductDetailsTab2";
+import { useLanguageContext } from '@/providers/LanguageContext';
+import { useTranslations } from '@/hooks/useTranslate';
 
 const ProductDetailsPrimary = () => {
   const { isNotSidebar, type } = useCommonContext();
   const { setCurrentProduct, product } = useProductContext();
+  const { locale } = useLanguageContext();
+  const t = useTranslations("common");
   const thumbsSwiper = useRef(null);
   const mainSwiper = useRef(null);
 
@@ -81,7 +85,7 @@ const ProductDetailsPrimary = () => {
                               <Link href={image} data-rel="lightcase:myCollection">
                                 <Image
                                   src={image}
-                                  alt={`${product?.title} cover image ${idx + 1}`}
+                                  alt={`${product?.name[locale]} ${t("cover image")} ${idx + 1}`}
                                   width={1000}
                                   height={1000}
                                   priority={idx === 0}

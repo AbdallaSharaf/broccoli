@@ -20,7 +20,7 @@ const Hero15 = ({ type }) => {
     };
     // main()
     fetchSlides();
-  }, [slides]);
+  }, []);
 
   return (
     <div className="ltn__slider-area mt-30">

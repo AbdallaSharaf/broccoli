@@ -32,7 +32,6 @@ const CartProduct = ({
   const [quantity, setQuantity] = useState(Number(quantity1) ?? 1);
   const { setCurrentProduct } = useProductContext();
   const t = useTranslations("common"); // Use translation hook for "common" keys
-
   // handle quantity change
   useEffect(() => {
     if (!isWishlist) {
@@ -85,7 +84,8 @@ const CartProduct = ({
   }, [isWishlist, quantity]);
 
   return (
-    <tr onMouseEnter={() => setCurrentProduct(product)}>
+    <tr onMouseEnter={() => 
+    isWishlist? setCurrentProduct({...productData, "quantity": 1}) : setCurrentProduct(product)}>
       <td
         className="cart-product-remove"
         onClick={() =>
@@ -133,7 +133,7 @@ const CartProduct = ({
         <td
           className="cart-product-add-cart"
           onClick={() =>
-            addProductToCart(productData)
+            addProductToCart({ ...productData, quantity: 1 })
           }
         >
           <Link

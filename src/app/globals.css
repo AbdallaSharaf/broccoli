@@ -2839,6 +2839,10 @@ ul {
   margin: 1.5em auto;
 }
 
+.input-error {
+  border: 1px solid red !important;
+}
+
 .wp-block-cover-text p {
   padding: 1.5em 14px;
 }
@@ -12540,6 +12544,10 @@ input.cart-plus-minus-box {
   display: block;
 }
 
+.cart-product-info {
+  width: 30%;
+}
+
 @media (min-width: 768px) and (max-width: 991px) {
   .shoping-cart-table td {
     padding: 20px 10px;
@@ -12551,7 +12559,11 @@ input.cart-plus-minus-box {
     font-size: 18px;
   }
 }
-
+@media (max-width: 768px) {
+  .cart-product-info {
+    width: 100%;
+  }
+}
 @media (max-width: 767px) {
   .shoping-cart-table thead th {
     display: none;
