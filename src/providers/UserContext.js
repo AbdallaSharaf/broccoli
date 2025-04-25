@@ -9,7 +9,23 @@ const userContext = createContext();
 
 export const UserContext = ({ children }) => {
   const [user, setUser] = useState(null);
-  
+  const [userData, setUserData] = useState(null);
+
+  const fetchUserData = async (token) => {
+    try {
+      const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/user/myData", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to fetch user data");
+      setUserData(data.user);
+    } catch (error) {
+      console.error("Fetch user data error:", error.message);
+      setUserData(null);
+    }
+  };
   // ✅ Check if user is already logged in (persist session)
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
@@ -17,6 +33,7 @@ export const UserContext = ({ children }) => {
       try {
         const decodedUser = jwtDecode(savedToken);
         setUser(decodedUser);
+        fetchUserData(savedToken); // 👈 Also fetch userData
       } catch (error) {
         console.error("Invalid token:", error);
         localStorage.removeItem("token"); // Remove invalid token
@@ -42,7 +59,10 @@ export const UserContext = ({ children }) => {
       const decodedUser = jwtDecode(token);
       setUser(decodedUser);
       localStorage.setItem("token", token);
-  
+      // 👇 Fetch user data here
+      await fetchUserData(token);
+
+      // Merge local cart with backend cart
       const guest = localStorage.getItem("guest");
       let localCart = { _id: "", items: [] };
   
@@ -168,11 +188,12 @@ const assignNewPassword = async (email, newPassword) => {
   // ✅ Logout function
   const logout = () => {
     setUser(null);
+    setUserData(null); // 👈 Clear userData
     localStorage.removeItem("token"); // Remove token on logout
   };
 
   return (
-    <userContext.Provider value={{ user, login, logout, register, forgotPassword, verifyResetCode, assignNewPassword }}>
+    <userContext.Provider value={{ user, userData, login, logout, register, forgotPassword, verifyResetCode, assignNewPassword }}>
       {children}
     </userContext.Provider>
   );
