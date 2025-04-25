@@ -1,4 +1,5 @@
 "use client"
+import CheckoutProduct from '@/components/shared/checkout/CheckoutProduct';
 import { useTranslations } from '@/hooks/useTranslate';
 import React from 'react'
 
