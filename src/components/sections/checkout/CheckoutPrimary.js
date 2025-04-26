@@ -184,11 +184,6 @@ console.log("Data",data)
       fbq("track", "Purchase", {
         value: data.order.totalPrice,
         currency: "SAR",
-        contents: data.order.items.map((item) => ({
-          id: item.productId,
-          quantity: item.quantity,
-        })),
-        content_type: "product",
       });
       // ✅ 2. Send the note in a separate API call (if exists)
       creteAlert("success", "Order placed successfully!");
