@@ -265,7 +265,12 @@
         "Days": "أيام",
         "My Account": "حسابي",
         "FAQ": "الأسئلة الشائعة",
-        "Frequently asked questions": "الأسئلة الشائعة"
+        "Frequently asked questions": "الأسئلة الشائعة",
+        "Location captured":"تم التعرف على الموقع",
+        "Location not captured":"لم يتم التعرف على الموقع",
+        "Share Current Location":"مشاركة الموقع الحالي",
+        "Unable to retrieve your location.":"غير قادر على استرداد موقعك.",
+        "Geolocation is not supported by your browser.":"الموقع الجغرافي غير مدعوم من قبل متصفحك."
     },
     "footer": {
         "Company": "الشركة",

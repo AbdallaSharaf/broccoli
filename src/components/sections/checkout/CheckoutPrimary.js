@@ -37,11 +37,33 @@ const CheckoutPrimary = () => {
     zip: "",
     notes: "",
   });
+  const [userLocation, setUserLocation] = useState({ latitude: null, longitude: null });
+const [locationError, setLocationError] = useState(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          setLocationError(null);
+        },
+        (error) => {
+          console.error(error);
+          setLocationError("Unable to retrieve your location.");
+        }
+      );
+    } else {
+      setLocationError("Geolocation is not supported by your browser.");
+    }
+  };
+  
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
@@ -113,6 +135,7 @@ const CheckoutPrimary = () => {
         city: formData.city,
         street: formData.houseNumber,
         zipCode: formData.zip,
+        location: `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`,
       },
     };
   
@@ -387,7 +410,7 @@ const CheckoutPrimary = () => {
           </div>
         </div>
 
-        <div className="row">
+        <div className="row mb-3">
           <div className="col-lg-12 col-md-12">
             <div className="row">
               <div className="col-md-6">
@@ -449,6 +472,26 @@ const CheckoutPrimary = () => {
               />
             </div>
           </div>
+          <div className="col-md-6">
+          <button
+  type="button"
+  onClick={getUserLocation}
+  className="btn theme-btn-1 btn-effect-1 text-uppercase mt-2"
+>
+  {t("Share Current Location")}
+</button>
+          </div>
+          <div className="col-md-6">
+          {userLocation.latitude && userLocation.longitude && (
+  <p style={{ marginTop: "10px" }}>
+    📍 {t("Location captured")}: ({userLocation.latitude.toFixed(5)}, {userLocation.longitude.toFixed(5)})
+  </p>
+)}
+{locationError && <p style={{ color: "red" }}>{locationError}</p>}
+          </div>
+
+
+
         </div>
 
         {/* <p>

@@ -267,7 +267,12 @@
         "News Details": "News Details",
         "FAQ": "FAQs",
         "Frequently asked questions": "Frequently asked questions",
-        "My Account": "My Account"
+        "My Account": "My Account",
+        "Location captured": "Location captured",
+        "Location not captured":"Location not captured",
+        "Share Current Location":"Share Current Location",
+        "Geolocation is not supported by your browser.":"Geolocation is not supported by your browser.",
+        "Unable to retrieve your location.":"Unable to retrieve your location."
     },
     "footer": {
         "Company": "Company",
