@@ -66,6 +66,10 @@ font-family: 'Roboto', sans-serif;
 /* ====================================================
     Gutter Code 
 ==================================================== */
+.nice-select{
+  display: none !important;
+}
+
 .container,
 .container-fluid {
   padding-inline-end: 15px;
