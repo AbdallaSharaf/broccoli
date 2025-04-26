@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "@/hooks/useTranslate"; // import translation hook
 
 const CartPrimary = () => {
-  const { cartProducts: currentProducts, updateCart, applyCoupon } = useCartContext();
+  const { cartProducts: currentProducts, updateCart, applyCoupon, cartLoading } = useCartContext();
   const [couponCode, setCouponCode] = useState(currentProducts?.coupon?.code || "");
   const [couponResponse, setCouponResponse] = useState(null);
   const cartProducts = currentProducts?.items ?? [];
@@ -39,6 +39,11 @@ const CartPrimary = () => {
     setCouponCode(currentProducts?.coupon?.code || "");
   }, [cartProducts]);
 
+  if (cartLoading) return (    
+  <div className="error-404-inner text-center">
+  <h1 className="error-404-title">{"⏳"}</h1>
+  <h2>{t("Fetching Your Cart")}</h2>
+  </div>)
   return (
     <div className="liton__shoping-cart-area mb-120">
       <div className="container">
@@ -74,11 +79,13 @@ const CartPrimary = () => {
                                 placeholder={t("Coupon code")}
                                 value={couponCode}
                                 onChange={(e) => setCouponCode(e.target.value)}
+                                style={{ height: "65px", marginInlineEnd: "20px" }}
                               />
                               <button
                                 type="button"
                                 onClick={handleApplyCoupon}
                                 className="btn theme-btn-2 btn-effect-2"
+                                style={{ height: "65px" }}
                               >
                                 {t("Apply coupon")}
                               </button>
@@ -87,7 +94,7 @@ const CartPrimary = () => {
                                   className="mt-2"
                                   style={{
                                     color:
-                                      couponResponse?.status === false
+                                      couponResponse?.success === false
                                         ? "#dc3545"
                                         : "#28a745",
                                   }}

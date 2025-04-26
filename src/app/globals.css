@@ -6041,9 +6041,14 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   .header-search-wrap {
     position: relative;
   }
-  .header-search-1-form {
+  .ltn__header-options-2.header-search-1-form {
     top: 130%;
     right: 0;
+  }
+  .header-search-1-form {
+    position: absolute;
+    top: 130%;
+    right: -150px;
   }
   
 .single-large-img {

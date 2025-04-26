@@ -22,7 +22,7 @@ const CartProduct = ({
   isWishlist,
 }) => {
   const { product: productData, quantity: quantity1 = 1, price } = product;
-  const { _id, name, imgCover } = productData;
+  const { _id, name, imgCover, priceAfterDiscount, priceAfterExpiresAt } = productData;
   // dom referance
   const inputRef = useRef(null);
   // hooks
@@ -32,6 +32,8 @@ const CartProduct = ({
   const [quantity, setQuantity] = useState(Number(quantity1) ?? 1);
   const { setCurrentProduct } = useProductContext();
   const t = useTranslations("common"); // Use translation hook for "common" keys
+  console.log("priceAfterDiscount", priceAfterDiscount)
+  // console.log("priceAfterExpiresAt", priceAfterExpiresAt)
   // handle quantity change
   useEffect(() => {
     if (!isWishlist) {
@@ -106,7 +108,19 @@ const CartProduct = ({
           <Link href={`/products/${_id}`}>{sliceText(getTranslatedName(name), 30)}</Link>
         </h4>
       </td>
-      <td className="cart-product-price">{price} {t("SAR")}</td>
+      <td className="cart-product-price">
+  {((priceAfterExpiresAt && new Date(priceAfterExpiresAt) < new Date()) || (!priceAfterExpiresAt && priceAfterDiscount)) ? (
+    <>
+      {priceAfterDiscount} {t("SAR")}{" "}
+      <del className="text-gray-500 text-sm">{price} {t("SAR")}</del>
+    </>
+  ) : (
+    <>
+      {price} {t("SAR")}
+    </>
+  )}
+</td>
+
       {isWishlist ? (
         <td className="cart-product-stock">{t("In Stock")}</td>
       ) : (

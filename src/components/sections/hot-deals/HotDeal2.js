@@ -40,10 +40,10 @@ const HotDeal2 = ({ type }) => {
           </div>
         </div>
       </div>
-      <div className="ltn__call-to-4-img-1">
+      <div className="ltn__call-to-4-img-1" dir="ltr">
         <Image src="/img/bg/12.png" alt="#" width={631} height={1000} />
       </div>
-      <div className="ltn__call-to-4-img-2">
+      <div className="ltn__call-to-4-img-2" dir="ltr">
         <Image src="/img/bg/11.png" alt="#" width={514} height={1000} />
       </div>
     </div>

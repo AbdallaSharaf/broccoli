@@ -4,17 +4,22 @@ import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUserContext } from "./UserContext";
 import { getGuestCart, getUserCart } from "@/libs/cartApi";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const cartContext = createContext(null);
 const CartContextProvider = ({ children }) => {
   const { user } = useUserContext(); // Get login function from context
   const [cartStatus, setCartStatus] = useState(null);
   const [cartProducts, setCartProducts] = useState({_id:"", items:[]});
+  const [cartLoading, setCartLoading] = useState(false);
   const creteAlert = useSweetAlert();
+  const t = useTranslations("common");
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
+        setCartLoading(true); // 👉 Start loading
+  
         if (user) {
           // Case 1: Logged in user
           const token = localStorage.getItem("token");
@@ -36,6 +41,8 @@ const CartContextProvider = ({ children }) => {
         }
       } catch (error) {
         console.error("Failed to fetch cart:", error);
+      } finally {
+        setCartLoading(false); // 👉 Stop loading (whether success or error)
       }
     };
   
@@ -201,7 +208,7 @@ const CartContextProvider = ({ children }) => {
         setCartProducts(cart);
         return { success: true, message: "Success! Coupon applied." };
       } else {
-        return { success: false, message: data.error || "Failed to apply coupon." };
+        return { success: false, message: t("Failed to apply coupon") };
       }
     } catch (error) {
       console.error("Apply coupon error:", error);
@@ -275,6 +282,7 @@ const CartContextProvider = ({ children }) => {
         deleteProductFromCart,
         cartStatus,
         updateCart,
+        cartLoading,
         applyCoupon
       }}
     >
