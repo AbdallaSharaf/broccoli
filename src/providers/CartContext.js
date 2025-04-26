@@ -55,7 +55,13 @@ const CartContextProvider = ({ children }) => {
   const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) => {
     try {
       const { _id: currentId, quantity: addedQuantity } = currentProduct;
-  
+      fbq("track", "AddToCart", {
+        content_name: currentProduct.name.ar,
+        content_ids: [currentId],
+        content_type: "product",
+        value: currentProduct.price,
+        currency: "SAR",
+      });
       const token = localStorage.getItem("token");
       const guestId = localStorage.getItem("guest");
       // console.log("guestId", guestId)

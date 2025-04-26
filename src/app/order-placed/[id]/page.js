@@ -9,6 +9,8 @@ export default function OrderPlacedPage({ params }) {
   if (!id) {
     notFound();
   }
+
+  
   return (
     <Suspense fallback={<>Loading...</>}>
       <PageWrapper

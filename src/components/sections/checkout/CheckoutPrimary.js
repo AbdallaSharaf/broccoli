@@ -179,7 +179,17 @@ const [locationError, setLocationError] = useState(null);
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-  
+
+console.log("Data",data)
+      fbq("track", "Purchase", {
+        value: data.order.totalPrice,
+        currency: "SAR",
+        contents: data.order.items.map((item) => ({
+          id: item.productId,
+          quantity: item.quantity,
+        })),
+        content_type: "product",
+      });
       // ✅ 2. Send the note in a separate API call (if exists)
       creteAlert("success", "Order placed successfully!");
       setCartProducts({_id: "" ,items: [] });
@@ -191,7 +201,17 @@ const [locationError, setLocationError] = useState(null);
   };
   
   
-  
+  //   useEffect(() => {
+  //   fbq("track", "Purchase", {
+  //     value: totalPrice,
+  //     currency: "USD",
+  //     contents: cart.map((item) => ({
+  //       id: item._id,
+  //       quantity: item.quantity,
+  //     })),
+  //     content_type: "product",
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (isProducts) {
