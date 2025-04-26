@@ -84,6 +84,14 @@ src="https://www.facebook.com/tr?id=1359273798966268&ev=PageView&noscript=1"
           `,
         }}
       />
+            <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: 'none' }}
+          src={`https://www.facebook.com/tr?id=1359273798966268&ev=PageView&noscript=1`}
+        />
+      </noscript>
         <Suspense fallback={<div></div>}>
           {children}
           <Script src="/plugins.js" />

@@ -194,7 +194,7 @@ console.log("Data",data)
       creteAlert("success", "Order placed successfully!");
       setCartProducts({_id: "" ,items: [] });
       setIsPlaceOrder(false);
-      router.push(`/order-placed/${data.invoiceId}`); // 👈 Route to home
+      router.push(`/order-placed/${data.order.invoiceId}`); // 👈 Route to home
     } catch (error) {
       creteAlert("error", error.message || "Failed to place order");
     }
