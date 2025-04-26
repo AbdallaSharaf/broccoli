@@ -208,7 +208,19 @@ const CartContextProvider = ({ children }) => {
         setCartProducts(cart);
         return { success: true, message: "Success! Coupon applied." };
       } else {
-        return { success: false, message: t("Failed to apply coupon") };
+        const errorMessage = data.error;
+
+        // Check if it's the "add more products" case
+        if (errorMessage.startsWith("You need to add more products to use this coupon")) {
+          // Extract the number using regex
+          const match = errorMessage.match(/(\d+)\s+is remaining/);
+          const remaining = match ? match[1] : "X"; // fallback if not found
+          
+          return { success: false, message: t("You need to add more products to use this coupon {x} is remaining", { x: remaining }) };
+        } else {
+          // Otherwise, just translate the error normally
+          return { success: false, message: t(errorMessage) || t("Failed to apply coupon") };
+        }
       }
     } catch (error) {
       console.error("Apply coupon error:", error);

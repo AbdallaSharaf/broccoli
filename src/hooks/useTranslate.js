@@ -5,14 +5,17 @@ import arTranslations from '../translations/ar.json'; // Import Arabic translati
 export function useTranslations(scope) {
   const { locale } = useLanguageContext();
 
-  // Select the correct translations based on locale
   const currentTranslations = locale === 'ar' ? arTranslations : enTranslations;
 
-  // Return translation function for the specified scope
-  return (key) => {
-    // Try current locale first, then English fallback, then return key as last resort
-    return currentTranslations[scope]?.[key] 
-           || enTranslations[scope]?.[key] 
-           || key;
+  return (key, variables = {}) => {
+    // Get the translation string
+    const translation = currentTranslations[scope]?.[key] 
+                     || enTranslations[scope]?.[key] 
+                     || key;
+
+    // Replace variables like {x} if provided
+    return Object.keys(variables).reduce((text, variable) => {
+      return text.replace(new RegExp(`{${variable}}`, 'g'), variables[variable]);
+    }, translation);
   };
 }
