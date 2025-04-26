@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import OrderPlacedMain from "@/components/layout/main/OrderPlacedMain";
 import trackEvent from "@/hooks/usePixel";
