@@ -68,7 +68,7 @@ const RegisterPrimary = () => {
     const result = await register({ firstname, lastname, email, password, phone });
   
     if (result) {
-      router.push("/verify-user");
+      router.push("/wait-verification");
     } else {
       setError(t("Registration failed. Please try again."));
     }
