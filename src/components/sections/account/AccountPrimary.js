@@ -325,7 +325,7 @@ const AccountPrimary = () => {
                                     <td>
                                       {t(order.status)}
                                     </td>
-                                    <td>{order.subTotal || order.totalPrice} {t("SAR")}</td>
+                                    <td>{order.totalPrice} {t("SAR")}</td>
                                     <td>
                                       <Link href={`/order/${order._id}`}>{t("View")}</Link>
                                     </td>

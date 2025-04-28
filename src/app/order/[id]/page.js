@@ -2,9 +2,33 @@ import OrderMain from "@/components/layout/main/OrderDetailsMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import { notFound } from "next/navigation";
 
+const getOrderById = async (id) => {
+  try {
+    console.log("Fetching order with ID:", id);
+    const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/order/${id}`, {
+      method: "GET",
+      // headers: {
+      //   "Content-Type": "application/json"
+      // },
+    });
+
+    if (!res.ok) throw new Error(`Failed to fetch order: ${res.status}`);
+
+    const data = await res.json();
+    const order = data.order;
+    console.log("Fetched order data:", data);
+    return order;
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    return null;
+  }
+};
+
 const OrderDetails = async ({ params }) => {
   const { id } = params;
-  if (!id) {
+  const order = await getOrderById(id);
+
+  if (!order) {
     notFound();
   }
   
@@ -15,7 +39,7 @@ const OrderDetails = async ({ params }) => {
       isTextWhite={true}
       isNavbarAppointmentBtn={true}
     >
-      <OrderMain order={id} />
+      <OrderMain order={order} />
     </PageWrapper>
   );
 };

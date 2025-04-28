@@ -12546,6 +12546,11 @@ input.cart-plus-minus-box {
   max-width: 450px;
   width: 100%;
 }
+@media  (max-width: 992px){
+  .float-inline-end{
+    float: inline-start !important;
+  }
+}
 .shoping-cart-total .table {
   margin-bottom: 0;
 }

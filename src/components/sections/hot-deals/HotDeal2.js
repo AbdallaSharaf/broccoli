@@ -4,10 +4,42 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "@/hooks/useTranslate";
 import Countdown from "./countdown";
+import { useEffect, useState } from "react";
+import { useLanguageContext } from "@/providers/LanguageContext";
 
 const HotDeal2 = ({ type }) => {
   const t = useTranslations("common");
+  const id = '67dc69372d9f897557d7f023'; // Static ID
+  const [data, setData] = useState({en: "", ar: ""});
+  const [loading, setLoading] = useState(true);
+  const { locale } = useLanguageContext();
+  useEffect(() => {
+    const fetchSettings = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/siteSettings/${id}`, {
+          method: "GET",
+        });
   
+        const json = await res.json(); // Important!
+  
+        const data = json.SiteSettings?.offersParagraph; // Use optional chaining to avoid crash if missing
+        setData(data);
+      } catch (error) {
+        console.error('Error fetching offer paragraphs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    if (id) { // make sure id exists
+      fetchSettings();
+    }
+  }, []); // <-- add id to dependencies
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div
       className={`ltn__call-to-action-area ltn__call-to-action-4 ltn__call-to-action-4-2  ${
@@ -25,7 +57,7 @@ const HotDeal2 = ({ type }) => {
             >
               <h2 className="ltn__secondary-color">{t("Hurry Up!")}</h2>
               <h1 className="h1">
-                {t("Hot Deal! Sale Up To")} 20% {t("off")}
+                {data[locale]}
               </h1>
               <Countdown date="2025-12-01" fullFormat={false} />
               <div className="btn-wrapper animated">

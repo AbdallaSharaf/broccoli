@@ -6,10 +6,9 @@ import modifyAmount from "@/libs/modifyAmount";
 import sliceText from "@/libs/sliceText";
 import React from "react";
 
-const CheckoutProduct = ({ product }) => {
-    const t = useTranslations("common");
-  const { product: productData, totalPrice, quantity } = product ? product : {};
-  const { name } = productData ? productData : {};
+const OrderCheckoutProduct = ({ product }) => {
+  const { name, totalPrice, quantity } = product ? product : {};
+  const t = useTranslations("common");
   return (
     <tr>
       <td>
@@ -20,4 +19,4 @@ const CheckoutProduct = ({ product }) => {
   );
 };
 
-export default CheckoutProduct;
+export default OrderCheckoutProduct;

@@ -219,7 +219,7 @@ console.log("Data",data)
       setCouponCode(products.coupon?.code || "");
     }
   }, [products]);
-
+  console.log(products)
   useEffect(() => {
     if (userData) {
       const [firstName = "", lastName = ""] = userData.name?.split(" ") || [];
@@ -532,7 +532,7 @@ console.log("Data",data)
             </div>
           </div>
           {/* payment methods */}
-    <div className="col-lg-6">
+    <div className="col-lg-6 order-lg-1 order-2">
       <div className="ltn__checkout-payment-method mt-50">
         <h4 className="title-2">{t("Payment Method")}</h4>
 
@@ -608,35 +608,41 @@ console.log("Data",data)
     </div>
 
   {/* product to buy */}
-  <div className="col-lg-6">
+  <div className="col-lg-6 order-lg-2 order-1">
       {!isProducts ? (
         <Nodata text={t("No Product!")} />
       ) : (
-        <div className="shoping-cart-total mt-50">
+        <div className="shoping-cart-total float-inline-end mt-50">
           <h4 className="title-2">{t("Cart Totals")}</h4>
           <table className="table">
-            <tbody>
-              {products?.items?.map((product, idx) => (
-                <CheckoutProduct key={idx} product={product} />
-              ))}
-
-              {products.shipping && (
-                <tr>
-                  <td>{t("Shipping and Handling")}</td>
-                  <td>${modifyAmount(products.shipping)}</td>
-                </tr>
-              )}
-
-              <tr>
-                <td>
-                  <strong>{t("Order Total")}</strong>
-                </td>
-                <td>
-                  <strong>${products.totalPrice}</strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                <tbody>
+                  {products?.items?.map((product, idx) => (
+                    <CheckoutProduct key={idx} product={product} />
+                  ))}
+                  <tr>
+                    <td>
+                      <strong>{t("Order Subtotal")}</strong>
+                    </td>
+                    <td>
+                      <strong>{products.subTotal} {t("SAR")}</strong>
+                    </td>
+                  </tr>
+                  {products.shippingFee && (
+                    <tr>
+                      <td><strong>{t("Shipping and Handling")}</strong></td>
+                      <td><strong>{modifyAmount(products.shippingFee)} {t("SAR")}</strong></td>
+                    </tr>
+                  )}
+                  <tr>
+                    <td>
+                      <strong>{t("Order Total")}</strong>
+                    </td>
+                    <td>
+                      <strong>{products.subTotal + products.shippingFee} {t("SAR")}</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
         </div>
       )}
     </div>
