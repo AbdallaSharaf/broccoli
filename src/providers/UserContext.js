@@ -111,7 +111,7 @@ const register = async ({ firstname, lastname, email, password, phone }) => {
     const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/SignUp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: fullName, email, password }), // 👈 Send `name` instead of separate first/last
+      body: JSON.stringify({ name: fullName, email, password, phone }), // 👈 Send `name` instead of separate first/last
     });
 
     const data = await res.json();
