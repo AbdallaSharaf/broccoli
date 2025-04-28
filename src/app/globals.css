@@ -8259,10 +8259,9 @@ ul.wp-block-latest-posts.is-grid.alignwide {
 
 .product-img a {
   display: inline-block;
-}
-
-.slick-slide .ltn__product-item-3 .product-info {
-  margin-top: -10px;
+  object-fit: cover; /* This is the key */
+  width: 100%;
+  height: 100%;
 }
 
 .product-img img {
@@ -8271,6 +8270,10 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   -o-transition: all 3.5s ease 0s;
   transition: all 3.5s ease 0s;
   z-index: -1;
+}
+
+.slick-slide .ltn__product-item-3 .product-info {
+  margin-top: -10px;
 }
 
 .product-img:before {
