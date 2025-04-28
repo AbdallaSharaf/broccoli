@@ -3,13 +3,14 @@ import ButtonOpenMobileMenu from "@/components/shared/buttons/ButtonOpenMobileMe
 import { useCartContext } from "@/providers/CartContext";
 import { useHeaderContex } from "@/providers/HeaderContex";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import HeaderCurrency from "./HeaderCurrency";
 import countTotalPrice from "@/libs/countTotalPrice";
 import HeaderCartShow from "./HeaderCartShow";
 import { useUserContext } from "@/providers/UserContext";
 import { useTranslations } from "@/hooks/useTranslate";
 import { useLanguageContext } from "@/providers/LanguageContext";
+import { useRouter } from "next/navigation";
 
 const HeaderRight = () => {
   const { headerStyle } = useHeaderContex();
@@ -17,11 +18,21 @@ const HeaderRight = () => {
   const t = useTranslations("header");
   const { locale, toggleLanguage } = useLanguageContext();
   const nextLocale = locale === "ar" ? "en" : "ar";
+  const [searchInput, setSearchInput] = useState("");
+  const router = useRouter();
 
   const handleLanguageChange = (e) => {
     e.preventDefault();
     toggleLanguage(nextLocale);
   };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchInput.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(searchInput.trim())}`);
+    }
+  };
+
 
   return (
     <div
@@ -39,14 +50,21 @@ const HeaderRight = () => {
           </div>
         </div>
         <div className="header-search-1-form">
-          <form id="#" method="get" action="#">
-            <input type="text" name="search" placeholder={t("searchHere")} />
-            <button type="submit">
-              <span>
-                <i className="icon-search"></i>
-              </span>
-            </button>
-          </form>
+        <form onSubmit={handleSearchSubmit}>
+          <input
+            key={locale}
+            type="text"
+            name="search"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder={t("searchHere")}
+          />
+          <button type="submit">
+            <span>
+              <i className="icon-search"></i>
+            </span>
+          </button>
+        </form>
         </div>
       </div>
       {/* <!-- user-menu --> */}

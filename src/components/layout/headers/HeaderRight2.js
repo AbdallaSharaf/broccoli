@@ -1,13 +1,16 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import HeaderCartShow from "./HeaderCartShow";
 import Link from "next/link";
 import { useUserContext } from "@/providers/UserContext";
 import { useLanguageContext } from "@/providers/LanguageContext";
 import { useTranslations } from "@/hooks/useTranslate";
+import { useRouter } from "next/navigation";
 
 const HeaderRight2 = () => {
 
+  const [searchInput, setSearchInput] = useState("");
+  const router = useRouter();
 const { isRtl, toggleLanguage } = useLanguageContext(); // Get direction state and toggle function
 const t = useTranslations("header");
 const {locale} = useLanguageContext()
@@ -16,6 +19,14 @@ const languages = [
   { code: "ar", name: t("arabic"), flag: "img/flags/ar.png" },
 
 ];
+
+const handleSearchSubmit = (e) => {
+  e.preventDefault();
+  if (searchInput.trim()) {
+    router.push(`/shop?search=${encodeURIComponent(searchInput.trim())}`);
+  }
+};
+
 const { user, logout } = useUserContext();
   // Set active language based on current direction
   const activeLang = isRtl ? languages[1] : languages[0];
@@ -34,11 +45,13 @@ const { user, logout } = useUserContext();
                 </div>
               </div>
               <div className="header-search-1-form">
-                <form id="#" method="get" action="#">
+              <form onSubmit={handleSearchSubmit}>
                   <input
-                    key={locale} // This forces re-render when locale changes
+                    key={locale}
                     type="text"
                     name="search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                     placeholder={t("searchHere")}
                   />
                   <button type="submit">
@@ -47,6 +60,7 @@ const { user, logout } = useUserContext();
                     </span>
                   </button>
                 </form>
+
               </div>
             </div>
           </li>{" "}
