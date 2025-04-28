@@ -91,17 +91,24 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
           </ul>
         </div> */}
         <div className="product-price">
-        {priceAfterDiscount > 0 && priceAfterExpiresAt && new Date(priceAfterExpiresAt) > new Date() ? (
-  <>
-    <span>{priceAfterDiscount} {t("SAR")}</span>
-    <del>{price} {t("SAR")}</del>
-  </>
-) : (
-  <span>{priceModified} {t("SAR")}</span> 
-)}
+        <span>
+        {(
+      priceAfterDiscount &&
+      !isNaN(Number(priceAfterDiscount)) &&
+      Number(priceAfterDiscount) > 0 &&
+      (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date())
+        ? Number(priceAfterDiscount)
+        : price
+            )} {t("SAR")}
+          </span>
 
-          <span>${netPriceModified}</span>
-          {/* <del>${priceModified}</del> */}
+          {priceAfterDiscount &&
+          !isNaN(Number(priceAfterDiscount)) &&
+          Number(priceAfterDiscount) > 0 &&
+          Number(priceAfterDiscount) !== price &&
+          (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date()) && (
+            <del>{price} {t("SAR")}</del>
+          )}
         </div>
 
         <div className="product-brief">

@@ -120,22 +120,26 @@ const ProductDetailsRight = ({ product }) => {
       <h3>{getTranslatedName(name)}</h3>
       {/* price */}
       <div className="product-price text-nowrap">
-      <span>
-        {(priceAfterDiscount && 
-          !isNaN(priceAfterDiscount) && 
-          priceAfterExpiresAt && 
-          new Date(priceAfterExpiresAt) > new Date() 
-            ? priceAfterDiscount 
-            : price) * quantity} {t("SAR")}
-      </span>
+        <span>
+          {(
+            priceAfterDiscount &&
+            !isNaN(Number(priceAfterDiscount)) &&
+            Number(priceAfterDiscount) > 0 &&
+            (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date())
+              ? Number(priceAfterDiscount)
+              : price
+          ) * quantity} {t("SAR")}
+        </span>
 
-      {!isNaN(priceAfterDiscount) &&
-      priceAfterDiscount !== price &&
-      priceAfterExpiresAt &&
-      new Date(priceAfterExpiresAt) > new Date() && (
-        <del>{price * quantity} {t("SAR")}</del>
-      )}
+        {priceAfterDiscount &&
+        !isNaN(Number(priceAfterDiscount)) &&
+        Number(priceAfterDiscount) > 0 &&
+        Number(priceAfterDiscount) !== price &&
+        (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date()) && (
+          <del>{price * quantity} {t("SAR")}</del>
+        )}
       </div>
+
       {/* description */}
 
       {/* category, availability */}

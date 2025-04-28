@@ -16,7 +16,6 @@ const OrderMain = (id) => {
                 const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/order/${id.order}`, {
                 method: "GET",
                 headers: {
-                    "Accept": "application/json",
                     "Content-Type": "application/json",
                     'Authorization': `Bearer ${token}`
                 },

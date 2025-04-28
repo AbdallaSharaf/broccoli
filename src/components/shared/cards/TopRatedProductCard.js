@@ -10,7 +10,6 @@ import { useTranslations } from "@/hooks/useTranslate"; // Assuming useTranslati
 const TopRatedProductCard = ({ product, isShowDisc }) => {
   const t = useTranslations("common");  // Access translations for common terms
   const { name, price,priceAfterDiscount,priceAfterExpiresAt, images, imgCover, _id, discount } = product;
-  console.log("topRate",product)
   // Calculate the discounted price if applicable
   const { netPrice } = countDiscount(price, discount);
   const netPriceModified = modifyAmount(netPrice);
@@ -45,16 +44,26 @@ const TopRatedProductCard = ({ product, isShowDisc }) => {
           <Link href={`/products/${_id}`}>{sliceText(getTranslatedName(name), 25)}</Link>
         </h6>
         <div className="product-price">
-        {priceAfterDiscount > 0 && priceAfterExpiresAt && new Date(priceAfterExpiresAt) > new Date() ? (
-          <>
-            <span>{priceAfterDiscount} {t("SAR")}</span>
-            <del>{price} {t("SAR")}</del>
-          </>
-        ) : (
-          <span>{priceModified} {t("SAR")}</span> 
-        )}
+  <span>
+    {(
+      priceAfterDiscount &&
+      !isNaN(Number(priceAfterDiscount)) &&
+      Number(priceAfterDiscount) > 0 &&
+      (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date())
+        ? Number(priceAfterDiscount)
+        : price
+    )} {t("SAR")}
+  </span>
 
-        </div>
+  {priceAfterDiscount &&
+  !isNaN(Number(priceAfterDiscount)) &&
+  Number(priceAfterDiscount) > 0 &&
+  Number(priceAfterDiscount) !== price &&
+  (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date()) && (
+    <del>{price} {t("SAR")}</del>
+  )}
+</div>
+
       </div>
     </div>
   );

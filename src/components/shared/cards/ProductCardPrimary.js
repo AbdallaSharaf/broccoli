@@ -132,17 +132,26 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
           <Link href={`/products/${_id}`}>{getTranslatedName(name)}</Link>
         </h2>
         <div className="product-price">
-          {/* <span>${netPriceModified}</span>  */}
-          {/* <del>${priceModified}</del> */}
-          {priceAfterDiscount > 0 && priceAfterExpiresAt && new Date(priceAfterExpiresAt) > new Date() ? (
-  <>
-    <span>{priceAfterDiscount} {t("SAR")}</span>
+  <span>
+    {(
+      priceAfterDiscount &&
+      !isNaN(Number(priceAfterDiscount)) &&
+      Number(priceAfterDiscount) > 0 &&
+      (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date())
+        ? Number(priceAfterDiscount)
+        : price
+    )} {t("SAR")}
+  </span>
+
+  {priceAfterDiscount &&
+  !isNaN(Number(priceAfterDiscount)) &&
+  Number(priceAfterDiscount) > 0 &&
+  Number(priceAfterDiscount) !== price &&
+  (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date()) && (
     <del>{price} {t("SAR")}</del>
-  </>
-) : (
-  <span>{priceModified} {t("SAR")}</span> 
-)}
-        </div>
+  )}
+</div>
+
       </div>
     </div>
   );

@@ -29,7 +29,6 @@ const WishlistContextProvider = ({ children }) => {
             if (guestId) {
               const guestWishlist = await getGuestWishlist(guestId);
               if (guestWishlist && guestWishlist.wishlist) {
-                console.log("Guest wishlist fetched:", guestWishlist);
                 setWishlistProducts(guestWishlist);
               }
             }

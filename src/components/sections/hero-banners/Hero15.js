@@ -21,7 +21,6 @@ const Hero15 = ({ type }) => {
     // main()
     fetchSlides();
   }, []);
-
   return (
     <div className="ltn__slider-area mt-30">
       <div className="container">

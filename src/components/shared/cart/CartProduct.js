@@ -32,7 +32,6 @@ const CartProduct = ({
   const [quantity, setQuantity] = useState(Number(quantity1) ?? 1);
   const { setCurrentProduct } = useProductContext();
   const t = useTranslations("common"); // Use translation hook for "common" keys
-  console.log("priceAfterDiscount", priceAfterDiscount)
   // console.log("priceAfterExpiresAt", priceAfterExpiresAt)
   // handle quantity change
   useEffect(() => {
@@ -109,15 +108,23 @@ const CartProduct = ({
         </h4>
       </td>
       <td className="cart-product-price">
-  {((priceAfterExpiresAt && new Date(priceAfterExpiresAt) < new Date()) || (!priceAfterExpiresAt && priceAfterDiscount)) ? (
-    <>
-      {priceAfterDiscount} {t("SAR")}{" "}
-      <del className="text-gray-500 text-sm">{price} {t("SAR")}</del>
-    </>
-  ) : (
-    <>
-      {price} {t("SAR")}
-    </>
+  <span>
+    {(
+      priceAfterDiscount &&
+      !isNaN(Number(priceAfterDiscount)) &&
+      Number(priceAfterDiscount) > 0 &&
+      (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date())
+        ? Number(priceAfterDiscount)
+        : price
+    ) * quantity} {t("SAR")}
+  </span>
+
+  {priceAfterDiscount &&
+  !isNaN(Number(priceAfterDiscount)) &&
+  Number(priceAfterDiscount) > 0 &&
+  Number(priceAfterDiscount) !== price &&
+  (!priceAfterExpiresAt || new Date(priceAfterExpiresAt) > new Date()) && (
+    <del>{price * quantity} {t("SAR")}</del>
   )}
 </td>
 

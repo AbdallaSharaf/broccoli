@@ -40,7 +40,6 @@ const ProductDetailsPrimary = () => {
   // Normalize imgCover to always be an array
   const getCoverImages = () => {
     if (!product?.imgCover) return [];
-    console.log(product.imgCover)
     return Array.isArray(product.imgCover) ? product.imgCover : [product.imgCover];
   };
 
@@ -50,7 +49,7 @@ const ProductDetailsPrimary = () => {
     const additionalImages = product?.images || [];
     return [...coverImages, ...additionalImages];
   };
-  console.log(getAllImages())
+
   return (
     <div
       className={`ltn__shop-details-area ${

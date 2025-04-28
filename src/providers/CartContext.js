@@ -34,7 +34,6 @@ const CartContextProvider = ({ children }) => {
           if (guestId) {
             const guestCart = await getGuestCart(guestId);
             if (guestCart && guestCart.items) {
-              console.log("Guest cart fetched:", guestCart);
               setCartProducts(guestCart);
             }
           }
@@ -145,7 +144,6 @@ const CartContextProvider = ({ children }) => {
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(!token && guestId && { tempId: guestId }),
       };
-      console.log("context", cart)
       // Format the payload
       const body = JSON.stringify({
         items: cart.map((item) => ({
@@ -153,7 +151,6 @@ const CartContextProvider = ({ children }) => {
           quantity: item.quantity,
         })),
       });
-      console.log(body)
       const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/cart", {
         method: "POST",
         headers,
