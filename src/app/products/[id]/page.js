@@ -8,10 +8,10 @@ const getProductById = async (id) => {
   try {
     console.log("Fetching product with ID:", id);
     const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product/${id}`, {
-      method: "GET",
-      // headers: {
-      //   "Content-Type": "application/json"
-      // },
+      // method: "GET",
+      // // headers: {
+      // //   "Content-Type": "application/json"
+      // // },
     });
 
     if (!res.ok) throw new Error(`Failed to fetch product: ${res.status}`);
