@@ -297,7 +297,7 @@ console.log("Data",data)
                       </label> 
                       */}
                       <p className="mt-30">
-                        <Link href="/register">{t("lost your password")}</Link>
+                        <Link href="/forget-password">{t("lost your password")}</Link>
                       </p>
                     </form>
                   </div>
