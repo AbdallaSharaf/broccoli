@@ -89,7 +89,7 @@ const AccountPrimary = () => {
         formData.name !== userData?.name ||
         formData.email !== userData?.email
       ) {
-        const nameEmailRes = await fetch('https://fruits-heaven-api.vercel.app/api/v1/user/updateMyData', {
+        const nameEmailRes = await fetch('https://fruits-heaven-api.onrender.com/api/v1/user/updateMyData', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ const AccountPrimary = () => {
   
       // --- Update Password if provided ---
       if (formData.newPassword) {
-        const passwordRes = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/user/changePassword/${userData?._id}`, {
+        const passwordRes = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/user/changePassword/${userData?._id}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ const AccountPrimary = () => {
         addressFormData.street !== userData?.address?.[0]?.street ||
         addressFormData.country !== userData?.address?.[0]?.country
       ) {
-        const res = await fetch('https://fruits-heaven-api.vercel.app/api/v1/user/updateMyData', {
+        const res = await fetch('https://fruits-heaven-api.onrender.com/api/v1/user/updateMyData', {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ const AccountPrimary = () => {
           console.error("User not found in local storage");
           return;
         }
-        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/order?keyword=${userData?._id}&PageCount=1000`, {
+        const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order?keyword=${userData?._id}&PageCount=1000`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`

@@ -3,12 +3,13 @@ import ProductDetailsReviews from "./ProductDetailsReviews";
 import Link from "next/link";
 import TabDescription from "./TabDescription";
 import countCommentLength from "@/libs/countCommentLength";
+import { useTranslations } from "@/hooks/useTranslate";
 
 const ProductDetailsTab = ({ product }) => {
-  const { reviews } = product ? product : {};
-
+  const t = useTranslations("common");
+  console.log(product)
   // variables
-  const reviewsLength = countCommentLength(reviews);
+  const reviewsLength = countCommentLength(product?.reviews);
   return (
     <div className="ltn__shop-details-tab-inner ltn__shop-details-tab-inner-2">
       <div className="ltn__shop-details-tab-menu">
@@ -18,10 +19,10 @@ const ProductDetailsTab = ({ product }) => {
             data-bs-toggle="tab"
             href="#liton_tab_details_1_1"
           >
-            Description
+            {t("description")}
           </Link>
           <Link data-bs-toggle="tab" href="#liton_tab_details_1_2" className="">
-            Reviews
+            {t("reviews")}
           </Link>
         </div>
       </div>
@@ -32,8 +33,9 @@ const ProductDetailsTab = ({ product }) => {
         {/* reviews */}
         <div className="tab-pane fade" id="liton_tab_details_1_2">
           <ProductDetailsReviews
-            reviews={reviews}
+            reviews={product?.reviews? product.reviews : []}
             reviewsLength={reviewsLength}
+            productId={product?._id}
           />
         </div>
       </div>

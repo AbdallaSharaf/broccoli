@@ -17,7 +17,7 @@ const HotDeal2 = ({ type }) => {
     const fetchSettings = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/siteSettings/${id}`, {
+        const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/siteSettings/${id}`, {
           method: "GET",
         });
   

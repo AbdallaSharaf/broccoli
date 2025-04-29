@@ -144,7 +144,7 @@ const [locationError, setLocationError] = useState(null);
       const guest = localStorage.getItem("guest");
 
       if (formData.notes?.trim()) {
-        const responseNote = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/note`, {
+        const responseNote = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/cart/note`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -162,7 +162,7 @@ const [locationError, setLocationError] = useState(null);
 
       // ✅ 1. Place the order
       const response = await fetch(
-        `https://fruits-heaven-api.vercel.app/api/v1/order/${products._id}`,
+        `https://fruits-heaven-api.onrender.com/api/v1/order/${products._id}`,
         {
           method: "POST",
           headers: {
@@ -179,8 +179,6 @@ const [locationError, setLocationError] = useState(null);
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-
-console.log("Data",data)
       fbq("track", "Purchase", {
         value: data.order.totalPrice,
         currency: "SAR",

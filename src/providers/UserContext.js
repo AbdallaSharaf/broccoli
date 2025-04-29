@@ -13,7 +13,7 @@ export const UserContext = ({ children }) => {
 
   const fetchUserData = async (token) => {
     try {
-      const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/user/myData", {
+      const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/user/myData", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,7 +44,7 @@ export const UserContext = ({ children }) => {
   // ✅ Login function
   const login = async (email, password) => {
     try {
-      const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/SignIn", {
+      const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/SignIn", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -108,7 +108,7 @@ const register = async ({ firstname, lastname, email, password, phone }) => {
   try {
     const fullName = `${firstname} ${lastname}`.trim(); // 👈 Merge and clean up
 
-    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/SignUp", {
+    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/SignUp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: fullName, email, password, phone }), // 👈 Send `name` instead of separate first/last
@@ -126,7 +126,7 @@ const register = async ({ firstname, lastname, email, password, phone }) => {
 
 const verifyResetCode = async (email, otp) => {
   try {
-    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/verifyRessetCode", {
+    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/verifyRessetCode", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, otp }),
@@ -147,7 +147,7 @@ const verifyResetCode = async (email, otp) => {
 
 const forgotPassword = async (email) => {
   try {
-    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/forgotPassword", {
+    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/forgotPassword", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
@@ -167,7 +167,7 @@ const forgotPassword = async (email) => {
 
 const assignNewPassword = async (email, newPassword) => {
   try {
-    const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/auth/resetPassword", {
+    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/resetPassword", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, newPassword }),

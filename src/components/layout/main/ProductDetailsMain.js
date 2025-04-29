@@ -19,7 +19,7 @@ const ProductDetailsMain = ({ title, text, type, isNotSidebar, product }) => {
     }
   }, [product, setProduct]); // Only runs when product changes
 
-  console.log(product)
+  // console.log(product)
   return (
     <main>
       <HeroPrimary

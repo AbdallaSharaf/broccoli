@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 const getOrderById = async (id) => {
   try {
     console.log("Fetching order with ID:", id);
-    const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/order/${id}`, {
+    const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order/${id}`, {
       method: "GET",
       // headers: {
       //   "Content-Type": "application/json"

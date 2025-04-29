@@ -67,7 +67,7 @@ const WishlistContextProvider = ({ children }) => {
       return
     }
 
-    const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/wishlist", {
+    const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/wishlist", {
       method: "PATCH",
       headers,
       body,
@@ -111,7 +111,7 @@ const WishlistContextProvider = ({ children }) => {
   
       if (isGuest && !guest) return;
       console.log(wishlistProducts)
-      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/wishlist`, {
+      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/wishlist`, {
         method: "DELETE",
         headers,
         body: JSON.stringify({ product: currentId }),

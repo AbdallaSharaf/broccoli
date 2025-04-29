@@ -11,7 +11,7 @@ const CategoryContext = ({ children }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/category?PageCount=100&deleted=false&available=true"); // Replace with your API URL
+        const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/category?PageCount=100&deleted=false&available=true"); // Replace with your API URL
         const data = await response.json();
 
         if (response.ok) {

@@ -11,7 +11,7 @@ const Offer4 = ({ mt, mb }) => {
       const fetchSlides = async () => {
         try {
           const res = await fetch(
-            "https://fruits-heaven-api.vercel.app/api/v1/siteSettings/slider/offersLastSlider"
+            "https://fruits-heaven-api.onrender.com/api/v1/siteSettings/slider/offersLastSlider"
           );
           const data = await res.json();
           setSlides(data || []);

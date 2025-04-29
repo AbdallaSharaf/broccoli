@@ -32,7 +32,7 @@ const HeaderCart = () => {
                         <>
             {cartProducts?.items?.map(
               ({ product, quantity, price }, idx) => {
-                const { _id, name, images, imgCover } = product
+                const { _id, name, imgCover } = product || {}
                 return (
                   <div key={idx} className="mini-cart-item clearfix">
                     <div className="mini-cart-img">

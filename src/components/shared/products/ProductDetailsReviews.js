@@ -1,173 +1,263 @@
+"use client";
+import { useState, useEffect } from 'react';
 import modifyNumber from "@/libs/modifyNumber";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useUserContext } from '@/providers/UserContext';
+import { useTranslations } from '@/hooks/useTranslate';
 
-const ProductDetailsReviews = ({ reviews, reviewsLength }) => {
+const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
+  const [rating, setRating] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const t = useTranslations('common');
+  const { userData, login } = useUserContext();
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleRatingClick = (selectedRating) => {
+    if (!userData) return;
+    setRating(selectedRating);
+  };
+
+  const handleLoginChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      const result = await login(loginData.email, loginData.password);
+      if (!result) throw new Error(t('loginFailed'));
+    } catch (err) {
+      setError(err.message || t('somethingWentWrong'));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!userData) return;
+
+    setError("");
+    setSuccess("");
+
+    if (!rating) {
+      setError(t('selectRating'));
+      return;
+    }
+
+    if (!reviewText.trim()) {
+      setError(t('enterReview'));
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('https://fruits-heaven-api.onrender.com/api/v1/review', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          product: productId,
+          rating,
+          comment: reviewText,
+        }),
+      });
+
+      if (!response.ok) throw new Error(t('submitFailed'));
+      
+      setSuccess(t('reviewSubmitted'));
+      setRating(0);
+      setReviewText("");
+    } catch (err) {
+      setError(err.message || t('somethingWentWrong'));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const dummyReview = [{
+    user: {
+      name: "John Doe",
+      image: "/img/user/default-user.jpg" // Make sure this image exists in your public folder
+    },
+    comment: "This is a great product! I'm very satisfied with my purchase.",
+    rating: 5,
+    createdAt: new Date().toISOString()
+  }];
+
+  const renderStars = (currentRating, interactive = false) => {
+    return [1, 2, 3, 4, 5].map((star) => (
+      <li key={star}>
+        <Link 
+          href="#" 
+          onClick={(e) => {
+            e.preventDefault();
+            if (interactive) {
+              handleRatingClick(star);
+            }
+          }}
+        >
+          <i className={star <= currentRating ? "fas fa-star" : "far fa-star"}></i>
+        </Link>
+      </li>
+    ));
+  };
+
   return (
     <div className="ltn__shop-details-tab-content-inner">
-      <h4 className="title-2">Customer Reviews</h4>
+      {reviewsLength > 0 && <>
+      <h4 className="title-2">{t('customerReviews')}</h4>
       <div className="product-ratting">
-        <ul>
-          <li>
-            <Link href="#">
-              <i className="fas fa-star"></i>
-            </Link>
-          </li>{" "}
-          <li>
-            <Link href="#">
-              <i className="fas fa-star"></i>
-            </Link>
-          </li>{" "}
-          <li>
-            <Link href="#">
-              <i className="fas fa-star"></i>
-            </Link>
-          </li>{" "}
-          <li>
-            <Link href="#">
-              <i className="fas fa-star-half-alt"></i>
-            </Link>
-          </li>{" "}
-          <li>
-            <Link href="#">
-              <i className="far fa-star"></i>
-            </Link>
-          </li>{" "}
+        <ul onClick={(e) => e.preventDefault()}>
+          {renderStars(
+            reviewsLength > 0 
+              ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
+              : 0
+          )}
           <li className="review-total">
-            <Link href="#"> ( {modifyNumber(reviewsLength)} Reviews )</Link>
+            <Link href="#"> ({modifyNumber(reviewsLength)} {t('reviews')})</Link>
           </li>
         </ul>
       </div>
       <hr />
-      {/* <!-- comment-area --> */}
+      </>}
+      
+      {/* Reviews List */}
       <div className="ltn__comment-area mb-30">
         <div className="ltn__comment-inner">
           <ul>
-            {reviewsLength
-              ? reviews?.map(({ author, desc, publishDate, replies }, idx) => (
-                  <li key={idx}>
-                    <div className="ltn__comment-item clearfix">
-                      <div className="ltn__commenter-img">
-                        <Image
-                          src={author.image}
-                          alt="Image"
-                          width={1000}
-                          height={100}
-                        />
+            {reviewsLength.length > 0 ? (
+              reviews?.map(({ user, comment, createdAt, rating: reviewRating }, idx) => (
+                <li key={idx}>
+                  <div className="ltn__comment-item clearfix">
+                    <div className="ltn__commenter-comment">
+                      <h6>
+                        {user.name}
+                      </h6>
+                      <div className="product-ratting">
+                        <ul>
+                          {renderStars(reviewRating)}
+                        </ul>
                       </div>
-                      <div className="ltn__commenter-comment">
-                        <h6>
-                          <Link href="#">{author.name}</Link>
-                        </h6>
-                        <div className="product-ratting">
-                          <ul>
-                            <li>
-                              <Link href="#">
-                                <i className="fas fa-star"></i>
-                              </Link>
-                            </li>{" "}
-                            <li>
-                              <Link href="#">
-                                <i className="fas fa-star"></i>
-                              </Link>
-                            </li>{" "}
-                            <li>
-                              <Link href="#">
-                                <i className="fas fa-star"></i>
-                              </Link>
-                            </li>{" "}
-                            <li>
-                              <Link href="#">
-                                <i className="fas fa-star-half-alt"></i>
-                              </Link>
-                            </li>{" "}
-                            <li>
-                              <Link href="#">
-                                <i className="far fa-star"></i>
-                              </Link>
-                            </li>
-                          </ul>
-                        </div>
-                        <p>{desc}</p>
-                        <span className="ltn__comment-reply-btn">
-                          {publishDate}
-                        </span>
-                      </div>
+                      <p>{comment}</p>
+                      <span className="ltn__comment-reply-btn">
+                        {new Date(createdAt).toLocaleString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}
+                      </span>
                     </div>
-                  </li>
-                ))
-              : ""}
+                  </div>
+                </li>
+              ))
+            ) : (
+              <p>{t('noReviews')}</p>
+            )}
           </ul>
         </div>
       </div>
-      {/* <!-- comment-reply --> */}
+      
+      {/* Review Form Section */}
       <div className="ltn__comment-reply-area ltn__form-box mb-30">
-        <form action="#">
-          <h4 className="title-2">Add a Review</h4>
+        {!userData ? (
           <div className="mb-30">
-            <div className="add-a-review">
-              <h6>Your Ratings:</h6>
-              <div className="product-ratting">
-                <ul>
-                  <li>
-                    <Link href="#">
-                      <i className="fas fa-star"></i>
-                    </Link>
-                  </li>{" "}
-                  <li>
-                    <Link href="#">
-                      <i className="fas fa-star"></i>
-                    </Link>
-                  </li>{" "}
-                  <li>
-                    <Link href="#">
-                      <i className="fas fa-star"></i>
-                    </Link>
-                  </li>{" "}
-                  <li>
-                    <Link href="#">
-                      <i className="fas fa-star-half-alt"></i>
-                    </Link>
-                  </li>{" "}
-                  <li>
-                    <Link href="#">
-                      <i className="far fa-star"></i>
-                    </Link>
-                  </li>
-                </ul>
+            <h5>
+              {t('please')} <Link href="/login">{t('login')}</Link> {t('toSubmitReview')}
+            </h5>
+            <form onSubmit={handleLogin}>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="input-item input-item-name ltn__custom-icon">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder={t('enterEmail')}
+                      value={loginData.email}
+                      onChange={handleLoginChange}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="input-item input-item-email ltn__custom-icon">
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder={t('password')}
+                      value={loginData.password}
+                      onChange={handleLoginChange}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
+              <button className="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">
+                {t('signIn')}
+              </button>
+              <div className="row mt-10">
+                <div className="col-12 col-md-6 mb-2 mb-md-0">
+                  <p className="mb-0">
+                    {t('noAccount')} <Link href="/register" className="secondary-link">{t('registerHere')}</Link>
+                  </p>
+                </div>
+                <div className="col-12 col-md-6">
+                  <p className="mb-0 text-md-end">
+                    <Link href="/forgot-password" className="secondary-link">{t('forgotPassword')}</Link>
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <h4 className="title-2">{t('addReview')}</h4>
+            
+            {error && <div className="alert alert-danger">{error}</div>}
+            {success && <div className="alert alert-success">{success}</div>}
+            
+            <div className="mb-30">
+              <div className="add-a-review">
+                <h6>{t('yourRating')}:</h6>
+                <div className="product-ratting">
+                  <ul>
+                    {renderStars(rating, true)}
+                  </ul>
+                  {rating > 0 && <span className="ms-2">{rating} {t(rating !== 1 ? 'stars' : 'star')}</span>}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="input-item input-item-textarea ltn__custom-icon">
-            <textarea placeholder="Type your reviews...."></textarea>
-          </div>
-          <div className="input-item input-item-name ltn__custom-icon">
-            <input type="text" placeholder="Type your name...." />
-          </div>
-          <div className="input-item input-item-email ltn__custom-icon">
-            <input type="email" placeholder="Type your email...." />
-          </div>
-          <div className="input-item input-item-website ltn__custom-icon">
-            <input
-              type="text"
-              name="website"
-              placeholder="Type your website...."
-            />
-          </div>
-          <label className="mb-0">
-            <input type="checkbox" name="agree" /> Save my name, email, and
-            website in this browser for the next time I comment.
-          </label>
-          <div className="btn-wrapper">
-            <button
-              className="btn theme-btn-1 btn-effect-1 text-uppercase"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+            
+            <div className="input-item input-item-textarea ltn__custom-icon">
+              <textarea 
+                placeholder={t('typeYourReview')}
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+                required
+              />
+            </div>
+            
+            <div className="btn-wrapper">
+              <button
+                className="btn theme-btn-1 btn-effect-1 text-uppercase"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? t('submitting') : t('submit')}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

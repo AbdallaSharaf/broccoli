@@ -11,7 +11,7 @@ const Hero15 = ({ type }) => {
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const res = await fetch("https://fruits-heaven-api.vercel.app/api/v1/siteSettings/slider/homeSlider");
+        const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/siteSettings/slider/homeSlider");
         const data = await res.json();
         setSlides(data || []);
       } catch (err) {

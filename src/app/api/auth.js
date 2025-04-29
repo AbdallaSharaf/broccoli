@@ -1,7 +1,7 @@
 
 export const verifyUserToken = async (token) => {
     try {
-      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/auth/verify/${token}`, {
+      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/auth/verify/${token}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

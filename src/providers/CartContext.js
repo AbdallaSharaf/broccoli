@@ -94,7 +94,7 @@ const CartContextProvider = ({ children }) => {
         ],
       });
   
-      const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/cart", {
+      const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/cart", {
         method: "POST",
         headers,
         body,
@@ -151,7 +151,7 @@ const CartContextProvider = ({ children }) => {
           quantity: item.quantity,
         })),
       });
-      const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/cart", {
+      const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/cart", {
         method: "POST",
         headers,
         body,
@@ -193,7 +193,7 @@ const CartContextProvider = ({ children }) => {
         code: coupon,
       });
   
-      const response = await fetch("https://fruits-heaven-api.vercel.app/api/v1/cart/coupon", {
+      const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/cart/coupon", {
         method: "POST",
         headers,
         body,
@@ -247,7 +247,7 @@ const CartContextProvider = ({ children }) => {
   
       if (isGuest && !guest) return;
   
-      const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/cart/${currentId}`, {
+      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/cart/${currentId}`, {
         method: "DELETE",
         headers,
       });

@@ -1,7 +1,7 @@
 export const getUserWishlist = async (token) => {
     if (!token) return []; // Don't fetch anything if no token
 
-    const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/wishlist`, {
+    const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/wishlist`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -15,7 +15,7 @@ export const getUserWishlist = async (token) => {
 export const getGuestWishlist = async (token) => {
     if (!token) return []; // Don't fetch anything if no token
 
-    const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/wishlist`, {
+    const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/wishlist`, {
       headers: {
         tempId: token,
       },
