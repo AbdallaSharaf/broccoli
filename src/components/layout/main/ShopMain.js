@@ -44,7 +44,7 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   useEffect(() => {
     const fetchCategoryName = async () => {
       try {
-        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/category/${category}`);
+        const response = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/category/${category}?deleted=false&available=true`);
         if (!response.ok) {
           throw new Error("Failed to fetch filtered items");
         }

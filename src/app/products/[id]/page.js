@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 const getProductById = async (id) => {
   try {
     console.log("Fetching product with ID:", id);
-    const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product/${id}`, {
+    const res = await fetch(`https://fruits-heaven-api.vercel.app/api/v1/product/${id}?deleted=false&available=true`, {
       // method: "GET",
       // // headers: {
       // //   "Content-Type": "application/json"

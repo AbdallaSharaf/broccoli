@@ -18,7 +18,7 @@ const filterItems = async (filters) => {
 
   // Determine API URL based on category presence
   const apiUrl = filters.category
-    ? `https://fruits-heaven-api.vercel.app/api/v1/product/category/${filters.category}`
+    ? `https://fruits-heaven-api.vercel.app/api/v1/product/category/${filters.category}?PageCount=10000&deleted=false&available=true`
     : `https://fruits-heaven-api.vercel.app/api/v1/product?${queryParams.toString()}`;
 
   try {
