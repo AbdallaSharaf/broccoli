@@ -24,12 +24,12 @@ const CallToAction2 = () => {
                 >
                   MAKE A CALL
                 </Link>{" "}
-                <Link
+                {/* <Link
                   href="/contact"
                   className="btn btn-transparent btn-effect-4 white-color"
                 >
                   CONTACT US
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

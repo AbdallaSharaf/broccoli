@@ -61,9 +61,9 @@ const FaqPrimary = () => {
               <div className="need-support text-center mt-100">
                 <h2>Still need help? Reach out to support 24/7:</h2>
                 <div className="btn-wrapper mb-30">
-                  <Link href="/contact" className="theme-btn-1 btn">
+                  {/* <Link href="/contact" className="theme-btn-1 btn">
                     Contact Us
-                  </Link>
+                  </Link> */}
                 </div>
                 <h3>
                   <i className="fas fa-phone"></i> +0123-456-789

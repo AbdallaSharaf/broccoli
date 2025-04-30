@@ -32,15 +32,15 @@ const About1 = ({ title }) => {
                 </p>
                 <div className="list-item-with-icon">
                   <ul>
-                    <li>
+                    {/* <li>
                       <Link href="/contact">24/7 Online Support</Link>
-                    </li>
-                    <li>
+                    </li> */}
+                    {/* <li>
                       <Link href="/team">Expert Team</Link>
                     </li>
                     <li>
                       <Link href="/services/1">Pure Equipment</Link>
-                    </li>
+                    </li> */}
                     <li>
                       <Link href="/shop">Unlimited Product</Link>
                     </li>

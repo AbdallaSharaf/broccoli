@@ -20,9 +20,9 @@ const FooterCustomerCare = () => {
             <li>
               <Link href="/faq">{t("FAQ")}</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/contact">{t("Contact us")}</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

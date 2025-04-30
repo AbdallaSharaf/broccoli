@@ -42,7 +42,7 @@ const About4 = () => {
                 </p>
                 <div className="list-item-with-icon">
                   <ul>
-                    <li>
+                    {/* <li>
                       <Link href="/contact">24/7 Online Support</Link>
                     </li>
                     <li>
@@ -50,7 +50,7 @@ const About4 = () => {
                     </li>
                     <li>
                       <Link href="/services/1">Pure Equipment</Link>
-                    </li>
+                    </li> */}
                     <li>
                       <Link href="/shop">Unlimited Product</Link>
                     </li>

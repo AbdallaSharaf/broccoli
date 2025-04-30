@@ -9,9 +9,9 @@ const CallToAction3 = () => {
             <div className="call-to-action-inner call-to-action-inner-2 text-center">
               <h2>Get A Free Service Or Make A Call</h2>
               <div className="btn-wrapper">
-                <Link className="btn btn-effect-4 btn-white" href="/contact">
+                {/* <Link className="btn btn-effect-4 btn-white" href="/contact">
                   <i className="fas fa-phone-volume"></i> MAKE A CALL
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

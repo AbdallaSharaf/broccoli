@@ -42,12 +42,12 @@ const ComingSoonMain = () => {
                 </form>
               </div>
               <div className="btn-wrapper mt-50">
-                <Link
+                {/* <Link
                   href="/contact"
                   className="btn theme-btn-2 btn-effect-2 text-uppercase"
                 >
                   Contact Us
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

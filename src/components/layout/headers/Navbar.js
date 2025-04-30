@@ -440,16 +440,6 @@ const Navbar = () => {
               {navItems?.map((item, idx) => (
                 <NavItem key={idx} item={item} />
               ))}
-              {isNavbarAppointmentBtn ||
-              headerSize === "lg" ||
-              headerStyle === 2 ||
-              headerStyle === 4 ? (
-                <li className="special-link text-uppercase">
-                  <Link href="/contact">{t("GETAQuote")}</Link>
-                </li>
-              ) : (
-                ""
-              )}
             </ul>
           </div>
         </nav>

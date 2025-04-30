@@ -12,7 +12,7 @@ const CallToAction6 = () => {
             <div className="call-to-action-inner call-to-action-inner-5 text-decoration text-center">
               <h2 className="white-color">
                 24/7 Availability, Make{" "}
-                <Link href="/contact">An Appointment</Link>
+                {/* <Link href="/contact">An Appointment</Link> */}
               </h2>
             </div>
           </div>
