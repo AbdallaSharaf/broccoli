@@ -73,7 +73,8 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
 
       const data = await response.json();
 
-      if (!response.ok) {creteAlert("error", t(data.message))}
+      if (!response.ok) {creteAlert("error", t(data.message)) 
+        return;}
       else {creteAlert("success", t(data.message))}
       
       setSuccess(t('reviewSubmitted'));
