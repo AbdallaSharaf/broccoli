@@ -150,6 +150,8 @@
         "enterEmail": "أدخل عنوان البريد الإلكتروني",
         "password": "كلمة المرور",
         "Cancel": "الغاء",
+        "You have already reviewed this product.": "لقد قمت بتقييم هذا المنتج بالفعل.",
+        "You can only review products you have purchased.": "يمكنك تقييم المنتجات التي قمت بشراءها.",
         "signIn": "تسجيل الدخول",
         "Order cannot be canceled. It must be within the first hour and have a status of newOrder or accepted.": "لا يمكن إلغاء الطلب. يجب أن يكون خلال الساعة الأولى وحالته 'طلب جديد' أو 'تم القبول'.",
         "noAccount": "ليس لديك حساب؟",

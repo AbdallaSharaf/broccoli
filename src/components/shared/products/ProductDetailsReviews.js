@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUserContext } from '@/providers/UserContext';
 import { useTranslations } from '@/hooks/useTranslate';
+import useSweetAlert from '@/hooks/useSweetAlert';
 
 const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
   const [rating, setRating] = useState(0);
@@ -15,7 +16,7 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
+  const creteAlert = useSweetAlert()
   const handleRatingClick = (selectedRating) => {
     if (!userData) return;
     setRating(selectedRating);
@@ -70,7 +71,10 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
         }),
       });
 
-      if (!response.ok) throw new Error(t('submitFailed'));
+      const data = await response.json();
+
+      if (!response.ok) {creteAlert("error", t(data.message))}
+      else {creteAlert("success", t(data.message))}
       
       setSuccess(t('reviewSubmitted'));
       setRating(0);
