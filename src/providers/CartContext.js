@@ -61,6 +61,8 @@ const CartContextProvider = ({ children }) => {
         value: currentProduct.price,
         currency: "SAR",
       });
+
+      snaptr('track', 'ADD_CART', {'price': currentProduct.price, 'currency': 'SAR', 'item_ids': [currentId], 'number_items': addedQuantity})
       const token = localStorage.getItem("token");
       const guestId = localStorage.getItem("guest");
       // console.log("guestId", guestId)

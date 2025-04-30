@@ -183,6 +183,8 @@ const [locationError, setLocationError] = useState(null);
         value: data.order.totalPrice,
         currency: "SAR",
       });
+      const productIds = products.items.map((item) => item.productId);
+      snaptr('track', 'PURCHASE', {'price': data.order.totalPrice, 'currency': 'SAR', 'transaction_id': data.order.invoiceId, 'item_ids': productIds, 'number_items': data.order.totalQuantity, 'payment_info_available': 0, 'success': 1, 'user_email': data.order.shippingAddress.email, 'user_phone_number': data.order.shippingAddress.phone|| data.order.user.phone, 'firstname': data.order.shippingAddress.name.split(' ')[0]|| data.order.user.name.split(' ')[0], 'lastname': data.order.shippingAddress.name.split(' ')[1]|| data.order.user.name.split(' ')[1], 'geo_state': data.order.shippingAddress.street, 'geo_city': data.order.shippingAddress.city, 'geo_country': data.order.shippingAddress.country, 'geo_postal_code': data.order.shippingAddress.zipCode})
       // ✅ 2. Send the note in a separate API call (if exists)
       creteAlert("success", "Order placed successfully!");
       setCartProducts({_id: "" ,items: [] });

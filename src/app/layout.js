@@ -26,6 +26,7 @@ const rajdhani = Rajdhani({
 //   description: "Fruits heaven",
 // };
 const PIXEL_ID = "1359273798966268"; 
+const SNAP_ID = "602d4f35-2199-4ae7-98b8-dad32da111db"; 
 export default function RootLayout({ children }) {
 
 
@@ -127,6 +128,23 @@ return (
           `,
         }}
       />
+      <Script
+  id="snapchat-pixel"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: `
+      (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function(){
+      a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};
+      a.queue=[];var s='script';r=t.createElement(s);r.async=!0;
+      r.src=n;var u=t.getElementsByTagName(s)[0];
+      u.parentNode.insertBefore(r,u);})(window,document,
+      'https://sc-static.net/scevent.min.js');
+
+      snaptr('init', '${SNAP_ID}'); 
+      snaptr('track', 'PAGE_VIEW');
+    `,
+  }}
+/>
     </head>
     <body className={open_sans.className}>
               <Suspense fallback={<div></div>}>
