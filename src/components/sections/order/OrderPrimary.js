@@ -7,7 +7,7 @@ import React from 'react'
 const OrderPrimary = (orderObject) => {
     const t = useTranslations("common");
     const order = orderObject.order;
-    
+    console.log(order.shippingFee)
     return (
       <div className='container'>
         <div className="row">
@@ -17,6 +17,10 @@ const OrderPrimary = (orderObject) => {
               <h4 className="title-2">{t("Billing Address")}</h4>
               <table className="table">
                 <tbody>
+                  <tr>
+                    <td><strong>{t("Invoice")}</strong></td>
+                    <td>{order?.invoiceId || "N/A"}</td>
+                  </tr>
                   <tr>
                     <td><strong>{t("Name")}</strong></td>
                     <td>{order?.shippingAddress?.name || "N/A"}</td>
@@ -77,12 +81,12 @@ const OrderPrimary = (orderObject) => {
                       <strong>{order.subTotal} {t("SAR")}</strong>
                     </td>
                   </tr>
-                  {order.shippingFee && (
-                    <tr>
-                      <td><strong>{t("Shipping and Handling")}</strong></td>
+                  {order.shippingFee > 0 && (
+                  <tr>
+                    <td><strong>{t("Shipping and Handling")}</strong></td>
                       <td><strong>{modifyAmount(order.shippingFee)} {t("SAR")}</strong></td>
-                    </tr>
-                  )}
+                  </tr>
+                    )}
                   <tr>
                     <td>
                       <strong>{t("Order Total")}</strong>

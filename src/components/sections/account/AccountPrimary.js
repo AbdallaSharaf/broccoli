@@ -344,50 +344,67 @@ const AccountPrimary = () => {
                         <div className="ltn__myaccount-tab-content-inner">
                           {!loading ? (<div className="table-responsive">
                             <table className="table">
-                              <thead>
-                                <tr>
-                                  <th>{t("Order")}</th>
-                                  <th>{t("Date")}</th>
-                                  <th>{t("Status")}</th>
-                                  <th>{t("Total")}</th>
-                                  <th>{t("Action")}</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                              {orders.length > 0 ? (
-                                orders.map((order, index) => (
-                                  <tr key={order._id || index}>
-                                    <td>{index + 1}</td>
-                                    <td>{formatDate(order.createdAt, locale)}</td>
-                                    <td>
-                                      {t(order.status)}
-                                    </td>
-                                    <td>{order.totalPrice} {t("SAR")}</td>
-                                    <td>
-                                      <Link href={`/order/${order._id}`} className="mx-1">{t("View")} </Link>
-                                      {(order.status === "newOrder" || order.status === "accepted") && <>
-                                        / 
-                                        <Link
-                                          href={`#`}
-                                          className="mx-1"
-                                          onClick={(e) => {e.preventDefault(); cancelOrder(order._id)}}
-                                          >
-                                          { t("Cancel")}
-                                        </Link>
-                                        </>
-                                      }
-                                    </td>
-                                  </tr>
-                                ))
-                              ) : (
-                                <tr>
-                                  <td colSpan="5" className="text-center">
-                                    {t("No orders found")}
-                                  </td>
-                                </tr>
-                              )}
-                            </tbody>
-                            </table>
+  <thead>
+    <tr>
+      <th>{t("Order")}</th>
+      <th>{t("Date")}</th>
+      <th>{t("Status")}</th>
+      <th>{t("Invoice ID")}</th>
+      <th>{t("Paid")}</th>
+      <th>{t("Delivered")}</th>
+      <th>{t("Total")}</th>
+      <th>{t("Action")}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {orders.length > 0 ? (
+      orders.map((order, index) => (
+        <tr key={order._id || index}>
+          <td>{index + 1}</td>
+          <td>{formatDate(order.createdAt, locale)}</td>
+          <td>{t(order.status)}</td>
+          <td>{order.invoiceId || t("N/A")}</td>
+          <td>
+            {order.isPaid ? (
+              <span className="text-green-500">{t("Yes")}</span>
+            ) : (
+              <span className="text-red-500">{t("No")}</span>
+            )}
+          </td>
+          <td>
+            {order.isDelivered ? (
+              <span className="text-green-500">{t("Yes")}</span>
+            ) : (
+              <span className="text-red-500">{t("No")}</span>
+            )}
+          </td>
+          <td>{order.totalPrice} {t("SAR")}</td>
+          <td>
+            <Link href={`/order/${order._id}`} className="mx-1">{t("View")}</Link>
+            {(order.status === "newOrder" || order.status === "accepted") && (
+              <>
+                / 
+                <Link
+                  href={`#`}
+                  className="mx-1"
+                  onClick={(e) => {e.preventDefault(); cancelOrder(order._id)}}
+                >
+                  {t("Cancel")}
+                </Link>
+              </>
+            )}
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="8" className="text-center">
+          {t("No orders found")}
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>
                           </div>) : (<div className="text-center">{t("Loading")}</div>)}
                         </div>
                       </div>

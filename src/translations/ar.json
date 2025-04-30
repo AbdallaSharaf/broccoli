@@ -22,6 +22,12 @@
     },
     "common": {
         "home": "الرئيسية",
+        "Invoice": "فاتورة",
+        "Invoice ID": "رقم الفاتورة",
+        "Paid": "مدفوع",
+        "Delivered": "تم التوصيل",
+        "No": "لا",
+        
         "orderDetails": "تفاصيل الطلب",
         "categories": "الفئات",
         "No Product Found!": "لم يتم العثور على منتجات",

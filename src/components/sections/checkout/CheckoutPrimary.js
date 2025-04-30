@@ -625,7 +625,7 @@ const [locationError, setLocationError] = useState(null);
                       <strong>{products.subTotal} {t("SAR")}</strong>
                     </td>
                   </tr>
-                  {products.shippingFee && (
+                  {products.shippingFee > 0 && (
                     <tr>
                       <td><strong>{t("Shipping and Handling")}</strong></td>
                       <td><strong>{modifyAmount(products.shippingFee)} {t("SAR")}</strong></td>
