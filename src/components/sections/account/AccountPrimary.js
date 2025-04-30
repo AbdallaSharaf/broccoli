@@ -1,4 +1,5 @@
 "use client"
+import useSweetAlert from "@/hooks/useSweetAlert";
 import { useTranslations } from "@/hooks/useTranslate";
 import { formatDate } from "@/libs/formatDate";
 import { useLanguageContext } from "@/providers/LanguageContext";
@@ -10,6 +11,7 @@ const AccountPrimary = () => {
   const { logout, userData } = useUserContext(); // Get login function from context
   const t = useTranslations("common");
   const [orders, setOrders] = useState([]);
+  const creteAlert = useSweetAlert();
   const { locale } = useLanguageContext();
   const [formData, setFormData] = useState({
     name: '',
@@ -198,34 +200,69 @@ const AccountPrimary = () => {
   };
   
 
-  // console.log(user)
+  const [loading, setLoading] = useState(false); // Add loading state
+
+  const cancelOrder = async (orderId) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order/cancelOrder/${orderId}`, {
+        method: 'POST', // Or PUT/POST based on your backend
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        creteAlert("error", t(data.message));
+      } else {
+        creteAlert("success", "Success! order cancelled.");
+      }
+      // Optional: refetch orders or update local state
+    } catch (error) {
+      console.error("Error cancelling order:", error);
+      creteAlert("error", t(error.message));
+    }
+  };
+
   useEffect(() => {
     const fetchOrders = async () => {
+      setLoading(true); // Start loading
       try {
-        // Get token from local storage
         const token = localStorage.getItem('token');
         if (!token || !userData?._id) {
           console.error("User not found in local storage");
           return;
         }
-        const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order?keyword=${userData?._id}&PageCount=1000`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
+  
+        const response = await fetch(
+          `https://fruits-heaven-api.onrender.com/api/v1/order?keyword=${userData?._id}&PageCount=1000`,
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
           }
-        });
+        );
   
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+  
         const data = await response.json();
-        // console.log(data)
-        setOrders(data.data || []); // Ensure we always have an array
+        setOrders(data.data || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
-    
+  
     if (userData?._id) {
       fetchOrders();
     }
@@ -305,7 +342,7 @@ const AccountPrimary = () => {
                       </div>
                       <div className="tab-pane fade" id="liton_tab_1_2">
                         <div className="ltn__myaccount-tab-content-inner">
-                          <div className="table-responsive">
+                          {!loading ? (<div className="table-responsive">
                             <table className="table">
                               <thead>
                                 <tr>
@@ -327,7 +364,18 @@ const AccountPrimary = () => {
                                     </td>
                                     <td>{order.totalPrice} {t("SAR")}</td>
                                     <td>
-                                      <Link href={`/order/${order._id}`}>{t("View")}</Link>
+                                      <Link href={`/order/${order._id}`} className="mx-1">{t("View")} </Link>
+                                      {(order.status === "newOrder" || order.status === "accepted") && <>
+                                        / 
+                                        <Link
+                                          href={`#`}
+                                          className="mx-1"
+                                          onClick={(e) => {e.preventDefault(); cancelOrder(order._id)}}
+                                          >
+                                          { t("Cancel")}
+                                        </Link>
+                                        </>
+                                      }
                                     </td>
                                   </tr>
                                 ))
@@ -340,7 +388,7 @@ const AccountPrimary = () => {
                               )}
                             </tbody>
                             </table>
-                          </div>
+                          </div>) : (<div className="text-center">{t("Loading")}</div>)}
                         </div>
                       </div>
 
