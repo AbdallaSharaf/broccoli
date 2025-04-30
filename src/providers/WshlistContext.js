@@ -82,6 +82,8 @@ const WishlistContextProvider = ({ children }) => {
       if (data?.guest && !guestId) {
         localStorage.setItem("guest", data.guest);
       }
+
+      snaptr('track', 'ADD_TO_WISHLIST', {'item_ids': [currentId], 'number_items': data.wishlist.length})
       setWishlistProducts(wishlist);
       addItemsToLocalstorage("wishlist", wishlist);
       creteAlert("success", "Success! Wishlist updated.");
