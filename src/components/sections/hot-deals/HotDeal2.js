@@ -13,6 +13,7 @@ const HotDeal2 = ({ type }) => {
   const [data, setData] = useState({en: "", ar: ""});
   const [loading, setLoading] = useState(true);
   const { locale } = useLanguageContext();
+  const [timestamp, setTimestamp] = useState('');
   useEffect(() => {
     const fetchSettings = async () => {
       setLoading(true);
@@ -24,7 +25,9 @@ const HotDeal2 = ({ type }) => {
         const json = await res.json(); // Important!
   
         const data = json.SiteSettings?.offersParagraph; // Use optional chaining to avoid crash if missing
+        const timestamp = json.SiteSettings?.offersTime; // Use optional chaining to avoid crash if missing
         setData(data);
+        setTimestamp(timestamp);
       } catch (error) {
         console.error('Error fetching offer paragraphs:', error);
       } finally {
@@ -59,7 +62,11 @@ const HotDeal2 = ({ type }) => {
               <h1 className="h1">
                 {data[locale]}
               </h1>
-              <Countdown date="2025-12-01" fullFormat={false} />
+              <Countdown 
+                timestamp={timestamp} 
+                fullFormat={false} 
+                onExpire={() => console.log('Countdown finished!')}
+              />
               <div className="btn-wrapper animated">
                 <Link
                   href="/shop"

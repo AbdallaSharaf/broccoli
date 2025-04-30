@@ -168,11 +168,6 @@ const ProductDetailsPrimary = ({product}) => {
             <div className="col-lg-4">
               <aside className="sidebar ltn__shop-sidebar ltn__right-sidebar">
                 <SidebarTopRatedProducs />
-                <SidebarBanner
-                  image={"/img/banner/2.jpg"}
-                  imgWidth={740}
-                  imgHeight={440}
-                />
               </aside>
             </div>
           )}

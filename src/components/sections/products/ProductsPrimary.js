@@ -143,7 +143,7 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
                     {/* <!-- ltn__product-item --> */}
                     {currentItems?.map((product, idx) => (
                       <div className="col-lg-12" key={idx}>
-                        <ProductCardPrimary2 product={product} />
+                        <ProductCardPrimary2 product={product} isShowDisc={true}/>
                       </div>
                     ))}
                   </div>

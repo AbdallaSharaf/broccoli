@@ -119,7 +119,7 @@ const ProductDetailsRight = ({ product }) => {
         </ul>
       </div> */}
       <h3>{getTranslatedName(name)}</h3>
-      {(description.ar || description.en) && <h4>{getTranslatedName(description)}</h4>}
+      {(description.ar || description.en) && <h4 className="mb-2">{getTranslatedName(description)}</h4>}
       {/* price */}
       <div className="product-price text-nowrap">
         <span>

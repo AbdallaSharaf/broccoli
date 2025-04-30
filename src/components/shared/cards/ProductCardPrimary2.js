@@ -41,7 +41,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
         <Link href={`/products/${_id}`}>
           <Image src={imgCover || '/img/product/1.png'} alt="#" width={1000} height={1000} />
         </Link>
-        {status || isShowDisc ? (
+        {isShowDisc ? (
           <div className="product-badge">
             <ul>
               {isShowDisc ? (
@@ -112,7 +112,7 @@ const ProductCardPrimary2 = ({ product, isShowDisc }) => {
         </div>
 
         <div className="product-brief">
-          <p>{sliceText(getTranslatedName(description), 140)}</p>
+          <h6>{sliceText(getTranslatedName(description), 140)}</h6>
         </div>
         <div className="product-hover-action">
           <ul>

@@ -24,7 +24,6 @@ const ProductSidebar = () => {
       <SidebarSearch />
 
       {/* <!-- Banner Widget --> */}
-      <SidebarBanner image={"/img/banner/banner-2.jpg"} />
     </aside>
   );
 };

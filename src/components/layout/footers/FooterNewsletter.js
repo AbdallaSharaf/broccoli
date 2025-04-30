@@ -7,19 +7,7 @@ const FooterNewsletter = () => {
   return (
     <div className="col-xl-3 col-md-6 col-sm-12 col-12">
       <div className="footer-widget footer-newsletter-widget">
-        <h4 className="footer-title">{t("Newsletter")}</h4>
-        <p>{t("Subscribe to our weekly Newsletter and receive updates via email.")}</p>
-        <div className="footer-newsletter">
-          <form action="#">
-            <input type="email" name="email" placeholder={t("email")} />
-            <div className="btn-wrapper">
-              <button className="theme-btn-1 btn" type="submit">
-                <i className="fas fa-location-arrow"></i>
-              </button>
-            </div>
-          </form>
-        </div>
-        <h5 className="mt-30">{t("We Accept")}</h5>
+        <h4 className="footer-title">{t("We Accept")}</h4>
         <Image
           src="/img/icons/payment-4.png"
           width={370}
