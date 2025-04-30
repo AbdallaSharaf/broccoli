@@ -31,7 +31,7 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
     setError("");
     try {
       const result = await login(loginData.email, loginData.password);
-      if (!result) throw new Error(t('loginFailed'));
+      if (!result) throw new Error(t("Invalid email or password"));
     } catch (err) {
       setError(err.message || t('somethingWentWrong'));
     }
@@ -85,15 +85,8 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
       setIsSubmitting(false);
     }
   };
-  const dummyReview = [{
-    user: {
-      name: "John Doe",
-      image: "/img/user/default-user.jpg" // Make sure this image exists in your public folder
-    },
-    comment: "This is a great product! I'm very satisfied with my purchase.",
-    rating: 5,
-    createdAt: new Date().toISOString()
-  }];
+
+
 
   const renderStars = (currentRating, interactive = false) => {
     return [1, 2, 3, 4, 5].map((star) => (
@@ -112,7 +105,6 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
       </li>
     ));
   };
-
   return (
     <div className="ltn__shop-details-tab-content-inner">
       {reviewsLength > 0 && <>
@@ -136,7 +128,7 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
       <div className="ltn__comment-area mb-30">
         <div className="ltn__comment-inner">
           <ul>
-            {reviewsLength.length > 0 ? (
+            {reviewsLength > 0 ? (
               reviews?.map(({ user, comment, createdAt, rating: reviewRating }, idx) => (
                 <li key={idx}>
                   <div className="ltn__comment-item clearfix">

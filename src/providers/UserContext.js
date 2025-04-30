@@ -115,12 +115,11 @@ const register = async ({ firstname, lastname, email, password, phone }) => {
     });
 
     const data = await res.json();
-    console.log(res)
     if (!res.ok) throw new Error(data.message || "Registration failed");
-    return true;
+    return {status: true, message: data.message};
   } catch (error) {
     console.error("Registration error:", error.message);
-    return null;
+    return {status: false, message: error.message};
   }
 };
 

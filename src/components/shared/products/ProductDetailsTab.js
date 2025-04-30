@@ -10,6 +10,7 @@ const ProductDetailsTab = ({ product }) => {
   console.log(product)
   // variables
   const reviewsLength = countCommentLength(product?.reviews);
+  console.log(product)
   return (
     <div className="ltn__shop-details-tab-inner ltn__shop-details-tab-inner-2">
       <div className="ltn__shop-details-tab-menu">
@@ -33,7 +34,7 @@ const ProductDetailsTab = ({ product }) => {
         {/* reviews */}
         <div className="tab-pane fade" id="liton_tab_details_1_2">
           <ProductDetailsReviews
-            reviews={product?.reviews? product.reviews : []}
+            reviews={product?.reviews || []}
             reviewsLength={reviewsLength}
             productId={product?._id}
           />

@@ -67,10 +67,10 @@ const RegisterPrimary = () => {
     // Submit
     const result = await register({ firstname, lastname, email, password, phone });
   
-    if (result) {
+    if (result.status) {
       router.push("/wait-verification");
     } else {
-      setError(t("Registration failed. Please try again."));
+      setError(result.message || t("Registration failed. Please try again."));
     }
   };
   
