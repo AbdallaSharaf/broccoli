@@ -60,7 +60,7 @@ const ProductDetailsTab2 = ({ product }) => {
                   className="tab-pane fade active show"
                   id="liton_tab_details_1_1"
                 >
-                  <TabDescription />
+                  <TabDescription product={product} />
                 </div>
                 <div className="tab-pane fade" id="liton_tab_details_1_2">
                   <ProductDetailsReviews

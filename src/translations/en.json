@@ -16,12 +16,13 @@
         "SAR": "SAR",
         "english": "English",
         "arabic": "Arabic",
-        "GETAQuote": "GET A QUOTE",
+        "GETAQuote": "CONTACT US",
         "switchLanguage": "English"
     },
     "common": {
         "home": "Home",
         "cartStatus": "Successfully",
+        "No Product Found!": "No Product Found!",
         "Cancel": "Cancel",
         "Verifying Your Account...": "Verifying Your Account...",
         "Account Verified!": "Account Verified!",
@@ -95,6 +96,7 @@
   "Download": "Download",
   "Download File": "Download File",
   "Yes": "Yes",
+  "Loading...": "Loading...",
   "Shipping Address": "Shipping Address",
   "edit": "edit",
   "First name": "First name",

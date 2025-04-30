@@ -16,7 +16,7 @@
         "SAR": "ر.س",
         "menu": "القائمة",
         "shoppingCart": "سلة التسوق",
-        "GETAQuote": "احصل على عرض سعر",
+        "GETAQuote": "تواصل معنا",
         "switchLanguage": "العربية"
 
     },
@@ -24,6 +24,8 @@
         "home": "الرئيسية",
         "orderDetails": "تفاصيل الطلب",
         "categories": "الفئات",
+        "No Product Found!": "لم يتم العثور على منتجات",
+        "Loading...": "جار التحميل...",
         "moreCategories": "المزيد من الفئات",
         "No products valid for the coupon": "لا توجد منتجات صالحة لاستخدام الكوبون",
         "user reached limit for this coupon": "لقد وصلت إلى الحد الأقصى لاستخدام هذا الكوبون",

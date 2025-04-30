@@ -20,9 +20,9 @@ import ProductDetailsTab2 from "@/components/shared/products/ProductDetailsTab2"
 import { useLanguageContext } from '@/providers/LanguageContext';
 import { useTranslations } from '@/hooks/useTranslate';
 
-const ProductDetailsPrimary = () => {
+const ProductDetailsPrimary = ({product}) => {
   const { isNotSidebar, type } = useCommonContext();
-  const { setCurrentProduct, product } = useProductContext();
+  const { setCurrentProduct } = useProductContext();
   const { locale } = useLanguageContext();
   const t = useTranslations("common");
   const thumbsSwiper = useRef(null);

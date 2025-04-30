@@ -19,6 +19,7 @@ const ProductDetailsRight = ({ product }) => {
     name,
     price,
     priceAfterDiscount,
+    description,
     priceAfterExpiresAt,
     reviews = [],
     category = []
@@ -81,7 +82,7 @@ const ProductDetailsRight = ({ product }) => {
   if (!product) {
     return;
   }
-  // console.log("quantity", quantity)
+  // console.log("description", description)
   return (
     <div className="modal-product-info shop-details-info pl-0" id="details">
       {/* ratings */}
@@ -118,6 +119,7 @@ const ProductDetailsRight = ({ product }) => {
         </ul>
       </div> */}
       <h3>{getTranslatedName(name)}</h3>
+      {(description.ar || description.en) && <h4>{getTranslatedName(description)}</h4>}
       {/* price */}
       <div className="product-price text-nowrap">
         <span>

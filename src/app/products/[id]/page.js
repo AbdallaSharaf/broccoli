@@ -1,6 +1,5 @@
 import ProductDetailsMain from "@/components/layout/main/ProductDetailsMain";
 import PageWrapper from "@/components/shared/wrappers/PageWrapper";
-import { useProductContext } from "@/providers/ProductContext";
 import { notFound } from "next/navigation";
 
 

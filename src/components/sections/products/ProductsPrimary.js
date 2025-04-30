@@ -7,6 +7,7 @@ import ShopDataShowing from "@/components/shared/products/ShopDataShowing";
 import ShopShortSelect from "@/components/shared/products/ShopShortSelect";
 import ProductSidebar from "@/components/shared/sidebars/ProductSidebar";
 import usePagination from "@/hooks/usePagination";
+import { useTranslations } from "@/hooks/useTranslate";
 import filterItems from "@/libs/filterItems";
 import { useCommonContext } from "@/providers/CommonContext";
 import { useProductContext } from "@/providers/ProductContext";
@@ -16,7 +17,8 @@ import React, { useEffect, useState } from "react";
 const ProductsPrimary = ({ isSidebar, currentTapId }) => {
   const [arrangeInput, setArrangeInput] = useState("default");
   const [currentTab, setCurrentTab] = useState(currentTapId ? currentTapId : 0);
-  const { products } = useProductContext();
+  const { products, loading } = useProductContext();
+  const t = useTranslations("common"); // ✅ use translation namespace
   const limit =
     currentTab === 1
       ? isSidebar === false
@@ -47,6 +49,7 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab]);
 
+
   return (
     <div className="ltn__product-area ltn__product-gutter mb-120">
       <div className="container">
@@ -56,7 +59,8 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
               isSidebar === "left" ? "order-lg-2 " : ""
             }`}
           >
-            {!totalPages ? <Nodata text={"No Product Found!"} /> : ""}
+            {loading ? <Nodata text={t("Loading...")} /> : ""}
+            {(!totalPages && !loading) ? <Nodata text={t("No Product Found!")} /> : ""}
 
             <div
               className={`ltn__shop-options ${!totalPages ? "no-data" : ""}`}

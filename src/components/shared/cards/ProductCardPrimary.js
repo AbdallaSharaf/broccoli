@@ -16,9 +16,6 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
     ? product
     : {};
   const { setCurrentProduct } = useProductContext();
-  const { netPrice } = countDiscount(price, 0);
-  const netPriceModified = modifyAmount(netPrice);
-  const priceModified = modifyAmount(price);
   const { addProductToCart } = useCartContext();
   const { addProductToWishlist } = useWishlistContext();
   return (
