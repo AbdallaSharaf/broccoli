@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 const getProductById = async (id) => {
   try {
     console.log("Fetching product with ID:", id);
-    const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/product/${id}?deleted=false&available=true`, {
+    const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/product/${id}`, {
       // method: "GET",
       // // headers: {
       // //   "Content-Type": "application/json"
@@ -28,7 +28,7 @@ const getProductById = async (id) => {
 const ProductDetails = async ({ params }) => {
   const { id } = params;
   const product = await getProductById(id);
-  if (!product) {
+  if (!product || product.deleted || !product.available) {
     notFound();
   }
   return (
