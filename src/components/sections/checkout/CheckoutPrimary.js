@@ -635,7 +635,7 @@ const [locationError, setLocationError] = useState(null);
                       <strong>{t("Order Total")}</strong>
                     </td>
                     <td>
-                      <strong>{products.subTotal + products.shippingFee} {t("SAR")}</strong>
+                      <strong>{products.subTotal > 100 ? products.subTotal : products.subTotal + 15} {t("SAR")}</strong>
                     </td>
                   </tr>
                 </tbody>
