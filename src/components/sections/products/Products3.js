@@ -22,7 +22,6 @@ const Products3 = ({
   if (!topProducts || topProducts.length === 0) {
     return null;
   }
-  console.log(t("topProducts"));
   return (
     <section>
       <div

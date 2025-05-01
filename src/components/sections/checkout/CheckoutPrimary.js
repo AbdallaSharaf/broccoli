@@ -74,7 +74,6 @@ const [locationError, setLocationError] = useState(null);
   
     try {
       const result = await login(loginData.email, loginData.password); // Call login function
-      console.log(result)
       if (result) {
         updateCart(products.items);
         // setCartProducts(result.cart); // update UI cart from merged version
@@ -84,7 +83,6 @@ const [locationError, setLocationError] = useState(null);
         setError("Invalid email or password"); // Show error if login fails
       }
     } catch (err) {
-      console.log(err)
       setError("Something went wrong. Please try again."); // Handle unexpected errors
     }
   };
@@ -219,7 +217,6 @@ const [locationError, setLocationError] = useState(null);
       setCouponCode(products.coupon?.code || "");
     }
   }, [products]);
-  console.log(products)
   useEffect(() => {
     if (userData) {
       const [firstName = "", lastName = ""] = userData.name?.split(" ") || [];
@@ -235,7 +232,6 @@ const [locationError, setLocationError] = useState(null);
       }));
     }
   }, [userData]);
-  console.log(formData)
   return (
     <div className="ltn__checkout-area mb-105">
       <div className="container">

@@ -7,10 +7,8 @@ import { useTranslations } from "@/hooks/useTranslate";
 
 const ProductDetailsTab = ({ product }) => {
   const t = useTranslations("common");
-  console.log(product)
   // variables
   const reviewsLength = countCommentLength(product?.reviews);
-  console.log(product)
   return (
     <div className="ltn__shop-details-tab-inner ltn__shop-details-tab-inner-2">
       <div className="ltn__shop-details-tab-menu">

@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 
 const getProductById = async (id) => {
   try {
-    console.log("Fetching product with ID:", id);
     const response = await axiosInstance.get(`/product/${id}`);
     
     if (response.status !== 200) {

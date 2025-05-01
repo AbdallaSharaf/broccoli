@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 
 const Offer4 = ({ mt, mb }) => {
     const [slides, setSlides] = useState([]);
-    console.log(slides)
     useEffect(() => {
       const fetchSlides = async () => {
         try {

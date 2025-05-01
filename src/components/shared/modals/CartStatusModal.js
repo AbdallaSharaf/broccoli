@@ -10,7 +10,6 @@ const CartStatusModal = ({ product }) => {
   const { _id, name, imgCover } = product;
   const { cartStatus } = useCartContext();
   const t = useTranslations("common"); // Using the translations
-  console.log(product)
   return (
     <div className="ltn__modal-area ltn__add-to-cart-modal-area">
       <div className="modal fade" id="add_to_cart_modal" tabIndex="-1">

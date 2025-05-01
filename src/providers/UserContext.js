@@ -96,7 +96,6 @@ export const UserContext = ({ children }) => {
   
       return { user: decodedUser, cart: mergedCart };
     } catch (error) {
-      console.log(error)
       console.error("Login error:", error.message);
       return null;
     }

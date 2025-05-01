@@ -48,7 +48,6 @@ export default function LocationPicker() {
 
   const handleSave = async () => {
     if (!selectedLocation) return;
-    console.log("location",selectedLocation ,`https://www.google.com/maps?q=${selectedLocation.lat},${selectedLocation.lon}`)
   //   const res = await fetch('https://your-backend-api.com/api/location', {
   //     method: 'POST',
   //     headers: { 'Content-Type': 'application/json' },

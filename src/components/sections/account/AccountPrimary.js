@@ -177,7 +177,6 @@ const AccountPrimary = () => {
             ]
           }),
         });
-        console.log(res)
   
         const nameEmailData = await res.json();
   
@@ -189,7 +188,6 @@ const AccountPrimary = () => {
       setSuccessMessage(t('Account updated successfully'));
       setTimeout(() => setSuccessMessage(''), 5000);
     } catch (error) {
-      console.log(error)
       setErrors((prev) => ({
         ...prev,
         serverError: error.message || t('An error occurred. Please try again.'),

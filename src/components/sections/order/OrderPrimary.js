@@ -7,7 +7,6 @@ import React from 'react'
 const OrderPrimary = (orderObject) => {
     const t = useTranslations("common");
     const order = orderObject.order;
-    console.log(order.shippingFee)
     return (
       <div className='container'>
         <div className="row">

@@ -112,7 +112,6 @@ const WishlistContextProvider = ({ children }) => {
       };
   
       if (isGuest && !guest) return;
-      console.log(wishlistProducts)
       const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/wishlist`, {
         method: "DELETE",
         headers,
@@ -137,7 +136,6 @@ const WishlistContextProvider = ({ children }) => {
               ? { wishlist: [] }
               : { ...wishlistProducts, wishlist: updatedWishlistItems };
         }
-        console.log(newWishlistProducts)
         setWishlistProducts(newWishlistProducts);
 c
         creteAlert("success", "Item successfully deleted from wishlist.");

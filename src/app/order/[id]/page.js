@@ -5,10 +5,8 @@ import { notFound } from "next/navigation";
 
 const getOrderById = async (id) => {
   try {
-    console.log("Fetching order with ID:", id);
     const response = await axios.get(`/order/${id}`);
     
-    console.log("Fetched order data:", response.data);
     return response.data.order;
   } catch (error) {
     console.error("Error fetching order:", error);

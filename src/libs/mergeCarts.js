@@ -1,6 +1,5 @@
 const mergeCarts = (backendCart, localCart) => {
     const map = new Map();
-    console.log(localCart)
     // Add all from backend
     backendCart?.forEach((item) => {
       map.set(item._id, { ...item });
@@ -14,7 +13,6 @@ const mergeCarts = (backendCart, localCart) => {
         map.set(key, item);
       }
     });
-    console.log(map)
     return Array.from(map.values());
   };
 
