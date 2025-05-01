@@ -51,7 +51,7 @@ export const UserContext = ({ children }) => {
       });
   
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Login failed");
+      if (!res.ok) throw new Error(data.error || "Login failed");
   
       const { token } = data;
       if (!token) throw new Error("No token received");
@@ -94,10 +94,10 @@ export const UserContext = ({ children }) => {
       // addItemsToLocalstorage("cart", updatedBackendCart);
       localStorage.removeItem("guest");
   
-      return { user: decodedUser, cart: mergedCart };
+      return { user: decodedUser, cart: mergedCart, status: true };
     } catch (error) {
       console.error("Login error:", error.message);
-      return null;
+      return {error: error.message, status: false};
     }
   };
   

@@ -74,13 +74,14 @@ const [locationError, setLocationError] = useState(null);
   
     try {
       const result = await login(loginData.email, loginData.password); // Call login function
-      if (result) {
+      if (result.status) {
         updateCart(products.items);
+        setCartProducts(result.cart);
         // setCartProducts(result.cart); // update UI cart from merged version
           // maybe navigate to /dashboard or /cart
         // router.push("/"); // Redirect only if login is successful
       } else {
-        setError("Invalid email or password"); // Show error if login fails
+        setError(t(result.error)); // Show error if login fails
       }
     } catch (err) {
       setError("Something went wrong. Please try again."); // Handle unexpected errors

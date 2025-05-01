@@ -25,12 +25,12 @@ const LoginPrimary = () => {
 
     try {
       const result = await login(formData.email, formData.password);
-      if (result) {
+      if (result.status) {
         updateCart(result.cart);
         setCartProducts(result.cart);
         router.push("/");
       } else {
-        setError(t("Invalid email or password"));
+        setError(t(result.error));
       }
     } catch (err) {
       setError(t("Something went wrong. Please try again."));
