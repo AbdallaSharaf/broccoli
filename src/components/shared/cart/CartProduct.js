@@ -83,7 +83,7 @@ const CartProduct = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWishlist, quantity]);
-
+  console.log(product)
   return (
     <tr onMouseEnter={() => 
     isWishlist? setCurrentProduct({...productData, "quantity": 1}) : setCurrentProduct(product)}>
