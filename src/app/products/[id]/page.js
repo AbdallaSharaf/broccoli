@@ -3,22 +3,22 @@ import PageWrapper from "@/components/shared/wrappers/PageWrapper";
 import axiosInstance from "@/libs/axiosInstance";
 import { notFound } from "next/navigation";
 
-const getProductById = async (id) => {
-  try {
-    const response = await axiosInstance.get(`/product/${id}`);
-    
-    if (response.status !== 200) {
-      throw new Error(`Failed to fetch product: ${response.status}`);
-    }
-
-    return response.data.Product;
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    return null;
-  }
-};
 
 const ProductDetails = async ({ params }) => {
+  const getProductById = async (id) => {
+    try {
+      const response = await axiosInstance.get(`/product/${id}`);
+      
+      if (response.status !== 200) {
+        throw new Error(`Failed to fetch product: ${response.status}`);
+      }
+  
+      return response.data.Product;
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      return null;
+    }
+  };
   const { id } = params;
   const product = await getProductById(id);
   
