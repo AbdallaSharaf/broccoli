@@ -75,30 +75,9 @@ const { user, logout } = useUserContext();
                       src={activeLang.flag}
                       alt={activeLang.name}
                       style={{ width: "24px", height: "24px" }}
+                      onClick={()=>toggleLanguage(locale === "en" ? "ar" : "en")}
                     />
                   </Link>
-                  <ul>
-                    {languages.map((lang) => (
-                      <li key={lang.code}>
-                        <Link
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            toggleLanguage(lang.code);
-                          }}
-                        >
-                          <img
-                            src={lang.flag}
-                            alt={lang.name}
-                            style={{ width: "20px", height: "14px", ...(isRtl
-                              ? { marginLeft: "5px" }
-                              : { marginRight: "5px"}), }}
-                          />
-                          {lang.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
                 </li>
               </ul>
             </div>

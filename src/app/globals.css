@@ -6045,18 +6045,18 @@ ul.wp-block-latest-posts.is-grid.alignwide {
   .header-search-wrap {
     position: relative;
   }
-  .ltn__header-options-2.header-search-1-form {
-    top: 130%;
-    right: 0;
-  }
   .header-search-1-form {
     position: absolute;
     top: 130%;
-    right: -150px;
+    inset-inline-start: -150px;
   }
   
-.single-large-img {
-  position: relative;
+  .ltn__header-options-2 .header-search-1-form {
+    top: 130%;
+    inset-inline-start: 0px;
+  }
+  .single-large-img {
+    position: relative;
   width: 100%;
   padding-top: 100%; /* Creates a 1:1 aspect ratio (square) */
   overflow: hidden;
