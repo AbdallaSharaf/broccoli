@@ -4,12 +4,14 @@ import { jwtDecode } from "jwt-decode"; // Import the decoder
 import mergeCarts from "@/libs/mergeCarts";
 import { getGuestCart, getUserCart } from "@/libs/cartApi";
 import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
+import axiosInstance from "@/libs/axiosInstance";
 
 const userContext = createContext();
 
 export const UserContext = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchUserData = async (token) => {
     try {
@@ -44,44 +46,44 @@ export const UserContext = ({ children }) => {
   // ✅ Login function
   const login = async (email, password) => {
     try {
-      const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/SignIn", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      setLoading(true);
+      const res = await axiosInstance.post("https://fruits-heaven-api.onrender.com/api/v1/auth/SignIn",
+       { email, password },
+      );
   
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Login failed");
-  
+      const data = res.data;
+      if (!res.message === "success") throw new Error(data?.message || "Login failed");
+      
       const { token } = data;
       if (!token) throw new Error("No token received");
-  
+      
       const decodedUser = jwtDecode(token);
       setUser(decodedUser);
       localStorage.setItem("token", token);
       // 👇 Fetch user data here
       await fetchUserData(token);
-
+      
       // Merge local cart with backend cart
       const guest = localStorage.getItem("guest");
       let localCart = { _id: "", items: [] };
-  
+      
       if (guest) {
         const guestCart = await getGuestCart(guest);
         if (guestCart && Array.isArray(guestCart.items)) {
           localCart = guestCart;
         }
       }
-  
+      
       const backendCart = await getUserCart(token);
       const backendItems = Array.isArray(backendCart?.items) ? backendCart.items : [];
       const backendId = backendCart?._id ?? "";
-  
+      
       // If localCart._id is equal to backendCart._id, don't merge
       if (localCart._id === backendId) {
         const updatedBackendCart = { ...backendCart, cart: backendItems };
         addItemsToLocalstorage("cart", updatedBackendCart);
-        return { user: decodedUser, cart: backendItems };
+        setLoading(false);
+        return { user: decodedUser, cart: backendItems, status: true  };
       }
   
       // Merge backend items and local items
@@ -93,9 +95,10 @@ export const UserContext = ({ children }) => {
       // };
       // addItemsToLocalstorage("cart", updatedBackendCart);
       localStorage.removeItem("guest");
-  
+      setLoading(false);
       return { user: decodedUser, cart: mergedCart, status: true };
     } catch (error) {
+      setLoading(false);
       console.error("Login error:", error.message);
       return {error: error.message, status: false};
     }
@@ -191,7 +194,7 @@ const assignNewPassword = async (email, newPassword) => {
   };
 
   return (
-    <userContext.Provider value={{ user, userData, login, logout, register, forgotPassword, verifyResetCode, assignNewPassword }}>
+    <userContext.Provider value={{ user, userData,loading, login, logout, register, forgotPassword, verifyResetCode, assignNewPassword }}>
       {children}
     </userContext.Provider>
   );

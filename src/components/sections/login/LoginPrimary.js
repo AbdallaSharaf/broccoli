@@ -8,7 +8,7 @@ import { useTranslations } from "@/hooks/useTranslate";
 
 const LoginPrimary = () => {
   const t = useTranslations("common");
-  const { login } = useUserContext();
+  const { login, loading } = useUserContext();
   const router = useRouter();
   const { setCartProducts, updateCart } = useCartContext();
 
@@ -29,6 +29,7 @@ const LoginPrimary = () => {
         updateCart(result.cart);
         setCartProducts(result.cart);
         router.push("/");
+        console.log(result.status);
       } else {
         setError(t(result.error));
       }
@@ -70,8 +71,8 @@ const LoginPrimary = () => {
                 />
                 {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
                 <div className="btn-wrapper mt-0">
-                  <button className="theme-btn-1 btn btn-block w-100" type="submit">
-                    {t("Sign In")}
+                  <button className="theme-btn-1 btn btn-block w-100" disabled={loading} type="submit">
+                    {loading ? t("Loading...") : t("Sign In")}
                   </button>
                 </div>
                 <div className="go-to-btn mt-20">
