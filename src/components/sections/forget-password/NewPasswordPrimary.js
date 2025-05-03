@@ -40,7 +40,7 @@ const NewPasswordPrimary = () => {
 
     setLoading(true);
 
-    const result = await assignNewPassword(password, email);
+    const result = await assignNewPassword(email, password);
 
     if (result.success) {
       localStorage.removeItem("resetEmail");
