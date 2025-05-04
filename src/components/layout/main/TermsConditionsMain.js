@@ -6,8 +6,7 @@ import Faq2 from "@/components/sections/faq/Faq2";
 import Features4 from "@/components/sections/features/Features4";
 import HeroPrimary from "@/components/sections/hero-banners/HeroPrimary";
 import Services4 from "@/components/sections/services/Services4";
-import Team1 from "@/components/sections/team/Team1";
-import Testimonials3 from "@/components/sections/testimonils/Testimonials3";
+import TermsConditionsPrimary from "@/components/sections/terms-conditions/TermsConditionsPrimary";
 import { useTranslations } from "@/hooks/useTranslate";
 
 const AboutMain = () => {
@@ -16,14 +15,7 @@ const AboutMain = () => {
   return (
     <main>
       <HeroPrimary title={t("about us")} text={t("about us")} bg="/img/bg/5.jpg" />
-      <About5 pt={"pt-0"} />
-      <Services4 />
-      {/* <Team1 /> */}
-      {/* <Testimonials3 pt="pt-115" /> */}
-      <Faq2 />
-      {/* <CallToAction1 /> */}
-      {/* <Blogs2 type={2} pb={"pb-70"} /> */}
-      <Features4 />
+      <TermsConditionsPrimary />
     </main>
   );
 };

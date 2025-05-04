@@ -43,7 +43,8 @@ const RegisterPrimary = () => {
     if (!firstname || !lastname || !email || !password || !confirmpassword || !phone) {
       return setError(t("Please fill in all required fields."));
     }
-
+  
+    // Phone number validation: digits only and minimum length (e.g., 10 digits)
     const phoneRegex = /^[0-9]{10,15}$/;
     if (!phoneRegex.test(phone)) {
       return setError(t("Please enter a valid phone number."));

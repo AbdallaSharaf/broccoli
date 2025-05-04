@@ -30,7 +30,7 @@ const FooterCompany = () => {
               <Link href="/contact">{t("Contact us")}</Link>
             </li> */}
             <li>
-              <Link href="/about">{t("Terms & Conditions")}</Link>
+              <Link href="/terms-conditions">{t("Terms & Conditions")}</Link>
             </li>
           </ul>
         </div>

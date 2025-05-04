@@ -99,6 +99,7 @@
   "Invoice ID": "Invoice ID",
   "Paid": "Paid",
   "Delivered": "Delivered",
+  
   "Yes": "Yes",
   "No": "No",
   "Invoice": "Invoice",
@@ -300,11 +301,17 @@
         "lost your password": "Lost your password?",
         "Order Notes (optional)": "Order Notes (optional)",
         "notes about your order...": "Special delivery notes",
-        "about us": "Special delivery notes",
+        "about us": "About Us",
         "Order Total": "Order Total",
         "Pay with cash upon delivery.": "Cash on Delivery",
         "Successfully added to your Wishlist": "Added to Wishlist",
         "Cart": "Cart",
+        "aboutImageAlt": "About Us Image",
+        "subtitle": "Know More About Shop",
+        "titleLine1": "Fruits Heaven",
+        "titleLine2": "Food Store",
+        "welcomeMessage": "Welcome to Jannat Al-Fawakih – We deliver the finest fresh fruits and vegetables in Riyadh.",
+        "aboutDescription": "An online store specializing in selling and delivering the finest fresh local and imported fruits and vegetables within Riyadh. Our goal is to provide you with the freshest products of the highest quality in the fastest time, with an easy and quick shopping experience.",
         "Subtotal": "Subtotal",
         "Free Shipping on All Orders Over": "Free Shipping on Orders Over",
         "Add to Wishlist": "Add to Wishlist",
@@ -351,5 +358,75 @@
         "We Accept": "We Accept",
         "Terms & Conditions": "Terms & Conditions",
         "My Account": "My Account"
-    }
-  }
+    },
+    "servicesSection":{
+        "featuresSubtitle": "features",
+        "mainTitle": "Why Choose Us",
+        "service1title": "Careful Preparation",
+        "service1desc": "We carefully prepare your orders and deliver them directly to your home at the scheduled time.",
+        "service2title": "Fresh Products",
+        "service2desc": "All displayed products are fresh and carefully selected.",
+        "service3title": "Dynamic Pricing",
+        "service3desc": "Prices may change without prior notice based on market availability."
+    },
+    "termsConditions":{
+        "title": "Terms and Conditions",
+        "intro": "Welcome to 'Jannat Al-Fawakih' website. By using our site, you automatically agree to the following terms and conditions, so please read them carefully before using the site or placing any order.",
+        
+        "ordersHeading": "Orders",
+        "ordersPoint1": "All orders are placed through the website.",
+        "ordersPoint2": "We reserve the right to reject any order if there is an error in the data.",
+        "ordersPoint3": "After completing the order, a confirmation will be sent via email or phone.",
+        "ordersPoint4": "Please verify your information to avoid order delays.",
+        
+        "deliveryHeading": "Delivery",
+        "deliveryPoint1": "We currently only deliver within Riyadh city.",
+        "deliveryPoint2": "Orders are delivered the morning after ordering, from 7 AM to 2 PM.",
+        "deliveryPoint3": "Delivery fees are automatically added to the order total during checkout.",
+        "deliveryPoint4": "Delivery speed and accuracy depend on the accuracy of customer-provided information (address, phone number, etc.).",
+        
+        "privacyHeading": "Privacy Policy",
+        "privacyPoint1": "We respect your privacy and are committed to protecting your personal data.",
+        "privacyPoint2": "Your data is only used to improve service, deliver orders, and communicate when necessary.",
+        "privacyPoint3": "Your data will not be shared with any external party without your permission.",
+        
+        "returnsHeading": "Return and Replacement Policy",
+        "returnsPoint1": "We are happy to assist you and manage all your requests.",
+        "returnsPoint2": "Returns or replacements are only accepted if there is clear damage or an error in the order.",
+        "returnsPoint3": "You must contact us within 24 hours of receiving the order, with photos showing the issue.",
+        
+        "ownershipHeading": "Ownership Rights",
+        "ownershipPoint1": "All website content (design, text, images, logos, etc.) is owned by 'Jannat Al-Fawakih' or we have license to use it.",
+        "ownershipPoint2": "Copying or reusing any content without prior written permission is prohibited.",
+        
+        "illegalUseHeading": "Illegal Use",
+        "illegalUseText": "Any unauthorized use of the website or attempt to access systems not intended for you is considered a violation and may lead to legal action.",
+        
+        "modificationsHeading": "Terms Modifications",
+        "modificationsPoint1": "We may update the terms and conditions from time to time.",
+        "modificationsPoint2": "Your continued use of the site means you agree to the modifications."
+      },
+    "faqSection":{
+        "sectionTitle": "Frequently Asked Questions",
+        "question1": "How to order from Jannat Al-Fawakih?",
+        "supportTitle": "Still need help? Reach out to support 24/7:",
+        "answer1": "Register on the website, select the products you need, add them to your cart, and complete the payment process easily.",
+        "question2": "When will my order be delivered?",
+        "answer2": "Orders are delivered the next day between 7 AM and 2 PM.",
+        "question3": "What payment methods do you accept?",
+        "answer3": "We accept Visa payments through the website or cash on delivery.",
+        "question4": "Do you have discount codes? How to use them?",
+        "answer4": "Yes, use code 'fvoffers' daily from 7 PM until 2 AM.",
+        "question5": "Can I order in bulk (wholesale)?",
+        "answer5": "Yes, we provide wholesale orders. Contact us via social media for details.",
+        "question6": "Can I order from outside Riyadh?",
+        "answer6": "Currently we only deliver within Riyadh city, but we plan to expand to other cities soon.",
+        "question7": "What should I do if I receive damaged or incorrect products?",
+        "answer7": "Contact us immediately with photos showing the issue, and we will replace or refund the next day.",
+        "question8": "Are there any special offers?",
+        "answer8": "Follow us on social media and register on our website to receive all new offers and seasonal subscriptions.",
+        "question9": "Can I modify or cancel my order?",
+        "answer9": "You can modify or cancel within the first 2 hours after order confirmation by contacting us immediately."
+      }
+}
+      

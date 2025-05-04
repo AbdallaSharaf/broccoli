@@ -61,18 +61,8 @@ const FooterAbout2 = () => {
                 </p>
               </div>
             </li>
-            {/* <li>
-              <div className="footer-address-icon">
-                <i className="icon-mail"></i>
-              </div>
-              <div className="footer-address-info">
-                <p>
-                  <Link href="mailto:example@example.com">
-                    example@example.com
-                  </Link>
-                </p>
-              </div>
-            </li> */}
+            <li>
+            </li>
           </ul>
         </div>
         <div className="ltn__social-media mt-20">
