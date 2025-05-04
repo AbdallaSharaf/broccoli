@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUserContext } from "@/providers/UserContext";
 import { useCartContext } from "@/providers/CartContext";
 import { useTranslations } from "@/hooks/useTranslate";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+// import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPrimary = () => {
   const t = useTranslations("common");
