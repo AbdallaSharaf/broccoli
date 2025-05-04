@@ -28,9 +28,9 @@ const FooterServices2 = () => {
                 <Link href="/account">{t("My Account")}</Link>
               </li>
             )}
-            <li>
+            {/* <li>
               <Link href="/order-tracking">{t("Order tracking")}</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/wishlist">{t("Wish List")}</Link>
             </li>
