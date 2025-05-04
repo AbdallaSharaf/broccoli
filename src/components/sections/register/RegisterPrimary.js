@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useTranslations } from "@/hooks/useTranslate";
 import { useUserContext } from "@/providers/UserContext";
 import { useRouter } from "next/navigation";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 Add icons
 
 const RegisterPrimary = () => {
   const t = useTranslations("common");
@@ -22,6 +23,8 @@ const RegisterPrimary = () => {
   });
 
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -34,46 +37,39 @@ const RegisterPrimary = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-  
+
     const { firstname, lastname, email, password, confirmpassword, privacyConsent, phone } = formData;
-  
-    // Basic required fields check
+
     if (!firstname || !lastname || !email || !password || !confirmpassword || !phone) {
       return setError(t("Please fill in all required fields."));
     }
-  
-    // Phone number validation: digits only and minimum length (e.g., 10 digits)
+
     const phoneRegex = /^[0-9]{10,15}$/;
     if (!phoneRegex.test(phone)) {
       return setError(t("Please enter a valid phone number."));
     }
-  
-    // Password validation: min 8 chars, 1 uppercase, 1 lowercase, 1 digit
+
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
       return setError(t("Password must be at least 8 characters long and include a letter and a number."));
     }
-  
-    // Confirm password match
+
     if (password !== confirmpassword) {
       return setError(t("Passwords do not match."));
     }
-  
-    // Consent check
+
     if (!privacyConsent) {
       return setError(t("You must accept the privacy policy."));
     }
-  
-    // Submit
+
     const result = await register({ firstname, lastname, email, password, phone });
-  
+
     if (result.status) {
       router.push("/wait-verification");
     } else {
       setError(result.message || t("Registration failed. Please try again."));
     }
   };
-  
 
   return (
     <div className="ltn__login-area pb-110">
@@ -88,8 +84,8 @@ const RegisterPrimary = () => {
         </div>
 
         <div className="row">
-        <div className="col-lg-6 mx-auto">
-          <div className="account-login-inner">
+          <div className="col-lg-6 mx-auto">
+            <div className="account-login-inner">
               <form onSubmit={handleSubmit} className="ltn__form-box contact-form-box">
                 <input
                   type="text"
@@ -119,20 +115,52 @@ const RegisterPrimary = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
-                <input
-                  type="password"
-                  name="password"
-                  placeholder={t("Password*")}
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                <input
-                  type="password"
-                  name="confirmpassword"
-                  placeholder={t("Confirm Password*")}
-                  value={formData.confirmpassword}
-                  onChange={handleChange}
-                />
+
+                {/* Password Field with Toggle */}
+                <div className="password-field-wrapper" style={{ position: "relative" }}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder={t("Password*")}
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                  <span
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: "absolute",
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+
+                {/* Confirm Password Field with Toggle */}
+                <div className="password-field-wrapper" style={{ position: "relative" }}>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmpassword"
+                    placeholder={t("Confirm Password*")}
+                    value={formData.confirmpassword}
+                    onChange={handleChange}
+                  />
+                  <span
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    style={{
+                      position: "absolute",
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
 
                 <label className="checkbox-inline">
                   <input

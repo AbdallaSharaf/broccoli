@@ -318,7 +318,18 @@
         "Location not captured":"Location not captured",
         "Share Current Location":"Share Current Location",
         "Geolocation is not supported by your browser.":"Geolocation is not supported by your browser.",
-        "Unable to retrieve your location.":"Unable to retrieve your location."
+        "Unable to retrieve your location.":"Unable to retrieve your location.",
+        "User with this email not found":"User with this email not found",
+        "OTP expired":"OTP expired",
+        "Invalid email":"Invalid email",
+        "incorrect email or password":"incorrect email or password",
+        "please verify your account first":"please verify your account first",
+        "email already exists":"email already exists",
+        "too short user name":"too short user name",
+        "too short user password":"too short user password",
+        "email is already registered":"email is already registered",
+        "too short phone number":"too short phone number",
+        "Coupon is not active at this time":"Coupon is not active at this time"
     },
     "footer": {
         "Company": "Company",
@@ -332,7 +343,7 @@
         "Newsletter": "Newsletter",
         "Subscribe to our weekly Newsletter and receive updates via email.": "Subscribe to our weekly Newsletter and receive updates via email.",
         "email": "Email",
-        "All Rights Reserved...": "© 2025 AM Software Developers",
+        "All Rights Reserved...": "© 2025 IN Marketing ",
         "Privacy & Policy": "Privacy Policy",
         "Claim": "Claims",
         "Login": "Login",

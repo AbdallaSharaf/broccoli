@@ -61,7 +61,7 @@ const FooterAbout2 = () => {
                 </p>
               </div>
             </li>
-            <li>
+            {/* <li>
               <div className="footer-address-icon">
                 <i className="icon-mail"></i>
               </div>
@@ -72,31 +72,37 @@ const FooterAbout2 = () => {
                   </Link>
                 </p>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="ltn__social-media mt-20">
           <ul>
+          {" "}
             <li>
-              <Link href="https://www.facebook.com" title="Facebook">
+              <Link href="https://www.facebook.com/fruitsheaven.sa/" title="Facebook">
                 <i className="fab fa-facebook-f"></i>
               </Link>
             </li>{" "}
-            <li>
+            {/* <li>
               <Link href="https://x.com" title="Twitter">
                 <i className="fab fa-twitter"></i>
               </Link>
-            </li>{" "}
+            </li>{" "} */}
             <li>
-              <Link href="https://www.linkedin.com" title="Linkedin">
-                <i className="fab fa-linkedin"></i>
+              <Link href="https://instagram.com/fruitsheaven.sa" title="instagram">
+                <i className="fab fa-instagram"></i>
               </Link>
             </li>{" "}
             <li>
-              <Link href="https://www.youtube.com" title="Youtube">
-                <i className="fab fa-youtube"></i>
+              <Link href="https://www.snapchat.com/add/fruitsheaven.sa" title="snapchat">
+                <i className="fab fa-snapchat"></i>
               </Link>
-            </li>
+            </li>{" "}
+            <li>
+              {/* <Link href="https://www.snapchat.com/add/fruitsheaven.sa" title="snapchat">
+                <i className="fab fa-snapchat"></i>
+              </Link> */}
+            </li>{" "}
           </ul>
         </div>
       </div>

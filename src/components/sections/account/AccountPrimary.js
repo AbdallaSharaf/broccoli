@@ -476,9 +476,9 @@ const AccountPrimary = () => {
                       </div>
                       <div className="tab-pane fade" id="liton_tab_1_5">
                         <div className="ltn__myaccount-tab-content-inner">
-                          <p>
+                          {/* <p>
                             {t("The following addresses will be used on the checkout page by default.")}
-                          </p>
+                          </p> */}
                           <div className="ltn__form-box">
                           <form onSubmit={handleSubmit}>
                             <div className="row mb-50">
@@ -516,7 +516,7 @@ const AccountPrimary = () => {
                                     {t("New password (leave blank to leave unchanged)")}:
                                   </label>
                                   <input
-                                    type="password"
+                                    type="text"
                                     name="newPassword"
                                     value={formData.newPassword}
                                     onChange={handleChange}
@@ -525,7 +525,7 @@ const AccountPrimary = () => {
                                   
                                   <label>{t("Confirm new password")}:</label>
                                   <input
-                                    type="password"
+                                    type="text"
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
                                     onChange={handleChange}

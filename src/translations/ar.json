@@ -317,7 +317,18 @@
         "Location not captured":"لم يتم التعرف على الموقع",
         "Share Current Location":"مشاركة الموقع الحالي",
         "Unable to retrieve your location.":"غير قادر على استرداد موقعك.",
-        "Geolocation is not supported by your browser.":"الموقع الجغرافي غير مدعوم من قبل متصفحك."
+        "Geolocation is not supported by your browser.":"الموقع الجغرافي غير مدعوم من قبل متصفحك.",
+        "User with this email not found": "لم يتم العثور على مستخدم بهذا البريد الإلكتروني",
+        "OTP expired": "رمز التحقق منتهٍ",
+        "Invalid email": "بريد إلكتروني غير صالح",
+        "incorrect email or password": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+        "please verify your account first": "يرجى التحقق من حسابك أولاً",
+        "email already exists": "البريد الإلكتروني موجود بالفعل",
+        "too short user name": "اسم المستخدم قصير جدًا",
+        "too short user password": "كلمة المرور قصيرة جدًا",
+        "email is already registered": "البريد الإلكتروني مسجل بالفعل",
+        "too short phone number": "رقم الهاتف قصير جدًا",
+        "Coupon is not active at this time": "القسيمة غير مفعلة في الوقت الحالي"
     },
     "footer": {
         "Company": "الشركة",
@@ -332,7 +343,7 @@
         "email": "البريد الإلكتروني",
         "Login": "تسجيل الدخول",
         "Register": "تسجيل",      
-        "All Rights Reserved...": "© 2025 جميع الحقوق محفوظة لـ AM للمطورين",
+        "All Rights Reserved...": "©  IN Marketing ",
         "Privacy & Policy": "سياسة الخصوصية",
         "Claim": "المطالبات",
         "All Products": "جميع المنتجات",
