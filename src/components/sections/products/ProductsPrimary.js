@@ -75,7 +75,7 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
             }`}
           >
             {loading ? <Nodata text={t("Loading...")} /> : ""}
-            {(!totalPages && !loading) ? <Nodata text={t("No Product Found!")} /> : ""}
+            {/* {(!totalPages && !loading) ? <Nodata text={t("No Product Found!")} /> : ""} */}
 
             <div
               className={`ltn__shop-options ${!totalPages ? "no-data" : ""}`}
