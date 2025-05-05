@@ -8,18 +8,20 @@ const Pagination = ({
   currenIndex,
   handleCurrentPage,
   totalPages,
-  path,
+  path = "", // Optional base path for hrefs
 }) => {
   return (
     <div className="ltn__pagination-area text-center">
       <div className="ltn__pagination">
         <ul>
+          {/* Previous Button */}
           <li>
             <Link
-              href={`#`}
-              onClick={(e) =>
-                handleCurrentPage(e, currenIndex < 1 ? 0 : currenIndex - 1)
-              }
+              href={`${path}?page=${currenIndex > 0 ? currenIndex - 1 : 0}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCurrentPage(currenIndex > 0 ? currenIndex - 1 : 0);
+              }}
               style={{
                 visibility: currenIndex > 0 ? "visible" : "hidden",
               }}
@@ -27,77 +29,92 @@ const Pagination = ({
               <i className="fas fa-angle-double-left"></i>
             </Link>
           </li>
-          {showMore === "left" ? (
+
+          {/* Left Ellipsis */}
+          {showMore === "left" && (
             <>
               <li>
                 <Link
-                  onClick={(e) => handleCurrentPage(e, 0)}
-                  href={`#`}
+                  href={`${path}?page=0`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCurrentPage(0);
+                  }}
                 >
                   1
                 </Link>
               </li>
               <li>
                 <Link
-                  onClick={(e) => handleCurrentPage(e, currenIndex - 1)}
-                  href={`#`}
+                  href={`${path}?page=${currenIndex - 1}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCurrentPage(currenIndex - 1);
+                  }}
                 >
                   ...
                 </Link>
               </li>
             </>
-          ) : (
-            ""
           )}
+
+          {/* Page Numbers */}
           {currentPaginationItems?.map((item, idx) => (
-            <li
-              key={idx}
-              className={` ${item === currenIndex ? "active" : ""}`}
-            >
+            <li key={idx} className={item === currenIndex ? "active" : ""}>
               <Link
-                onClick={(e) => handleCurrentPage(e, item)}
-                href={`#`}
+                href={`${path}?page=${item}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCurrentPage(item);
+                }}
               >
                 {item + 1}
               </Link>
             </li>
           ))}
-          {showMore === "right" ? (
+
+          {/* Right Ellipsis */}
+          {showMore === "right" && (
             <>
               <li>
                 <Link
-                  onClick={(e) => handleCurrentPage(e, currenIndex + 1)}
-                  href={`#`}
+                  href={`${path}?page=${currenIndex + 1}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCurrentPage(currenIndex + 1);
+                  }}
                 >
                   ...
                 </Link>
               </li>
               <li>
                 <Link
-                  onClick={(e) => handleCurrentPage(e, totalPages - 1)}
-                  href={`#`}
+                  href={`${path}?page=${totalPages - 1}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCurrentPage(totalPages - 1);
+                  }}
                 >
                   {totalPages}
                 </Link>
               </li>
             </>
-          ) : (
-            ""
           )}
+
+          {/* Next Button */}
           <li>
             <Link
-              href={`#`}
-              onClick={(e) =>
+              href={`${path}?page=${
+                currenIndex < totalPages - 1 ? currenIndex + 1 : totalPages - 1
+              }`}
+              onClick={(e) => {
+                e.preventDefault();
                 handleCurrentPage(
-                  e,
-                  currenIndex > totalPages - 2
-                    ? totalPages - 1
-                    : currenIndex + 1
-                )
-              }
+                  currenIndex < totalPages - 1 ? currenIndex + 1 : totalPages - 1
+                );
+              }}
               style={{
-                visibility:
-                  currenIndex < items?.length - 1 ? "visible" : "hidden",
+                visibility: currenIndex < totalPages - 1 ? "visible" : "hidden",
               }}
             >
               <i className="fas fa-angle-double-right"></i>

@@ -12,12 +12,17 @@ import filterItems from "@/libs/filterItems";
 import { useCommonContext } from "@/providers/CommonContext";
 import { useProductContext } from "@/providers/ProductContext";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const ProductsPrimary = ({ isSidebar, currentTapId }) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [arrangeInput, setArrangeInput] = useState("default");
   const [currentTab, setCurrentTab] = useState(currentTapId ? currentTapId : 0);
   const { products, loading } = useProductContext();
+  const currentPageFromUrl = parseInt(searchParams.get('page')) || 0;
+
   const t = useTranslations("common"); // ✅ use translation namespace
   const limit =
     currentTab === 1
@@ -41,14 +46,24 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
     handleCurrentPage,
     firstItem,
     lastItem,
-  } = usePagination(products, limit, 5);
+  } = usePagination(products, limit, 5, currentPageFromUrl);
 
   const tabControllers = ["fas fa-th-large", "fas fa-list"];
-  useEffect(() => {
-    setCurrentpage(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab]);
+  
+  const handlePageChange = (page) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', page);
+    router.push(`?${params.toString()}`, { scroll: false });
+    // Don't need to call setCurrentpage here if your usePagination hook syncs with the URL
+  };
 
+
+  // useEffect(() => {
+  //   const params = new URLSearchParams(searchParams);
+  //   params.set('page', 0);
+  //   router.push(`?${params.toString()}`, { scroll: false });
+  //   setCurrentpage(0);
+  // }, [currentTab]);
 
   return (
     <div className="ltn__product-area ltn__product-gutter mb-120">
@@ -151,14 +166,14 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
               </div>
             </div>
             {totalPages > 1 ? (
-              <Pagination
-                totalPages={totalPages}
-                currentPaginationItems={currentPaginationItems}
-                showMore={showMore}
-                items={paginationItems}
-                currenIndex={currentpage}
-                handleCurrentPage={handleCurrentPage}
-              />
+                <Pagination
+                  totalPages={totalPages}
+                  currentPaginationItems={currentPaginationItems}
+                  showMore={showMore}
+                  items={paginationItems}
+                  currenIndex={currentpage}
+                  handleCurrentPage={handlePageChange} // Use our new handler
+                />
             ) : (
               ""
             )}
