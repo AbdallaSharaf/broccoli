@@ -16,7 +16,7 @@ const Pagination = ({
         <ul>
           <li>
             <Link
-              href={`#${path ? path : "blogs"}`}
+              href={`#`}
               onClick={(e) =>
                 handleCurrentPage(e, currenIndex < 1 ? 0 : currenIndex - 1)
               }
@@ -32,7 +32,7 @@ const Pagination = ({
               <li>
                 <Link
                   onClick={(e) => handleCurrentPage(e, 0)}
-                  href={`#${path ? path : "blogs"}`}
+                  href={`#`}
                 >
                   1
                 </Link>
@@ -40,7 +40,7 @@ const Pagination = ({
               <li>
                 <Link
                   onClick={(e) => handleCurrentPage(e, currenIndex - 1)}
-                  href={`#${path ? path : "blogs"}`}
+                  href={`#`}
                 >
                   ...
                 </Link>
@@ -56,7 +56,7 @@ const Pagination = ({
             >
               <Link
                 onClick={(e) => handleCurrentPage(e, item)}
-                href={`#${path ? path : "blogs"}`}
+                href={`#`}
               >
                 {item + 1}
               </Link>
@@ -67,7 +67,7 @@ const Pagination = ({
               <li>
                 <Link
                   onClick={(e) => handleCurrentPage(e, currenIndex + 1)}
-                  href={`#${path ? path : "blogs"}`}
+                  href={`#`}
                 >
                   ...
                 </Link>
@@ -75,7 +75,7 @@ const Pagination = ({
               <li>
                 <Link
                   onClick={(e) => handleCurrentPage(e, totalPages - 1)}
-                  href={`#${path ? path : "blogs"}`}
+                  href={`#`}
                 >
                   {totalPages}
                 </Link>
@@ -86,7 +86,7 @@ const Pagination = ({
           )}
           <li>
             <Link
-              href={`#${path ? path : "blogs"}`}
+              href={`#`}
               onClick={(e) =>
                 handleCurrentPage(
                   e,

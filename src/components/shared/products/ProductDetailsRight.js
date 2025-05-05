@@ -14,7 +14,7 @@ import getTranslatedName from "@/libs/getTranslatedName";
 import { useTranslations } from "@/hooks/useTranslate";
 const ProductDetailsRight = ({ product }) => {
   // destructure current product
-  
+  // console.log(product.category)
   const {
     name,
     price,
@@ -145,7 +145,7 @@ const ProductDetailsRight = ({ product }) => {
       {/* description */}
 
       {/* category, availability */}
-      {Array.isArray(category) && category?.length > 0 && <div className={`modal-product-meta ltn__product-details-menu-1`}>
+      {category && Array.isArray(category) && category?.length > 0 && <div className={`modal-product-meta ltn__product-details-menu-1`}>
         <ul>
           <li
             onClick={() => {
@@ -154,11 +154,14 @@ const ProductDetailsRight = ({ product }) => {
           >
             <strong>{t("categories")}:</strong>{" "}
             <span>
-              {Array.isArray(category) && category?.map((cat) => (
+            {category && Array.isArray(category) && category
+              ?.filter(cat => cat.category) // This filters out any items where cat.category is null/undefined
+              ?.map((cat) => (
                 <Link key={cat.category._id} href={`/shop?category=${cat.category._id}`}>
                   {getTranslatedName(cat.category?.name)}
                 </Link>
-              ))}
+              ))
+            }
             </span>
           </li>
         </ul>

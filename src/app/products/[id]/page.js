@@ -5,24 +5,9 @@ import { notFound } from "next/navigation";
 
 
 const ProductDetails = async ({ params }) => {
-  const getProductById = async (id) => {
-    try {
-      const response = await axiosInstance.get(`/product/${id}`);
-      
-      if (response.status !== 200) {
-        throw new Error(`Failed to fetch product: ${response.status}`);
-      }
-  
-      return response.data.Product;
-    } catch (error) {
-      console.error("Error fetching product:", error);
-      return null;
-    }
-  };
   const { id } = params;
-  const product = await getProductById(id);
   
-  if (!product || product.deleted || !product.available) {
+  if (!id) {
     notFound();
   }
 
@@ -33,7 +18,7 @@ const ProductDetails = async ({ params }) => {
       isTextWhite={true}
       isNavbarAppointmentBtn={true}
     >
-      <ProductDetailsMain type={1} product={product} />
+      <ProductDetailsMain type={1} product={id} />
     </PageWrapper>
   );
 };

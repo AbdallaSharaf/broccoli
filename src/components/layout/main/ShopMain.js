@@ -43,6 +43,9 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
 
   useEffect(() => {
     const fetchCategoryName = async () => {
+      if (!category) {
+        return;
+      }
       try {
         const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/category/${category}?deleted=false&available=true`);
         if (!response.ok) {
