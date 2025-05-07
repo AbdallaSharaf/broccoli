@@ -102,7 +102,8 @@
         "Paid": "مدفوع",
         "Delivered": "تم التوصيل",
         "No": "لا",
-        
+        "Discount": "خصم",
+        "Shipping Discount": "خصم الشحن",
         "orderDetails": "تفاصيل الطلب",
         "categories": "الفئات",
         "No Product Found!": "لم يتم العثور على منتجات",

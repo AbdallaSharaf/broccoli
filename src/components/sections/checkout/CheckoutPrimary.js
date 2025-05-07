@@ -18,6 +18,8 @@ const CheckoutPrimary = () => {
   const [isPlaceOrder, setIsPlaceOrder] = useState(false);
   const creteAlert = useSweetAlert();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState('cash'); // default to cash on delivery
   const { cartProducts: products, updateCart, applyCoupon, setCartProducts } = useCartContext();
   const [couponCode, setCouponCode] = useState(products?.coupon?.code || ""); // coupon input
   const [couponResponse, setCouponResponse] = useState(null); // coupon result
@@ -26,6 +28,7 @@ const CheckoutPrimary = () => {
   const [error, setError] = useState(null); // State to track errors
   const [fieldErrors, setFieldErrors] = useState({});
   const [firstName = "", lastName = ""] = userData?.name?.split(" ") || [];
+  console.log(products)
   const [formData, setFormData] = useState({
     firstName,
     lastName,
@@ -63,7 +66,7 @@ const [locationError, setLocationError] = useState(null);
       setLocationError("Geolocation is not supported by your browser.");
     }
   };
-  
+  console.log(selectedPayment)
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
@@ -98,6 +101,7 @@ const [locationError, setLocationError] = useState(null);
 
   // handle place order
   const handlePlaceOrder = async () => {
+    setLoading(true);
     const requiredFields = [
       "firstName",
       "lastName",
@@ -118,13 +122,14 @@ const [locationError, setLocationError] = useState(null);
         newErrors[field] = t("This field is required");
       });
       setFieldErrors(newErrors);
+      setLoading(false);
       creteAlert("error", t("Please fill in all required fields"));
       return;
     } else {
       setFieldErrors({}); // Clear errors if all fields are valid
     }
-
-    // 🔁 Format the main payload
+  
+    // Format the main payload
     const formattedPayload = {
       address: {
         name: `${formData.firstName} ${formData.lastName}`.trim(),
@@ -136,12 +141,14 @@ const [locationError, setLocationError] = useState(null);
         zipCode: formData.zip,
         location: `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`,
       },
+      // paymentMethod: selectedPayment === 'cash' ? 'cash' : 'card', // Include payment method in payload
     };
   
     try {
       const token = localStorage.getItem("token");
       const guest = localStorage.getItem("guest");
-
+  
+      // Submit note if exists (for both payment methods)
       if (formData.notes?.trim()) {
         const responseNote = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/cart/note`, {
           method: "POST",
@@ -155,40 +162,72 @@ const [locationError, setLocationError] = useState(null);
           }),
         });
         if (!responseNote.ok) {
-          throw new Error(data.message || "Something went wrong");
+          throw new Error("Failed to save order note");
         }
       }
-
-      // ✅ 1. Place the order
-      const response = await fetch(
-        `https://fruits-heaven-api.onrender.com/api/v1/order/${products._id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-            ...(!token && guest && { tempId: guest }),    
-          },
-          body: JSON.stringify(formattedPayload),
-        }
-      );
+  
+      // Determine API endpoint based on payment method
+      const endpoint = selectedPayment === 'paypal' 
+        ? `https://fruits-heaven-api.onrender.com/api/v1/order/cardOrder/${products._id}`
+        : `https://fruits-heaven-api.onrender.com/api/v1/order/${products._id}`;
+  
+      // Place the order
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && { Authorization: `Bearer ${token}` }),
+          ...(!token && guest && { tempId: guest }),    
+        },
+        body: JSON.stringify(formattedPayload),
+      });
   
       const data = await response.json();
   
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
+  
+      // Handle PayPal redirect
+      if (selectedPayment === 'paypal' && data.invoiceURL) {
+        window.location.href = data.invoiceURL;
+        setLoading(false);
+        return; // Exit function as we're redirecting
+      }
+  
+      // For cash on delivery, proceed with success flow
+      const productIds = products.items.map((item) => item.productId);
+      
+      creteAlert("success", "Order placed successfully!");
+      setCartProducts({ _id: "", items: [] });
+      setIsPlaceOrder(false);
+      
+      // Track purchase events
       fbq("track", "Purchase", {
         value: data.order.totalPrice,
         currency: "SAR",
       });
-      const productIds = products.items.map((item) => item.productId);
-      snaptr('track', 'PURCHASE', {'price': data.order.totalPrice, 'currency': 'SAR', 'transaction_id': data.order.invoiceId, 'item_ids': productIds, 'number_items': data.order.totalQuantity, 'payment_info_available': 0, 'success': 1, 'user_email': data.order.shippingAddress.email, 'user_phone_number': data.order.shippingAddress.phone|| data.order.user.phone, 'firstname': data.order.shippingAddress.name.split(' ')[0]|| data.order.user.name.split(' ')[0], 'lastname': data.order.shippingAddress.name.split(' ')[1]|| data.order.user.name.split(' ')[1], 'geo_state': data.order.shippingAddress.street, 'geo_city': data.order.shippingAddress.city, 'geo_country': data.order.shippingAddress.country, 'geo_postal_code': data.order.shippingAddress.zipCode})
-      // ✅ 2. Send the note in a separate API call (if exists)
-      creteAlert("success", "Order placed successfully!");
-      setCartProducts({_id: "" ,items: [] });
-      setIsPlaceOrder(false);
-      router.push(`/order-placed/${data.order.invoiceId}`); // 👈 Route to home
+      
+      snaptr('track', 'PURCHASE', {
+        'price': data.order.totalPrice,
+        'currency': 'SAR',
+        'transaction_id': data.order.invoiceId,
+        'item_ids': productIds,
+        'number_items': data.order.totalQuantity,
+        'payment_info_available': selectedPayment === 'paypal' ? 1 : 0,
+        'success': 1,
+        'user_email': data.order.shippingAddress.email,
+        'user_phone_number': data.order.shippingAddress.phone || data.order.user?.phone,
+        'firstname': data.order.shippingAddress.name.split(' ')[0] || data.order.user?.name.split(' ')[0],
+        'lastname': data.order.shippingAddress.name.split(' ')[1] || data.order.user?.name.split(' ')[1],
+        'geo_state': data.order.shippingAddress.street,
+        'geo_city': data.order.shippingAddress.city,
+        'geo_country': data.order.shippingAddress.country,
+        'geo_postal_code': data.order.shippingAddress.zipCode
+      });
+      setLoading(false);
+      router.push(`/order-placed/${data.order.invoiceId}`);
+  
     } catch (error) {
       creteAlert("error", error.message || "Failed to place order");
     }
@@ -529,7 +568,7 @@ const [locationError, setLocationError] = useState(null);
             </div>
           </div>
           {/* payment methods */}
-    <div className="col-lg-6 order-lg-1 order-2">
+          <div className="col-lg-6 order-lg-1 order-2">
       <div className="ltn__checkout-payment-method mt-50">
         <h4 className="title-2">{t("Payment Method")}</h4>
 
@@ -537,17 +576,18 @@ const [locationError, setLocationError] = useState(null);
           {/* Cash on Delivery */}
           <div className="card">
             <h5
-              className="ltn__card-title"
+              className={`ltn__card-title ${selectedPayment === 'cash' ? '' : 'collapsed'}`}
               data-bs-toggle="collapse"
               data-bs-target="#chechoutCollapseTwo"
-              aria-expanded="true"
+              aria-expanded={selectedPayment === 'cash'}
+              onClick={() => setSelectedPayment('cash')}
             >
               {t("Cash on delivery")}{" "}
               <Image src="/img/icons/cash.png" alt="#" width={131} height={110} />
             </h5>
             <div
               id="chechoutCollapseTwo"
-              className="accordion-collapse collapse show"
+              className={`accordion-collapse collapse ${selectedPayment === 'cash' ? 'show' : ''}`}
               data-bs-parent="#checkoutAccordion"
             >
               <div className="card-body">
@@ -559,10 +599,11 @@ const [locationError, setLocationError] = useState(null);
           {/* PayPal */}
           <div className="card">
             <h5
-              className="collapsed ltn__card-title"
+              className={`ltn__card-title ${selectedPayment === 'paypal' ? '' : 'collapsed'}`}
               data-bs-toggle="collapse"
               data-bs-target="#chechoutCollapseFour"
-              aria-expanded="false"
+              aria-expanded={selectedPayment === 'paypal'}
+              onClick={() => setSelectedPayment('paypal')}
             >
               {t("PayPal")}{" "}
               <Image
@@ -575,7 +616,7 @@ const [locationError, setLocationError] = useState(null);
             </h5>
             <div
               id="chechoutCollapseFour"
-              className="accordion-collapse collapse"
+              className={`accordion-collapse collapse ${selectedPayment === 'paypal' ? 'show' : ''}`}
               data-bs-parent="#checkoutAccordion"
             >
               <div className="card-body">
@@ -585,6 +626,8 @@ const [locationError, setLocationError] = useState(null);
           </div>
         </div>
 
+        {/* Hidden input to store the selected payment method (optional) */}
+        <input type="hidden" name="paymentMethod" value={selectedPayment} />
         <div className="ltn__payment-note mt-30 mb-30">
           <p>
             {t(
@@ -592,14 +635,13 @@ const [locationError, setLocationError] = useState(null);
             )}
           </p>
         </div>
-
         <button
           onClick={handlePlaceOrder}
           className="btn theme-btn-1 btn-effect-1 text-uppercase"
           type="submit"
-          disabled={!isPlaceOrder}
+          disabled={!isPlaceOrder || loading}
         >
-          {t("place order")}
+          {loading ? t("Loading...") : t("place order")}
         </button>
       </div>
     </div>
@@ -624,10 +666,22 @@ const [locationError, setLocationError] = useState(null);
                       <strong>{products.subTotal} {t("SAR")}</strong>
                     </td>
                   </tr>
-                  {products.subTotal < 100 && (
+                  {products.discount > 0 && (
+                    <tr>
+                      <td><strong>{t("Discount")}</strong></td>
+                      <td><strong>{products.discount} {t("SAR")}</strong></td>
+                    </tr>
+                  )}
+                  {products.shippingFee > 0 && (
                     <tr>
                       <td><strong>{t("Shipping and Handling")}</strong></td>
-                      <td><strong>15 {t("SAR")}</strong></td>
+                      <td><strong>{products.shippingFee} {t("SAR")}</strong></td>
+                    </tr>
+                  )}
+                  {products.shippingDiscount > 0 && (
+                    <tr>
+                      <td><strong>{t("Shipping Discount")}</strong></td>
+                      <td><strong>{products.shippingDiscount} {t("SAR")}</strong></td>
                     </tr>
                   )}
                   <tr>
@@ -635,7 +689,7 @@ const [locationError, setLocationError] = useState(null);
                       <strong>{t("Order Total")}</strong>
                     </td>
                     <td>
-                      <strong>{products.subTotal > 100 ? products.subTotal : products.subTotal + 15} {t("SAR")}</strong>
+                      <strong>{products.totalPrice} {t("SAR")}</strong>
                     </td>
                   </tr>
                 </tbody>

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useUserContext } from "@/providers/UserContext";
 import { useCartContext } from "@/providers/CartContext";
 import { useTranslations } from "@/hooks/useTranslate";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPrimary = () => {
   const t = useTranslations("common");
@@ -82,13 +81,13 @@ const LoginPrimary = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     style={{
                       position: "absolute",
-                      top: "50%",
+                      top: "35%",
                       right: "10px",
                       transform: "translateY(-50%)",
                       cursor: "pointer",
                     }}
                   >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    {showPassword ? <i class="fa fa-eye-slash" aria-hidden="true"></i> : <i class="fa fa-eye" aria-hidden="true"></i>}
                   </span>
                 </div>
 
