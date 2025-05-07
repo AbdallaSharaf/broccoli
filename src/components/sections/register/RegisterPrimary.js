@@ -5,6 +5,7 @@ import { useTranslations } from "@/hooks/useTranslate";
 import { useUserContext } from "@/providers/UserContext";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 Add icons
+import axiosInstance from "../../../libs/axiosInstance.js";
 
 const RegisterPrimary = () => {
   const t = useTranslations("common");
@@ -64,9 +65,15 @@ const RegisterPrimary = () => {
     }
 
     const result = await register({ firstname, lastname, email, password, phone });
-
+    const {data} = await axiosInstance.get("/siteSettings");
+    console.log(data)
     if (result.status) {
-      router.push("/wait-verification");
+      if(data?.data[0].verifyRegister){
+  
+        router.push("/wait-verification");
+      }else {
+        router.push("/login");
+      }
     } else {
       setError(result.message || t("Registration failed. Please try again."));
     }
