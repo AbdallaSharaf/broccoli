@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useUserContext } from "@/providers/UserContext";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "@/hooks/useTranslate";
+import axiosInstance from "@/libs/axiosInstance";
 
 const CheckoutPrimary = () => {
   const t = useTranslations("common");
@@ -141,52 +142,33 @@ const [locationError, setLocationError] = useState(null);
         zipCode: formData.zip,
         location: `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`,
       },
-      // paymentMethod: selectedPayment === 'cash' ? 'cash' : 'card', // Include payment method in payload
     };
   
     try {
       const token = localStorage.getItem("token");
       const guest = localStorage.getItem("guest");
-  
+      
+      // Set up common headers
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(!token && guest && { tempId: guest }),
+      };
+
       // Submit note if exists (for both payment methods)
       if (formData.notes?.trim()) {
-        const responseNote = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/cart/note`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-            ...(!token && guest && { tempId: guest }),     
-          },
-          body: JSON.stringify({
-            note: formData.notes.trim(),
-          }),
-        });
-        if (!responseNote.ok) {
-          throw new Error("Failed to save order note");
-        }
+        await axiosInstance.post("/cart/note", {
+          note: formData.notes.trim(),
+        }, { headers });
       }
   
       // Determine API endpoint based on payment method
       const endpoint = selectedPayment === 'paypal' 
-        ? `https://fruits-heaven-api.onrender.com/api/v1/order/cardOrder/${products._id}`
-        : `https://fruits-heaven-api.onrender.com/api/v1/order/${products._id}`;
+        ? `/order/cardOrder/${products._id}`
+        : `/order/${products._id}`;
   
       // Place the order
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && { Authorization: `Bearer ${token}` }),
-          ...(!token && guest && { tempId: guest }),    
-        },
-        body: JSON.stringify(formattedPayload),
-      });
-  
-      const data = await response.json();
-  
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
+      const { data } = await axiosInstance.post(endpoint, formattedPayload, { headers });
   
       // Handle PayPal redirect
       if (selectedPayment === 'paypal' && data.invoiceURL) {
@@ -229,7 +211,8 @@ const [locationError, setLocationError] = useState(null);
       router.push(`/order-placed/${data.order.invoiceId}`);
   
     } catch (error) {
-      creteAlert("error", error.message || "Failed to place order");
+      creteAlert("error", error.response?.data?.message || error.message || "Failed to place order");
+      setLoading(false);
     }
   };
   
