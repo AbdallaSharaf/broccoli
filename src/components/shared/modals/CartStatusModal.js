@@ -39,7 +39,7 @@ const CartStatusModal = ({ product }) => {
                         </h5>
                         <p className="added-cart">
                           <i className="fa fa-check-circle"></i> {t("cartStatus")}{" "}
-                          {cartStatus ? t(cartStatus) : t("cartStatus")}{" "}
+                          {/* {cartStatus ? t(cartStatus) : t("cartStatus")}{" "} */}
                           {cartStatus === "increased" ||
                           cartStatus === "decreased"}
                         </p>

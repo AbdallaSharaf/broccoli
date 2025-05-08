@@ -588,7 +588,7 @@ const [locationError, setLocationError] = useState(null);
               aria-expanded={selectedPayment === 'paypal'}
               onClick={() => setSelectedPayment('paypal')}
             >
-              {t("PayPal")}{" "}
+              {t("Card Payment")}{" "}
               <Image
                 src={paymnetImage3}
                 width={319}
@@ -652,7 +652,7 @@ const [locationError, setLocationError] = useState(null);
                   {products.discount > 0 && (
                     <tr>
                       <td><strong>{t("Discount")}</strong></td>
-                      <td><strong>{products.discount} {t("SAR")}</strong></td>
+                      <td><strong>-{products.discount} {t("SAR")}</strong></td>
                     </tr>
                   )}
                   {products.shippingFee > 0 && (
@@ -664,15 +664,23 @@ const [locationError, setLocationError] = useState(null);
                   {products.shippingDiscount > 0 && (
                     <tr>
                       <td><strong>{t("Shipping Discount")}</strong></td>
-                      <td><strong>{products.shippingDiscount} {t("SAR")}</strong></td>
+                      <td><strong>-{products.shippingDiscount} {t("SAR")}</strong></td>
                     </tr>
                   )}
+                  <tr>
+                    <td>
+                      <strong>{t("VAT")}</strong>
+                    </td>
+                    <td>
+                      <strong>{((products.totalPrice) *0.15).toFixed(2)} {t("SAR")}</strong>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       <strong>{t("Order Total")}</strong>
                     </td>
                     <td>
-                      <strong>{products.totalPrice} {t("SAR")}</strong>
+                      <strong>{(products.totalPrice + products.shippingFee - (products?.shippingDiscount? products?.shippingDiscount:0) - (products?.discount? products?.discount:0) +( (products.totalPrice) *0.15)).toFixed(2)} {t("SAR")}</strong>
                     </td>
                   </tr>
                 </tbody>

@@ -404,7 +404,9 @@
         "too short user password": "كلمة المرور قصيرة جدًا",
         "email is already registered": "البريد الإلكتروني مسجل بالفعل",
         "too short phone number": "رقم الهاتف قصير جدًا",
-        "Coupon is not active at this time": "القسيمة غير مفعلة في الوقت الحالي"
+        "Coupon is not active at this time": "القسيمة غير مفعلة في الوقت الحالي",
+        "Card Payment":"دفع بالبطاقه",
+        "VAT":"ضريبة القيمة المضافة"
     },
     "footer": {
         "Company": "الشركة",

@@ -338,7 +338,9 @@
         "too short user password":"too short user password",
         "email is already registered":"email is already registered",
         "too short phone number":"too short phone number",
-        "Coupon is not active at this time":"Coupon is not active at this time"
+        "Coupon is not active at this time":"Coupon is not active at this time",
+        "Card Payment":"Card Payment",
+        "VAT":"VAT"
     },
     "footer": {
         "Company": "Company",
