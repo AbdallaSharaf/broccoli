@@ -14,7 +14,7 @@ const Products5 = ({ isRelated, title, tag, pt, pb }) => {
         pb ? pb : ""
       }  ${pt ? pt : isRelated ? "pb-70" : "pt-115 pb-70"}`}
     >
-      <div className="container">
+      {/* <div className="container">
         <div className="row">
           <div className="col-lg-12">
             <div
@@ -43,7 +43,7 @@ const Products5 = ({ isRelated, title, tag, pt, pb }) => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
