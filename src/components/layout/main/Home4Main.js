@@ -23,7 +23,7 @@ const Home4Main = () => {
       <Products3
         isSmallTitle={true}
         isDouble={true}
-        desc={t("A highly efficient slip-ring scanner for today's diagnostic requirements.")}
+        // desc={t("A highly efficient slip-ring scanner for today's diagnostic requirements.")}
       />
       {/* <Categories3 type={3} /> */}
       <HotDeal2 type={2} />

@@ -46,7 +46,7 @@ const Products3 = ({
                 </h1>
                 {desc ? (
                   <p>
-                    {t("A highly efficient slip-ring scanner for today's diagnostic requirements.")}
+                    {/* {t("A highly efficient slip-ring scanner for today's diagnostic requirements.")} */}
                   </p>
                 ) : (
                   ""
