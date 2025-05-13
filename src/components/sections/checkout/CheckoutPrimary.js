@@ -110,7 +110,6 @@ const [locationError, setLocationError] = useState(null);
       "phone",
       "houseNumber",
       "city",
-      "state",
     ];
   
     const missingFields = requiredFields.filter(
@@ -467,7 +466,8 @@ const [locationError, setLocationError] = useState(null);
                   <input
                     type="text"
                     name="city"
-                    value={formData.city}
+                    value='الرياض'
+                    disabled
                     onChange={handleChange}
                     placeholder={t("city")}
                     required
@@ -476,34 +476,6 @@ const [locationError, setLocationError] = useState(null);
                   />
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <h6>{t("state")}</h6>
-            <div className="input-item">
-              <input
-                type="text"
-                name="state"
-                value={formData.state}
-                onChange={handleChange}
-                placeholder={t("state")}
-                required
-                className={fieldErrors.state ? "input-error" : ""}
-
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <h6>{t("zip")}</h6>
-            <div className="input-item">
-              <input
-                type="text"
-                name="zip"
-                value={formData.zip}
-                onChange={handleChange}
-                placeholder={t("zip")}
-                className={fieldErrors.zip ? "input-error" : ""}
-              />
             </div>
           </div>
           <div className="col-md-6">
