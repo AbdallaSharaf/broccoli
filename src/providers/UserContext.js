@@ -1,12 +1,21 @@
 "use client";
+"use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode"; // Import the decoder
+import { jwtDecode } from "jwt-decode";
 import mergeCarts from "@/libs/mergeCarts";
 import { getGuestCart, getUserCart } from "@/libs/cartApi";
 import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 import axiosInstance from "@/libs/axiosInstance";
 
 const userContext = createContext();
+
+// Helper function to check if token is expired (more than 7 days old)
+const isTokenExpired = (tokenDate) => {
+  const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+  const now = new Date();
+  const tokenCreationDate = new Date(tokenDate);
+  return (now - tokenCreationDate) > oneWeekInMs;
+};
 
 export const UserContext = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -28,17 +37,31 @@ export const UserContext = ({ children }) => {
       setUserData(null);
     }
   };
+
   // ✅ Check if user is already logged in (persist session)
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
-    if (savedToken) {
+    const tokenCreationDate = localStorage.getItem("tokenCreationDate");
+    
+    if (savedToken && tokenCreationDate) {
       try {
+        // Check if token is older than 7 days
+        if (isTokenExpired(tokenCreationDate)) {
+          console.log("Token expired - removing from storage");
+          localStorage.removeItem("token");
+          localStorage.removeItem("tokenCreationDate");
+          setUser(null);
+          setUserData(null);
+          return;
+        }
+        
         const decodedUser = jwtDecode(savedToken);
         setUser(decodedUser);
-        fetchUserData(savedToken); // 👈 Also fetch userData
+        fetchUserData(savedToken);
       } catch (error) {
         console.error("Invalid token:", error);
-        localStorage.removeItem("token"); // Remove invalid token
+        localStorage.removeItem("token");
+        localStorage.removeItem("tokenCreationDate");
       }
     }
   }, []);
@@ -60,7 +83,9 @@ export const UserContext = ({ children }) => {
       const decodedUser = jwtDecode(token);
       setUser(decodedUser);
       localStorage.setItem("token", token);
-      // 👇 Fetch user data here
+      // Store current date with the token
+      localStorage.setItem("tokenCreationDate", new Date().toISOString());
+      
       await fetchUserData(token);
       
       // Merge local cart with backend cart
@@ -78,7 +103,6 @@ export const UserContext = ({ children }) => {
       const backendItems = Array.isArray(backendCart?.items) ? backendCart.items : [];
       const backendId = backendCart?._id ?? "";
       
-      // If localCart._id is equal to backendCart._id, don't merge
       if (localCart._id === backendId) {
         const updatedBackendCart = { ...backendCart, cart: backendItems };
         addItemsToLocalstorage("cart", updatedBackendCart);
@@ -86,14 +110,7 @@ export const UserContext = ({ children }) => {
         return { user: decodedUser, cart: backendItems, status: true  };
       }
   
-      // Merge backend items and local items
       const mergedCart = mergeCarts(backendItems, localCart.items);
-  
-      // const updatedBackendCart = {
-      //   ...(backendCart || {}),
-      //   cart: mergedCart,
-      // };
-      // addItemsToLocalstorage("cart", updatedBackendCart);
       localStorage.removeItem("guest");
       setLoading(false);
       return { user: decodedUser, cart: mergedCart, status: true };
@@ -189,8 +206,9 @@ const assignNewPassword = async (email, newPassword) => {
   // ✅ Logout function
   const logout = () => {
     setUser(null);
-    setUserData(null); // 👈 Clear userData
-    localStorage.removeItem("token"); // Remove token on logout
+    setUserData(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("tokenCreationDate"); // Also remove the creation date
   };
 
   return (

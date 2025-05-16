@@ -4,8 +4,10 @@ import { useTranslations } from "@/hooks/useTranslate";
 import { formatDate } from "@/libs/formatDate";
 import { useLanguageContext } from "@/providers/LanguageContext";
 import { useUserContext } from "@/providers/UserContext";
+import { FaEye, FaTimes, FaStickyNote } from 'react-icons/fa';
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const AccountPrimary = () => {
   const { logout, userData } = useUserContext(); // Get login function from context
@@ -13,6 +15,9 @@ const AccountPrimary = () => {
   const [orders, setOrders] = useState([]);
   const creteAlert = useSweetAlert();
   const { locale } = useLanguageContext();
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [noteModalOpen, setNoteModalOpen] = useState(false);
+  const [noteText, setNoteText] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -204,7 +209,19 @@ const handleAddressSubmit = async (e) => {
 
   const [loading, setLoading] = useState(false); // Add loading state
 
-  const cancelOrder = async (orderId) => {
+const cancelOrder = async (orderId) => {
+  const result = await Swal.fire({
+    title: t('Are you sure?'),
+    text: t('You won\'t be able to revert this!'),
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: t('Yes, cancel it!'),
+    cancelButtonText: t('No, keep it')
+  });
+
+  if (result.isConfirmed) {
     const token = localStorage.getItem('token');
     if (!token) {
       console.error("No token found");
@@ -213,7 +230,7 @@ const handleAddressSubmit = async (e) => {
   
     try {
       const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order/cancelOrder/${orderId}`, {
-        method: 'POST', // Or PUT/POST based on your backend
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -223,14 +240,52 @@ const handleAddressSubmit = async (e) => {
       if (!response.ok) {
         creteAlert("error", t(data.message));
       } else {
-        creteAlert("success", "Success! order cancelled.");
+        creteAlert("success", t("Success! order cancelled."));
+        // Optional: refetch orders or update local state
       }
-      // Optional: refetch orders or update local state
     } catch (error) {
       console.error("Error cancelling order:", error);
       creteAlert("error", t(error.message));
     }
-  };
+  }
+};
+
+const openNoteModal = (orderId) => {
+  setSelectedOrderId(orderId);
+  setNoteModalOpen(true);
+};
+
+const handleAddNote = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+
+    const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order/${selectedOrderId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ note: noteText }),
+    });
+    
+    const data = await response.json();
+    if (!response.ok) {
+      creteAlert("error", t(data.message));
+    } else {
+      creteAlert("success", t("Note added successfully!"));
+      setNoteModalOpen(false);
+      setNoteText('');
+      // Optional: refetch orders or update local state
+    }
+  } catch (error) {
+    console.error("Error adding note:", error);
+    creteAlert("error", t(error.message));
+  }
+};
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -385,19 +440,39 @@ const handleAddressSubmit = async (e) => {
           </td>
           <td>{order.totalPrice} {t("SAR")}</td>
           <td>
-            <Link href={`/order/${order._id}`} className="mx-1">{t("View")}</Link>
-            {(order.status === "newOrder" || order.status === "accepted") && (
-              <>
-                / 
-                <Link
-                  href={`#`}
-                  className="mx-1"
-                  onClick={(e) => {e.preventDefault(); cancelOrder(order._id)}}
-                >
-                  {t("Cancel")}
-                </Link>
-              </>
-            )}
+            <Link 
+                      href={`/order/${order._id}`} 
+                      className="text-blue-500 hover:text-blue-700"
+                      title={t("View")}
+                    >
+                      <FaEye size={16} />
+                    </Link>
+                    
+                    {(order.status === "newOrder" || order.status === "accepted") && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            cancelOrder(order._id);
+                          }}
+                          className="text-red-500 hover:text-red-700"
+                          title={t("Cancel")}
+                        >
+                          <FaTimes size={16} />
+                        </button>
+                        
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            openNoteModal(order._id);
+                          }}
+                          className="text-gray-600 hover:text-gray-900"
+                          title={t("Add Note")}
+                        >
+                          <FaStickyNote size={16} />
+                        </button>
+                      </>
+                    )}
           </td>
         </tr>
       ))
@@ -594,6 +669,83 @@ const handleAddressSubmit = async (e) => {
               </div>
             </div>
             {/* <!-- PRODUCT TAB AREA END --> */}
+              {noteModalOpen && (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 50
+  }}>
+    <div style={{
+      backgroundColor: 'white',
+      padding: '24px',
+      borderRadius: '8px',
+      maxWidth: '448px',
+      width: '100%'
+    }}>
+      <h3 style={{
+        fontSize: '18px',
+        fontWeight: 500,
+        marginBottom: '16px'
+      }}>{t("Add Note to Order")}</h3>
+      <textarea
+        style={{
+          width: '100%',
+          padding: '8px',
+          border: '1px solid #e2e8f0',
+          borderRadius: '4px',
+          marginBottom: '16px',
+          minHeight: '100px'
+        }}
+        rows="4"
+        value={noteText}
+        onChange={(e) => setNoteText(e.target.value)}
+        placeholder={t("Enter your note here...")}
+      />
+      <div style={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '8px'
+      }}>
+        <button
+          onClick={() => {
+            setNoteModalOpen(false);
+            setNoteText('');
+          }}
+          style={{
+            padding: '8px 16px',
+            border: '1px solid #e2e8f0',
+            borderRadius: '4px',
+            background: 'transparent'
+          }}
+        >
+          {t("Cancel")}
+        </button>
+        <button
+          onClick={handleAddNote}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            borderRadius: '4px',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+        >
+          {t("Save Note")}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
           </div>
         </div>
       </div>
