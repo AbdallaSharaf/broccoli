@@ -21,8 +21,9 @@ const AccountPrimary = () => {
   });
   const [addressFormData, setAddressFormData] = useState({
     street: '',
-    country: '',
-    city: '',
+    houseNumber: '',
+    district: '',
+    landmark: '',
   });
   
   const [errors, setErrors] = useState({});
@@ -145,57 +146,60 @@ const AccountPrimary = () => {
       setIsSubmitting(false);
     }
   };
-  const handleAddressSubmit = async (e) => {
-    e.preventDefault();
-    
-    setIsSubmitting(true);
-    setErrors({});
-    setSuccessMessage('');
+const handleAddressSubmit = async (e) => {
+  e.preventDefault();
   
-    const token = localStorage.getItem('token');
-  
-    try {
-      // --- Update Name/Email if changed ---
-      if (
-        addressFormData.city !== userData?.address?.[0]?.city ||
-        addressFormData.street !== userData?.address?.[0]?.street ||
-        addressFormData.country !== userData?.address?.[0]?.country
-      ) {
-        const res = await fetch('https://fruits-heaven-api.onrender.com/api/v1/user/updateMyData', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            address: [
-              {
-                city: addressFormData.city,
-                street: addressFormData.street,
-                country: addressFormData.country
-              }
-            ]
-          }),
-        });
-  
-        const nameEmailData = await res.json();
-  
-        if (!res.ok) {
-          throw new Error(nameEmailData.message || t('Update failed'));
-        }
+  setIsSubmitting(true);
+  setErrors({});
+  setSuccessMessage('');
+
+  const token = localStorage.getItem('token');
+
+  try {
+    // Concatenate all address parts with commas
+    const concatenatedAddress = [
+      addressFormData.houseNumber,
+      addressFormData.street,
+      addressFormData.district,
+      addressFormData.landmark
+    ].filter(part => part).join(', '); // Only include non-empty parts
+
+    // Check if address has actually changed
+    const currentAddress = userData?.address?.[0]?.street || '';
+    if (concatenatedAddress !== currentAddress) {
+      const res = await fetch('https://fruits-heaven-api.onrender.com/api/v1/user/updateMyData', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          address: [
+            {
+              street: concatenatedAddress
+            }
+          ]
+        }),
+      });
+
+      const nameEmailData = await res.json();
+
+      if (!res.ok) {
+        throw new Error(nameEmailData.message || t('Update failed'));
       }
-  
-      setSuccessMessage(t('Account updated successfully'));
-      setTimeout(() => setSuccessMessage(''), 5000);
-    } catch (error) {
-      setErrors((prev) => ({
-        ...prev,
-        serverError: error.message || t('An error occurred. Please try again.'),
-      }));
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+
+    setSuccessMessage(t('Account updated successfully'));
+    setTimeout(() => setSuccessMessage(''), 5000);
+  } catch (error) {
+    setErrors((prev) => ({
+      ...prev,
+      serverError: error.message || t('An error occurred. Please try again.'),
+    }));
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   
 
   const [loading, setLoading] = useState(false); // Add loading state
@@ -268,15 +272,18 @@ const AccountPrimary = () => {
 
   useEffect(() => {
     if (userData) {
+
+      const addressParts = userData.address?.[0]?.street?.split(",").map(part => part.trim()) || [];
       setFormData((prev) => ({
         ...prev,
         name: userData.name || '',
         email: userData.email || ''
       }));
       setAddressFormData({
-        street: userData.address?.[0]?.street || '',
-        country: userData.address?.[0]?.country || '',
-        city: userData.address?.[0]?.city || ''
+        houseNumber: addressParts[0] || "",       // First part before comma
+        street: addressParts[1] || "",           // Second part
+        district: addressParts[2] || "",         // Third part
+        landmark: addressParts[3] || "",         // Fourth part
       });
     }
   }, [userData]);
@@ -418,40 +425,65 @@ const AccountPrimary = () => {
                               <h4>
                                 {t("Shipping Address")}{" "}
                               </h4>
-                              <div className="row">
-                              <div className="col-md-12">
-                                <label>{t("Street and House")}:</label>
-                                <input
-                                  type="text"
-                                  name="street"
-                                  value={addressFormData.street}
-                                  onChange={handleAddressChange}
-                                  placeholder={t("Street and House")}
-                                />
-                              </div>
-                              
-                              <div className="col-md-12">
-                                <label>{t("Town / City")}:</label>
-                                <input
-                                  type="text"
-                                  name="city"
-                                  value={addressFormData.city}
-                                  onChange={handleAddressChange}
-                                  placeholder={t("Town / City")}
-                                />
-                              </div>
-
-                              <div className="col-md-12">
-                                <label>{t("state")}:</label>
-                                <input
-                                  type="text"
-                                  name="country"
-                                  value={addressFormData.country}
-                                  onChange={handleAddressChange}
-                                  placeholder={t("state")}
-                                />
-                              </div>
-                            </div>
+                                        <div className="col-lg-12 col-md-12">
+            <div className="row">
+              <div className="col-md-6">
+                <h6>{t("House Number")}</h6>
+                <div className="input-item">
+                  <input
+                    type="text"
+                    name="houseNumber"
+                    value={addressFormData.houseNumber}
+                    onChange={handleAddressChange}
+                    placeholder={t("House number")}
+                    
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <h6>{t("District")}</h6>
+                <div className="input-item">
+                  <input
+                    type="text"
+                    name="district"
+                    value={addressFormData.district}
+                    onChange={handleAddressChange}
+                    placeholder={t("District")}
+                    
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-12 col-md-12">
+            <div className="row">
+              <div className="col-md-6">
+                <h6>{t("Street")}</h6>
+                <div className="input-item">
+                  <input
+                    type="text"
+                    name="street"
+                    value={addressFormData.street}
+                    onChange={handleAddressChange}
+                    placeholder={t("Street name")}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <h6>{t("Landmark")}</h6>
+                <div className="input-item">
+                  <input
+                    type="text"
+                    name="landmark"
+                    value={addressFormData.landmark}
+                    onChange={handleAddressChange}
+                    placeholder={t("landmark")}
+                  
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
                             {errors.serverError && (
                               <div className="alert alert-danger">{errors.serverError}</div>
                             )}

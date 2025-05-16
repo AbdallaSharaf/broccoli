@@ -35,7 +35,10 @@ const CheckoutPrimary = () => {
     lastName,
     email: userData?.email || "",
     phone: "",
+    landmark: "",
     houseNumber: "",
+    street: "",
+    district: "",
     city: "",
     state: "",
     zip: "",
@@ -101,119 +104,138 @@ const [locationError, setLocationError] = useState(null);
   const isProducts = products.items.length > 0;
 
   // handle place order
-  const handlePlaceOrder = async () => {
-    setLoading(true);
-    const requiredFields = [
-      "firstName",
-      "lastName",
-      "email",
-      "phone",
-      "houseNumber",
-      "city",
-    ];
-  
-    const missingFields = requiredFields.filter(
-      (field) => !formData[field]?.trim()
-    );
-  
-    if (missingFields.length > 0) {
-      const newErrors = {};
-      missingFields.forEach(field => {
-        newErrors[field] = t("This field is required");
-      });
-      setFieldErrors(newErrors);
-      setLoading(false);
-      creteAlert("error", t("Please fill in all required fields"));
-      return;
-    } else {
-      setFieldErrors({}); // Clear errors if all fields are valid
-    }
-  
-    // Format the main payload
-    const formattedPayload = {
-      address: {
-        name: `${formData.firstName} ${formData.lastName}`.trim(),
-        phone: formData.phone,
-        email: formData.email,
-        country: formData.state,
-        city: formData.city,
-        street: formData.houseNumber,
-        zipCode: formData.zip,
-        location: `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`,
-      },
-    };
-  
-    try {
-      const token = localStorage.getItem("token");
-      const guest = localStorage.getItem("guest");
-      
-      // Set up common headers
-      const headers = {
-        "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
-        ...(!token && guest && { tempId: guest }),
-      };
+const handlePlaceOrder = async () => {
+  setLoading(true);
+  const requiredFields = [
+    "firstName",
+    "lastName",
+    "email",
+    "phone",
+    "district",
+    "street",
+    "city",
+  ];
 
-      // Submit note if exists (for both payment methods)
-      if (formData.notes?.trim()) {
-        await axiosInstance.post("/cart/note", {
-          note: formData.notes.trim(),
-        }, { headers });
-      }
-  
-      // Determine API endpoint based on payment method
-      const endpoint = selectedPayment === 'paypal' 
-        ? `/order/cardOrder/${products._id}`
-        : `/order/${products._id}`;
-  
-      // Place the order
-      const { data } = await axiosInstance.post(endpoint, formattedPayload, { headers });
-  
-      // Handle PayPal redirect
-      if (selectedPayment === 'paypal' && data.invoiceURL) {
-        window.location.href = data.invoiceURL;
-        setLoading(false);
-        return; // Exit function as we're redirecting
-      }
-  
-      // For cash on delivery, proceed with success flow
-      const productIds = products.items.map((item) => item.productId);
-      
-      creteAlert("success", "Order placed successfully!");
-      setCartProducts({ _id: "", items: [] });
-      setIsPlaceOrder(false);
-      
-      // Track purchase events
-      fbq("track", "Purchase", {
-        value: data.order.totalPrice,
-        currency: "SAR",
-      });
-      
-      snaptr('track', 'PURCHASE', {
-        'price': data.order.totalPrice,
-        'currency': 'SAR',
-        'transaction_id': data.order.invoiceId,
-        'item_ids': productIds,
-        'number_items': data.order.totalQuantity,
-        'payment_info_available': selectedPayment === 'paypal' ? 1 : 0,
-        'success': 1,
-        'user_email': data.order.shippingAddress.email,
-        'user_phone_number': data.order.shippingAddress.phone || data.order.user?.phone,
-        'firstname': data.order.shippingAddress.name.split(' ')[0] || data.order.user?.name.split(' ')[0],
-        'lastname': data.order.shippingAddress.name.split(' ')[1] || data.order.user?.name.split(' ')[1],
-        'geo_state': data.order.shippingAddress.street,
-        'geo_city': data.order.shippingAddress.city,
-        'geo_country': data.order.shippingAddress.country,
-        'geo_postal_code': data.order.shippingAddress.zipCode
-      });
-      setLoading(false);
-      router.push(`/order-placed/${data.order.invoiceId}`);
-  
-    } catch (error) {
-      creteAlert("error", error.response?.data?.message || error.message || "Failed to place order");
-      setLoading(false);
-    }
+  // Validate required fields
+  const missingFields = requiredFields.filter(
+    (field) => !formData[field]?.trim()
+  );
+
+  // Validate district and street are not the same
+  if (formData.district?.trim() && formData.street?.trim() && 
+      formData.district.trim().toLowerCase() === formData.street.trim().toLowerCase()) {
+    setFieldErrors({
+      ...fieldErrors,
+      district: t("District and street cannot be the same"),
+      street: t("District and street cannot be the same")
+    });
+    setLoading(false);
+    creteAlert("error", t("District and street cannot be the same"));
+    return;
+  }
+
+  if (missingFields.length > 0) {
+    const newErrors = {};
+    missingFields.forEach(field => {
+      newErrors[field] = t("This field is required");
+    });
+    setFieldErrors(newErrors);
+    setLoading(false);
+    creteAlert("error", t("Please fill in all required fields"));
+    return;
+  } else {
+    setFieldErrors({}); // Clear errors if all fields are valid
+  }
+
+  // Format the main payload with concatenated address fields
+  const formattedPayload = {
+    address: {
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      phone: formData.phone,
+      email: formData.email,
+      country: formData.state,
+      city: formData.city,
+      street: [
+        formData.houseNumber,
+        formData.street,
+        formData.district,
+        formData.landmark
+      ].filter(Boolean).join(', '), // Concatenate and remove empty parts
+      location: `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`,
+    },
   };
+
+  try {
+    const token = localStorage.getItem("token");
+    const guest = localStorage.getItem("guest");
+    
+    // Set up common headers
+    const headers = {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(!token && guest && { tempId: guest }),
+    };
+
+    // Submit note if exists (for both payment methods)
+    if (formData.notes?.trim()) {
+      await axiosInstance.post("/cart/note", {
+        note: formData.notes.trim(),
+      }, { headers });
+    }
+
+    // Determine API endpoint based on payment method
+    const endpoint = selectedPayment === 'paypal' 
+      ? `/order/cardOrder/${products._id}`
+      : `/order/${products._id}`;
+
+    // Place the order
+    const { data } = await axiosInstance.post(endpoint, formattedPayload, { headers });
+
+    // Handle PayPal redirect
+    if (selectedPayment === 'paypal' && data.invoiceURL) {
+      window.location.href = data.invoiceURL;
+      setLoading(false);
+      return; // Exit function as we're redirecting
+    }
+
+    // For cash on delivery, proceed with success flow
+    const productIds = products.items.map((item) => item.productId);
+    
+    creteAlert("success", "Order placed successfully!");
+    setCartProducts({ _id: "", items: [] });
+    setIsPlaceOrder(false);
+    
+    // Track purchase events
+    fbq("track", "Purchase", {
+      value: data.order.totalPrice,
+      currency: "SAR",
+    });
+    
+    snaptr('track', 'PURCHASE', {
+      'price': data.order.totalPrice,
+      'currency': 'SAR',
+      'transaction_id': data.order.invoiceId,
+      'item_ids': productIds,
+      'number_items': data.order.totalQuantity,
+      'payment_info_available': selectedPayment === 'paypal' ? 1 : 0,
+      'success': 1,
+      'user_email': data.order.shippingAddress.email,
+      'user_phone_number': data.order.shippingAddress.phone || data.order.user?.phone,
+      'firstname': data.order.shippingAddress.name.split(' ')[0] || data.order.user?.name.split(' ')[0],
+      'lastname': data.order.shippingAddress.name.split(' ')[1] || data.order.user?.name.split(' ')[1],
+      'geo_state': data.order.shippingAddress.street,
+      'geo_city': data.order.shippingAddress.city,
+      'geo_country': data.order.shippingAddress.country,
+      'geo_postal_code': data.order.shippingAddress.zipCode
+    });
+    setLoading(false);
+    router.push(`/order-placed/${data.order.invoiceId}`);
+
+  } catch (error) {
+    creteAlert("error", error.response?.data?.message || error.message || "Failed to place order");
+    setLoading(false);
+  }
+};
   
   
   //   useEffect(() => {
@@ -239,21 +261,28 @@ const [locationError, setLocationError] = useState(null);
       setCouponCode(products.coupon?.code || "");
     }
   }, [products]);
-  useEffect(() => {
-    if (userData) {
-      const [firstName = "", lastName = ""] = userData.name?.split(" ") || [];
-  
-      setFormData((prev) => ({
-        ...prev,
-        firstName,
-        lastName,
-        email: userData.email || "",
-        houseNumber: userData.address?.[0]?.street || "",
-        city: userData.address?.[0]?.city || "",
-        state: userData.address?.[0]?.country || "",
-      }));
-    }
-  }, [userData]);
+useEffect(() => {
+  if (userData) {
+    const [firstName = "", lastName = ""] = userData.name?.split(" ") || [];
+    
+    // Split address.street by comma and trim whitespace
+    const addressParts = userData.address?.[0]?.street?.split(",").map(part => part.trim()) || [];
+    
+    setFormData((prev) => ({
+      ...prev,
+      firstName,
+      lastName,
+      email: userData.email || "",
+      houseNumber: addressParts[0] || "",       // First part before comma
+      street: addressParts[1] || "",           // Second part
+      district: addressParts[2] || "",         // Third part
+      landmark: addressParts[3] || "",         // Fourth part
+      city: userData.address?.[0]?.city || "",
+      state: userData.address?.[0]?.country || "",
+    }));
+  }
+}, [userData]);
+
   return (
     <div className="ltn__checkout-area mb-105">
       <div className="container">
@@ -447,19 +476,69 @@ const [locationError, setLocationError] = useState(null);
           <div className="col-lg-12 col-md-12">
             <div className="row">
               <div className="col-md-6">
-                <h6>{t("Street and House")}</h6>
+                <h6>{t("House Number")}</h6>
                 <div className="input-item">
                   <input
                     type="text"
                     name="houseNumber"
                     value={formData.houseNumber}
                     onChange={handleChange}
-                    placeholder={t("House number and street name")}
+                    placeholder={t("House number")}
                     required
                     className={fieldErrors.houseNumber ? "input-error" : ""}
                   />
                 </div>
               </div>
+              <div className="col-md-6">
+                <h6>{t("District")}</h6>
+                <div className="input-item">
+                  <input
+                    type="text"
+                    name="district"
+                    value={formData.district}
+                    onChange={handleChange}
+                    placeholder={t("District")}
+                    required
+                    className={fieldErrors.district ? "input-error" : ""}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-12 col-md-12">
+            <div className="row">
+              <div className="col-md-6">
+                <h6>{t("Street")}</h6>
+                <div className="input-item">
+                  <input
+                    type="text"
+                    name="street"
+                    value={formData.street}
+                    onChange={handleChange}
+                    placeholder={t("Street name")}
+                    required
+                    className={fieldErrors.street ? "input-error" : ""}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <h6>{t("Landmark")}</h6>
+                <div className="input-item">
+                  <input
+                    type="text"
+                    name="landmark"
+                    value={formData.landmark}
+                    onChange={handleChange}
+                    placeholder={t("landmark")}
+                    required
+                    className={fieldErrors.landmark ? "input-error" : ""}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-12 col-md-12">
+            <div className="row">
               <div className="col-md-6">
                 <h6>{t("Town / City")}</h6>
                 <div className="input-item">
