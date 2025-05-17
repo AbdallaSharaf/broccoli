@@ -113,7 +113,6 @@ const handlePlaceOrder = async () => {
     "phone",
     "district",
     "street",
-    "city",
   ];
 
   // Validate required fields
@@ -277,7 +276,7 @@ useEffect(() => {
       street: addressParts[1] || "",           // Second part
       district: addressParts[2] || "",         // Third part
       landmark: addressParts[3] || "",         // Fourth part
-      city: userData.address?.[0]?.city || "",
+      city: userData.address?.[0]?.city || "الرياض",
       state: userData.address?.[0]?.country || "",
     }));
   }
