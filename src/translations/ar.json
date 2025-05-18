@@ -424,7 +424,11 @@
         "too short phone number": "رقم الهاتف قصير جدًا",
         "Coupon is not active at this time": "القسيمة غير مفعلة في الوقت الحالي",
         "Card Payment":"دفع بالبطاقه",
-        "VAT":"ضريبة القيمة المضافة"
+        "VAT":"ضريبة القيمة المضافة",
+        "Permission denied. Please enable location access in Settings.":"تم رفض الصلاحية. يرجى تفعيل الوصول للموقع في الاعدادات.",
+        "Position unavailable.":"الموقع غير متاح.",
+        "Request timed out.":"انتهت صلاحية الطلب.",
+        "An unknown error occurred.":"حدث خطأ غير معروف."
     },
     "footer": {
         "Company": "الشركة",

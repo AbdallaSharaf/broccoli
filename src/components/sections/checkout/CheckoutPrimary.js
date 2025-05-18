@@ -62,14 +62,32 @@ const [locationError, setLocationError] = useState(null);
           setLocationError(null);
         },
         (error) => {
-          console.error(error);
-          setLocationError("Unable to retrieve your location.");
+          console.error("Geolocation error:", error);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              setLocationError(t("Permission denied. Please enable location access in Settings."));
+              break;
+            case error.POSITION_UNAVAILABLE:
+              setLocationError(t("Position unavailable."));
+              break;
+            case error.TIMEOUT:
+              setLocationError(t("Request timed out."));
+              break;
+            default:
+              setLocationError("An unknown error occurred.");
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
         }
       );
     } else {
       setLocationError("Geolocation is not supported by your browser.");
     }
   };
+  
   console.log(selectedPayment)
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });

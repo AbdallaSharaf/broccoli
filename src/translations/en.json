@@ -359,7 +359,11 @@
         "too short phone number":"too short phone number",
         "Coupon is not active at this time":"Coupon is not active at this time",
         "Card Payment":"Card Payment",
-        "VAT":"VAT"
+        "VAT":"VAT",
+        "Permission denied. Please enable location access in Settings.":"Permission denied. Please enable location access in Settings.",
+        "Position unavailable.":"Position unavailable.",
+        "Request timed out.":"Request timed out.",
+        "An unknown error occurred.":"An unknown error occurred."
     },
     "footer": {
         "Company": "Company",
