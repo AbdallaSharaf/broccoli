@@ -428,7 +428,8 @@
         "Permission denied. Please enable location access in Settings.":"تم رفض الصلاحية. يرجى تفعيل الوصول للموقع في الاعدادات.",
         "Position unavailable.":"الموقع غير متاح.",
         "Request timed out.":"انتهت صلاحية الطلب.",
-        "An unknown error occurred.":"حدث خطأ غير معروف."
+        "An unknown error occurred.":"حدث خطأ غير معروف.",
+        "No user found with this email": "لم يتم العثور على مستخدم بهذا البريد الألكتروني."
     },
     "footer": {
         "Company": "الشركة",

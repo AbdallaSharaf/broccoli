@@ -47,7 +47,7 @@ export const UserContext = ({ children }) => {
       try {
         // Check if token is older than 7 days
         if (isTokenExpired(tokenCreationDate)) {
-          console.log("Token expired - removing from storage");
+          // console.log("Token expired - removing from storage");
           localStorage.removeItem("token");
           localStorage.removeItem("tokenCreationDate");
           setUser(null);
@@ -75,6 +75,7 @@ export const UserContext = ({ children }) => {
       );
   
       const data = res.data;
+      // console.log("resp",res)
       if (!res.message === "success") throw new Error(data?.message || "Login failed");
       
       const { token } = data;
@@ -116,8 +117,9 @@ export const UserContext = ({ children }) => {
       return { user: decodedUser, cart: mergedCart, status: true };
     } catch (error) {
       setLoading(false);
+      // console.log("error",error)
       console.error("Login error:", error.message);
-      return {error: error.message, status: false};
+      return {error: error?.response?.data?.error, status: false};
     }
   };
   
@@ -137,8 +139,8 @@ const register = async ({ firstname, lastname, email, password, phone }) => {
     if (!res.ok) throw new Error(data.error || "Registration failed");
     return {status: true, message: data.message};
   } catch (error) {
-    console.error("Registration error:", error.message);
-    return {status: false, message: error.message};
+    console.error("Registration error:", error?.response?.data?.error);
+    return {status: false, message: error?.response?.data?.error};
   }
 };
 
@@ -158,7 +160,7 @@ const verifyResetCode = async (email, otp) => {
 
     return { success: true, data };
   } catch (error) {
-    return { success: false, message: error.message };
+    return { success: false, message: error?.response?.data?.error };
   }
 };
 
@@ -172,14 +174,16 @@ const forgotPassword = async (email) => {
     });
 
     const data = await res.json();
-
+    // console.log("res",res)
+    console.log("data",data)
     if (!res.ok) {
-      throw new Error(data.message || "Something went wrong. Please try again.");
+      throw new Error(data.error || "Something went wrong. Please try again.");
     }
 
     return { success: true, data };
   } catch (error) {
-    return { success: false, message: error.message };
+    console.log("error",error)
+    return {  error: error,status: false, };
   }
 };
 
@@ -199,7 +203,7 @@ const assignNewPassword = async (email, newPassword) => {
 
     return { success: true, data };
   } catch (error) {
-    return { success: false, message: error.message };
+    return { success: false, message: error?.response?.data?.error };
   }
 };
 

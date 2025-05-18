@@ -363,7 +363,8 @@
         "Permission denied. Please enable location access in Settings.":"Permission denied. Please enable location access in Settings.",
         "Position unavailable.":"Position unavailable.",
         "Request timed out.":"Request timed out.",
-        "An unknown error occurred.":"An unknown error occurred."
+        "An unknown error occurred.":"An unknown error occurred.",
+        "No user found with this email":"No user found with this email"
     },
     "footer": {
         "Company": "Company",

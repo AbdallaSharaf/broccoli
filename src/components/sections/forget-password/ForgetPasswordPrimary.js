@@ -24,12 +24,12 @@ const ForgetPasswordPrimary = () => {
     setLoading(true);
   
     const result = await forgotPassword(email);
-  
+  console.log("result",result)
     if (result.success) {
       localStorage.setItem("resetEmail", email);
       router.push("/reset-code");
     } else {
-      setError(result.message);
+      setError(t(result.error.message));
     }
   
     setLoading(false);
