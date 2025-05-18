@@ -142,13 +142,17 @@ const CartProduct = ({
             <div className="dec qtybutton">-</div>
             <input
               value={quantity}
-              type="text"
+              type="number"
               name="qtybutton"
               className="cart-plus-minus-box"
+              min="0.25"
+              step="0.25"
               onChange={(e) => {
-                const val = Number(e.target.value);
-                setQuantity(val > 0 ? val : 0.25);
-                setIsUpdate(true);
+                const val = parseFloat(e.target.value);
+                if (!isNaN(val) && val > 0 && (val * 100) % 25 === 0) {
+                  setQuantity(val);
+                  setIsUpdate(true);
+                }
               }}
             />
             <div className="inc qtybutton">+</div>
