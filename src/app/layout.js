@@ -145,6 +145,51 @@ return (
     `,
   }}
 />
+<script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Fruits Heaven",
+              "url": "https://fruitsheaven.sa/",
+              "logo": "https://fruitsheaven.sa/images/logo.png",
+              "description": "Fruits Heaven provides fresh local and imported fruits, vegetables, and leaves in Saudi Arabia. Official agent for AxisForTrading.",
+              "sameAs": [
+                "https://www.facebook.com/fruitsheaven",
+                "https://www.instagram.com/fruitsheaven"
+              ],
+              "founder": "AxisForTrading",
+              "location": {
+                "@type": "Place",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressCountry": "SA"
+                }
+              }
+            })
+          }}
+        />
+
+        <title>جنة الفواكه</title>
+        <meta name="description" content="Local & imported fruits, vegetables, and more — delivered across KSA. Fruits Heaven is your trusted AxisForTrading agent." />
+        <meta name="keywords" content="الفواكه في المملكة العربية السعودية، الخضروات في المملكة العربية السعودية، الفواكه المستوردة، المنتجات المحلية، الأوراق الطازجة، توصيل الفاكهة، جنة الفواكه، وكيل AxisForTrading" />
+        <meta name="author" content="IN marketing" />
+        
+        {/* Open Graph for social media */}
+        <meta property="og:title" content="جنة الفواكه" />
+        <meta property="og:description" content="Premium quality local and imported fruits, vegetables, and leaves delivered to your door in KSA. We're the official agent for AxisForTrading" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.fruits-heaven.com/" />
+        <meta property="og:image" content="https://www.fruits-heaven.com/og-image.jpg" />
+
+        {/* Twitter Cards */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="جنة الفواكه" />
+        <meta name="twitter:description" content="Local & imported fruits, vegetables, and more — delivered across KSA. Fruits Heaven is your trusted AxisForTrading agent." />
+        <meta name="twitter:image" content="https://www.fruits-heaven.com/twitter-image.jpg" />
+
+        <link rel="canonical" href="https://www.fruits-heaven.com/" />
     </head>
     <body className={open_sans.className}>
               <Suspense fallback={<div></div>}>
