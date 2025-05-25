@@ -6,6 +6,7 @@ import { useTranslations } from "@/hooks/useTranslate";
 import Countdown from "./countdown";
 import { useEffect, useState } from "react";
 import { useLanguageContext } from "@/providers/LanguageContext";
+import axiosInstance from "@/libs/axiosInstance";
 
 const HotDeal2 = ({ type }) => {
   const t = useTranslations("common");
@@ -14,35 +15,34 @@ const HotDeal2 = ({ type }) => {
   const [loading, setLoading] = useState(true);
   const { locale } = useLanguageContext();
   const [timestamp, setTimestamp] = useState('');
+
   useEffect(() => {
     const fetchSettings = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/siteSettings/${id}`, {
-          method: "GET",
-        });
-  
-        const json = await res.json(); // Important!
-  
-        const data = json.SiteSettings?.offersParagraph; // Use optional chaining to avoid crash if missing
-        const timestamp = json.SiteSettings?.offersTime; // Use optional chaining to avoid crash if missing
-        setData(data);
-        setTimestamp(timestamp);
+        const response = await axiosInstance.get(`/siteSettings/${id}`);
+        
+        const data = response.data?.SiteSettings?.offersParagraph;
+        const timestamp = response.data?.SiteSettings?.offersTime;
+        
+        setData(data || {en: "", ar: ""});
+        setTimestamp(timestamp || '');
       } catch (error) {
         console.error('Error fetching offer paragraphs:', error);
       } finally {
         setLoading(false);
       }
     };
-  
-    if (id) { // make sure id exists
+
+    if (id) {
       fetchSettings();
     }
-  }, []); // <-- add id to dependencies
-  
+  }, []);
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
   return (
     <div
       className={`ltn__call-to-action-area ltn__call-to-action-4 ltn__call-to-action-4-2  ${
