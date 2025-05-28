@@ -11,6 +11,8 @@ import CommonContext from "@/providers/CommonContext";
 import { useProductContext } from "@/providers/ProductContext";
 import getTranslatedName from "@/libs/getTranslatedName";
 import { useTranslations } from "@/hooks/useTranslate"; // ✅ import hook
+import axios from "axios";
+import axiosInstance from "../../../libs/axiosInstance.js";
 
 const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   const t = useTranslations("header"); // ✅ use translation namespace
@@ -47,7 +49,7 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
         return;
       }
       try {
-        const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/category/${category}?deleted=false&available=true`);
+        const response = await axiosInstance.get(`/category/${category}?deleted=false&available=true`);
         if (!response.ok) {
           throw new Error("Failed to fetch filtered items");
         }

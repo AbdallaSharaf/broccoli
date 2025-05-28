@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useUserContext } from '@/providers/UserContext';
 import { useTranslations } from '@/hooks/useTranslate';
 import useSweetAlert from '@/hooks/useSweetAlert';
+import axiosInstance from '../../../libs/axiosInstance.js';
 
 const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
   const [rating, setRating] = useState(0);
@@ -58,30 +59,30 @@ const ProductDetailsReviews = ({ reviews, reviewsLength, productId }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://fruits-heaven-api.onrender.com/api/v1/review', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          product: productId,
-          rating,
-          comment: reviewText,
-        }),
-      });
+      const response = await axiosInstance.post('/review', 
+       {
+        product: productId,
+        rating,
+        comment: reviewText,
+      },{
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      }}
+      );
 
       const data = await response.json();
-
+console.log(data)
       if (!response.ok) {creteAlert("error", t(data.message)) 
         return;}
-      else {creteAlert("success", t(data.message))}
+      else {creteAlert("success", t(data.response.data.message))}
       
       setSuccess(t('reviewSubmitted'));
       setRating(0);
       setReviewText("");
     } catch (err) {
-      setError(err.message || t('somethingWentWrong'));
+      console.log("err", err);
+      setError(t(err.response.data.message) || t('somethingWentWrong'));
     } finally {
       setIsSubmitting(false);
     }

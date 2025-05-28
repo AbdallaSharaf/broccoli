@@ -429,7 +429,16 @@
         "Position unavailable.":"الموقع غير متاح.",
         "Request timed out.":"انتهت صلاحية الطلب.",
         "An unknown error occurred.":"حدث خطأ غير معروف.",
-        "No user found with this email": "لم يتم العثور على مستخدم بهذا البريد الألكتروني."
+        "No user found with this email": "لم يتم العثور على مستخدم بهذا البريد الألكتروني.",
+        "Success! Cart updated.": "نجاح! تم تحديث السلة.",
+        "Failed to update cart.": "فشل في تحديث السلة.",
+        "Success! Coupon applied.": "نجاح! تم تطبيق القسيمة.",
+        "Failed to apply coupon.": "فشل في تطبيق القسيمة.",
+        "Item successfully deleted from cart.": "تم حذف المنتج بنجاح من السلة.",
+        "Failed to delete item from cart.": "فشل في حذف المنتج من السلة.",
+        "An error occurred while deleting the item.": "حدث خطأ في حذف المنتج.",
+        "An error occurred while applying the coupon.": "حدث خطأ في تطبيق القسيمة.",
+        "You can only review products you've purchased.": "يمكنك تقييم المنتجات التي قمت بشرائها."
     },
     "footer": {
         "Company": "الشركة",

@@ -1,5 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import axiosInstance from "../libs/axiosInstance.js";
 
 const categoryContext = createContext(null);
 
@@ -11,13 +12,11 @@ const CategoryContext = ({ children }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/category?PageCount=100&deleted=false&available=true"); // Replace with your API URL
-        const data = await response.json();
-
-        if (response.ok) {
-          setCategories(data.data); // Store fetched categories
+        const response = await axiosInstance.get("/category?PageCount=100&deleted=false&available=true"); // Replace with your API URL
+        if (response.status === 200) {
+          setCategories(response.data.data); // Store fetched categories
         } else {
-          throw new Error(data.message || "Failed to fetch categories");
+          throw new Error(response.data.message || "Failed to fetch categories");
         }
       } catch (err) {
         setError(err.message);

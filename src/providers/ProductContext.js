@@ -3,6 +3,7 @@ import CartStatusModal from "@/components/shared/modals/CartStatusModal";
 import ProductDetailsQuick from "@/components/shared/modals/ProductDetailsQuick";
 import WishlistStatusModal from "@/components/shared/modals/WishlistStatusModal";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axiosInstance from "../libs/axiosInstance.js";
 
 const productContext = createContext(null);
 
@@ -19,9 +20,9 @@ const ProductContext = ({ children }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/product?PageCount=1000&deleted=false&available=true&isTopProduct=true"); // Replace with your API URL
-        const data = await response.json();
-        if (response.ok) {
+        const response = await axiosInstance.get("/product?PageCount=1000&deleted=false&available=true&isTopProduct=true"); // Replace with your API URL
+        if (response.status === 200) {
+          const data = response.data;
           setTopRatedProducts(data.data); // Store products in state
           setTopProducts(data.data); // Store products in state
         } else {

@@ -1,12 +1,8 @@
+import axiosInstance from "../../libs/axiosInstance.js";
 
 export const verifyUserToken = async (token) => {
     try {
-      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/auth/verify/${token}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axiosInstance.get(`https://fruits-heaven-api.onrender.com/api/v1/auth/verify/${token}`);
   
       const data = await response.json();
   

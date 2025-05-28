@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useUserContext } from "./UserContext";
 import { getGuestCart, getUserCart } from "@/libs/cartApi";
 import { useTranslations } from "@/hooks/useTranslate";
+import axiosInstance from "../libs/axiosInstance.js";
 
 const cartContext = createContext(null);
 const CartContextProvider = ({ children }) => {
@@ -81,28 +82,26 @@ const CartContextProvider = ({ children }) => {
       // console.log("currentQuantity", currentQuantity);
       // Construct headers
       const headers = {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(!token && guestId && { tempId: guestId }),
       };
-  
       // Payload to backend
-      const body = JSON.stringify({
+      const body = {
         items: [
           {
             product: currentId,
             quantity: currentQuantity,
           },
         ],
-      });
+      };
   
-      const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/cart", {
-        method: "POST",
-        headers,
-        body,
-      });
+      const {data} = await axiosInstance.post("/cart", 
+      body,
+        {headers},
+      );
   
-      const data = await response.json();
+      // const data = await response.json();
   
       if (data.message === "Success" && data.cart) {
         const { cart } = data;
@@ -126,9 +125,9 @@ const CartContextProvider = ({ children }) => {
           setCartStatus("increased");
         }
   
-        creteAlert("success", "Success! Cart updated.");
+        creteAlert("success", t("Success! Cart updated."));
       } else {
-        creteAlert("error", data.message || "Failed to update cart.");
+        creteAlert("error", data.message || t("Failed to update cart."));
       }
     } catch (error) {
       console.error("Add to cart error:", error);
@@ -142,7 +141,6 @@ const CartContextProvider = ({ children }) => {
       const guestId = localStorage.getItem("guest");
   
       const headers = {
-        "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(!token && guestId && { tempId: guestId }),
       };
@@ -153,13 +151,12 @@ const CartContextProvider = ({ children }) => {
           quantity: item.quantity,
         })),
       });
-      const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/cart", {
-        method: "POST",
-        headers,
+      const {data} = await axiosInstance.post("/cart", 
         body,
-      });
+        {headers},
+      );
   
-      const data = await response.json();
+      // const data = await response.json();
   
       if (data.message === "Success" && data.cart) {
         const { cart } = data;
@@ -170,9 +167,9 @@ const CartContextProvider = ({ children }) => {
         }
   
         setCartProducts(cart);
-        creteAlert("success", "Success! Cart updated.");
+        creteAlert("success", t("Success! Cart updated."));
       } else {
-        creteAlert("error", data.message || "Failed to update cart.");
+        creteAlert("error", data.message || t("Failed to update cart."));
       }
     } catch (error) {
       console.error("Add to cart error:", error);
@@ -186,7 +183,7 @@ const CartContextProvider = ({ children }) => {
       const guestId = localStorage.getItem("guest");
   
       const headers = {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(!token && guestId && { tempId: guestId }),
       };
@@ -195,13 +192,12 @@ const CartContextProvider = ({ children }) => {
         code: coupon,
       });
   
-      const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/cart/coupon", {
-        method: "POST",
-        headers,
+      const {data} = await axiosInstance.post("/cart/coupon", 
         body,
-      });
+        {headers},
+      );
   
-      const data = await response.json();
+      // const data = await response.json();
   
       if (data.message === "Success" && data.cart) {
         const { cart } = data;
@@ -211,7 +207,7 @@ const CartContextProvider = ({ children }) => {
         }
   
         setCartProducts(cart);
-        return { success: true, message: "Success! Coupon applied." };
+        return { success: true, message: t("Success! Coupon applied.") };
       } else {
         const errorMessage = data.error;
 
@@ -229,7 +225,7 @@ const CartContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Apply coupon error:", error);
-      return { success: false, message: "An error occurred while applying the coupon." };
+      return { success: false, message: t("An error occurred while applying the coupon.") + " " + t(error?.response?.data?.error) };
     }
   };
   
@@ -249,12 +245,10 @@ const CartContextProvider = ({ children }) => {
   
       if (isGuest && !guest) return;
   
-      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/cart/${currentId}`, {
-        method: "DELETE",
+      const {data} = await axiosInstance.delete(`https://fruits-heaven-api.onrender.com/api/v1/cart/${currentId}`, {
         headers,
       });
   
-      const data = await response.json();
   
       if (data.message === "Success") {
         let newCartProducts;
@@ -277,14 +271,14 @@ const CartContextProvider = ({ children }) => {
         setCartProducts(newCartProducts);
         addItemsToLocalstorage("cart", newCartProducts);
 
-        creteAlert("success", "Item successfully deleted from cart.");
+        creteAlert("success", t("Item successfully deleted from cart."));
         setCartStatus("deleted");
       }
       else {
-        creteAlert("error", "Failed to delete item from backend.");
+        creteAlert("error", t("Failed to delete item from cart."));
       }
       } catch (error) {
-      creteAlert("error", "An error occurred while deleting the item.");
+      creteAlert("error", t("An error occurred while deleting the item."));
       console.error(error);
     }
   };
