@@ -74,8 +74,8 @@ const ProductsPrimary = ({ isSidebar, currentTapId }) => {
               isSidebar === "left" ? "order-lg-2 " : ""
             }`}
           >
-            {loading ? <Nodata text={t("Loading...")} /> : ""}
-            {(products?.length === 0 && !loading) ? <Nodata text={t("No Product Found!")} /> : ""}
+            {products?.length === 0 &&  <Nodata text={t("Loading...")} />}
+            {/* {(products?.length === 0 && !loading) ? <Nodata text={t("No Product Found!")} /> : ""} */}
 
             <div
               className={`ltn__shop-options ${!totalPages ? "no-data" : ""}`}

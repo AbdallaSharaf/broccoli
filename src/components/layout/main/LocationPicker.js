@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -27,16 +28,29 @@ export default function LocationPicker() {
   const [results, setResults] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
-  const handleSearch = async () => {
-    if (!query) return;
+const handleSearch = async () => {
+  if (!query) return;
 
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=5`
+  try {
+    // Since this is an external API, we'll use axios directly without the instance
+    const { data } = await axios.get(
+      `https://nominatim.openstreetmap.org/search`,
+      {
+        params: {
+          q: query,
+          format: 'json',
+          addressdetails: 1,
+          limit: 5
+        }
+      }
     );
-    const data = await response.json();
     setResults(data);
-  };
-
+  } catch (error) {
+    console.error('Search error:', error);
+    // Optionally handle the error in your UI
+    setResults([]);
+  }
+};
   const selectLocation = (location) => {
     setSelectedLocation({
       lat: parseFloat(location.lat),

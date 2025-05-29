@@ -8,6 +8,7 @@ import { FaEye, FaTimes, FaStickyNote } from 'react-icons/fa';
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import axiosInstance from "@/libs/axiosInstance";
 
 const AccountPrimary = () => {
   const { logout, userData } = useUserContext(); // Get login function from context
@@ -88,64 +89,47 @@ const AccountPrimary = () => {
     setIsSubmitting(true);
     setErrors({});
     setSuccessMessage('');
-  
-    const token = localStorage.getItem('token');
-  
     try {
       // --- Update Name/Email if changed ---
       if (
         formData.name !== userData?.name ||
         formData.email !== userData?.email
       ) {
-        const nameEmailRes = await fetch('https://fruits-heaven-api.onrender.com/api/v1/user/updateMyData', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify({
+        await axiosInstance.patch(
+          '/user/updateMyData',
+          {
             name: formData.name,
             email: formData.email,
-          }),
-        });
-  
-        const nameEmailData = await nameEmailRes.json();
-  
-        if (!nameEmailRes.ok) {
-          throw new Error(nameEmailData.message || t('Update failed'));
-        }
+          }
+        );
+
+        // With axios, non-2xx status codes throw errors automatically
+        // so we don't need to manually check response.ok
       }
-  
+
       // --- Update Password if provided ---
       if (formData.newPassword) {
-        const passwordRes = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/user/changePassword/${userData?._id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify({
+        await axiosInstance.patch(
+          `/user/changePassword/${userData?._id}`,
+          {
             password: formData.newPassword,
-          }),
-        });
-  
-        const passwordData = await passwordRes.json();
-  
-        if (!passwordRes.ok) {
-          throw new Error(passwordData.message || t('Password update failed'));
-        }
+          }
+        );
       }
-      setFormData(prev => (({
+
+      setFormData(prev => ({
         ...prev,
         newPassword: '',
         confirmPassword: ''
-      })))
+      }));
       setSuccessMessage(t('Account updated successfully'));
       setTimeout(() => setSuccessMessage(''), 5000);
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
-        serverError: error.message || t('An error occurred. Please try again.'),
+        serverError: error.response?.data?.message || 
+                    error.message || 
+                    t('An error occurred. Please try again.'),
       }));
     } finally {
       setIsSubmitting(false);
