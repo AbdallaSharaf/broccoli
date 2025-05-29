@@ -1,6 +1,7 @@
 "use client";
 import HeroSidebar from "@/components/shared/sidebars/HeroSidebar";
 import { useTranslations } from "@/hooks/useTranslate";
+import axiosInstance from "@/libs/axiosInstance";
 import main from "@/libs/main";
 import { useEffect, useState } from "react";
 
@@ -8,19 +9,21 @@ const Hero15 = ({ type }) => {
   const t = useTranslations("common");
   const [slides, setSlides] = useState([]);
 
-  useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/siteSettings/slider/homeSlider");
-        const data = await res.json();
-        setSlides(data || []);
-      } catch (err) {
-        console.error("Failed to fetch slides:", err);
-      }
-    };
-    // main()
-    fetchSlides();
-  }, []);
+useEffect(() => {
+  const fetchSlides = async () => {
+    try {
+      const { data } = await axiosInstance.get("/siteSettings/slider/homeSlider");
+      setSlides(data || []);
+    } catch (err) {
+      console.error("Failed to fetch slides:", err);
+      // Optional: show error to user
+      // creteAlert("error", "Failed to load slides");
+    }
+  };
+
+  fetchSlides();
+}, []);
+
   return (
     <div className="ltn__slider-area mt-30">
       <div className="container">

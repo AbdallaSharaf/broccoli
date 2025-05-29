@@ -22,21 +22,22 @@ export const UserContext = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchUserData = async (token) => {
-    try {
-      const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/user/myData", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch user data");
-      setUserData(data.user);
-    } catch (error) {
-      console.error("Fetch user data error:", error.message);
-      setUserData(null);
-    }
-  };
+const fetchUserData = async (token) => {
+  try {
+    const { data } = await axiosInstance.get('/user/myData', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    setUserData(data.user);
+  } catch (error) {
+    console.error("Fetch user data error:", error.response?.data?.message || error.message);
+    setUserData(null);
+    
+    // Optional: Show error to user
+    // creteAlert('error', error.response?.data?.message || 'Failed to fetch user data');
+  }
+};
 
   // ✅ Check if user is already logged in (persist session)
   useEffect(() => {
@@ -127,83 +128,59 @@ export const UserContext = ({ children }) => {
   // ✅ Register function with full name merge
 const register = async ({ firstname, lastname, email, password, phone }) => {
   try {
-    const fullName = `${firstname} ${lastname}`.trim(); // 👈 Merge and clean up
+    const fullName = `${firstname} ${lastname}`.trim();
 
-    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/SignUp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: fullName, email, password, phone }), // 👈 Send `name` instead of separate first/last
+    const { data } = await axiosInstance.post('/auth/SignUp', {
+      name: fullName,
+      email,
+      password, 
+      phone
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Registration failed");
-    return {status: true, message: data.message};
+    return { status: true, message: data.message };
   } catch (error) {
-    console.error("Registration error:", error?.response?.data?.error);
-    return {status: false, message: error?.response?.data?.error};
+    console.error("Registration error:", error.response?.data?.error || error.message);
+    return {
+      status: false,
+      message: error.response?.data?.error || "Registration failed"
+    };
   }
 };
 
 const verifyResetCode = async (email, otp) => {
   try {
-    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/verifyRessetCode", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, otp }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || "Something went wrong. Please try again.");
-    }
-
+    const { data } = await axiosInstance.post('/auth/verifyResetCode', { email, otp });
     return { success: true, data };
   } catch (error) {
-    return { success: false, message: error?.response?.data?.error };
+    return { 
+      success: false, 
+      message: error.response?.data?.message || "Something went wrong. Please try again." 
+    };
   }
 };
 
-
 const forgotPassword = async (email) => {
   try {
-    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/forgotPassword", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    const data = await res.json();
-    // console.log("res",res)
-    console.log("data",data)
-    if (!res.ok) {
-      throw new Error(data.error || "Something went wrong. Please try again.");
-    }
-
+    const { data } = await axiosInstance.post('/auth/forgotPassword', { email });
     return { success: true, data };
   } catch (error) {
-    console.log("error",error)
-    return {  error: error,status: false, };
+    console.error("Forgot password error:", error.response?.data || error);
+    return { 
+      status: false, 
+      error: error.response?.data?.error || "Something went wrong. Please try again." 
+    };
   }
 };
 
 const assignNewPassword = async (email, newPassword) => {
   try {
-    const res = await fetch("https://fruits-heaven-api.onrender.com/api/v1/auth/resetPassword", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, newPassword }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || "Something went wrong. Please try again.");
-    }
-
+    const { data } = await axiosInstance.put('/auth/resetPassword', { email, newPassword });
     return { success: true, data };
   } catch (error) {
-    return { success: false, message: error?.response?.data?.error };
+    return { 
+      success: false, 
+      message: error.response?.data?.message || "Something went wrong. Please try again." 
+    };
   }
 };
 

@@ -1,5 +1,6 @@
 "use client"
 
+import axiosInstance from "@/libs/axiosInstance";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -9,18 +10,15 @@ const Offer4 = ({ mt, mb }) => {
     useEffect(() => {
       const fetchSlides = async () => {
         try {
-          const res = await fetch(
-            "https://fruits-heaven-api.onrender.com/api/v1/siteSettings/slider/offersLastSlider"
-          );
-          const data = await res.json();
+          const { data } = await axiosInstance.get("/siteSettings/slider/offersLastSlider");
           setSlides(data || []);
         } catch (err) {
           console.error("Failed to fetch slides:", err);
         }
       };
-  
+
       fetchSlides();
-    }, []); // <-- FIXED: Don't depend on slides!
+    }, []);
 
   return (
     <div className={`ltn__banner-area ${mb ? mb : ""}  ${mt ? mt : "mt-120"}`}>

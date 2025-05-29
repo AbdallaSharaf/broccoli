@@ -4,6 +4,7 @@ import addItemsToLocalstorage from "@/libs/addItemsToLocalstorage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useUserContext } from "./UserContext";
 import { getGuestWishlist, getUserWishlist } from "@/libs/wishlistApi";
+import axiosInstance from "@/libs/axiosInstance";
 
 const wishlistContext = createContext(null);
 const WishlistContextProvider = ({ children }) => {
@@ -42,113 +43,106 @@ const WishlistContextProvider = ({ children }) => {
     }, [user]);
 
   // add  product from localstorage wishlist
-  const addProductToWishlist = async (currentProduct) => {
-    try {
+const addProductToWishlist = async (currentProduct) => {
+  try {
     const { _id: currentId } = currentProduct;
-  
     const token = localStorage.getItem("token");
     const guestId = localStorage.getItem("guest");
     const existingItem = wishlistProducts?.wishlist?.find(
       (item) => item._id === currentId
     );
-    const headers = {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...(!token && guestId && { tempId: guestId }),
-    };
-
-    const body = JSON.stringify({
-        product: currentId,
-    });
 
     if (existingItem) {
-      creteAlert("error", "Failed ! Already exist in wishlist.");
+      creteAlert("error", "Failed! Already exists in wishlist.");
       setWishlistStatus("exist");
-      return
+      return;
     }
 
-    const response = await fetch("https://fruits-heaven-api.onrender.com/api/v1/wishlist", {
-      method: "PATCH",
-      headers,
-      body,
+    const { data } = await axiosInstance.patch('/wishlist', {
+      product: currentId
+    }, {
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(!token && guestId && { tempId: guestId })
+      }
     });
 
-    const data = await response.json();
-
     if (data.message === "Success" && data.wishlist) {
-      const { wishlist } = data;
-  
       // Store guest ID if new
       if (data?.guest && !guestId) {
         localStorage.setItem("guest", data.guest);
       }
 
-      snaptr('track', 'ADD_TO_WISHLIST', {'item_ids': [currentId], 'number_items': data.wishlist.length})
-      setWishlistProducts(wishlist);
-      addItemsToLocalstorage("wishlist", wishlist);
+      snaptr('track', 'ADD_TO_WISHLIST', {
+        'item_ids': [currentId],
+        'number_items': data.wishlist.length
+      });
+      
+      setWishlistProducts(data.wishlist);
+      addItemsToLocalstorage("wishlist", data.wishlist);
       creteAlert("success", "Success! Wishlist updated.");
-
-    } 
-    else {
+    } else {
       creteAlert("error", data.error || "Failed to update wishlist.");
     }
   } catch (error) {
     console.error("Add to wishlist error:", error);
-    creteAlert("error", "An error occurred while updating the wishlist.");
+    creteAlert("error", 
+      error.response?.data?.error || 
+      "An error occurred while updating the wishlist."
+    );
   }
-  };
+};
 
   // delete product from localstorage wishlist
-  const deleteProductFromWishlist = async (currentId) => {
-    try {
-      const isGuest = !user;
-      const token = localStorage.getItem("token");
-      const guest = localStorage.getItem("guest");
+const deleteProductFromWishlist = async (currentId) => {
+  try {
+    const isGuest = !user;
+    const token = localStorage.getItem("token");
+    const guest = localStorage.getItem("guest");
 
-      const headers = {
-        "Content-Type": "application/json",
+    if (isGuest && !guest) return;
+
+    const { data } = await axiosInstance.delete('/wishlist', {
+      headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
-        ...(!token && guest && { tempId: guest }),      
-      };
-  
-      if (isGuest && !guest) return;
-      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/wishlist`, {
-        method: "DELETE",
-        headers,
-        body: JSON.stringify({ product: currentId }),
-      });
-  
-      const data = await response.json();
-      if (data.message === "Success") {
-        let newWishlistProducts;
+        ...(!token && guest && { tempId: guest }),
+      },
+      data: { product: currentId }  // Axios uses 'data' for DELETE body
+    });
 
-        if (data.wishlist) {
-          // ✅ If the backend returns a wishlist, use it directly
-          newWishlistProducts = data.wishlist;
-        } else {
-          // 🧹 Fallback to filtering the local wishlist
-          const updatedWishlistItems = wishlistProducts?.wishlist?.filter(
-            ( product ) => product._id !== currentId
-          );
+    if (data.message === "Success") {
+      let newWishlistProducts;
 
-          newWishlistProducts =
-            updatedWishlistItems.length === 0
-              ? { wishlist: [] }
-              : { ...wishlistProducts, wishlist: updatedWishlistItems };
-        }
-        setWishlistProducts(newWishlistProducts);
-c
-        creteAlert("success", "Item successfully deleted from wishlist.");
-        setWishlistStatus("deleted");
+      if (data.wishlist) {
+        // ✅ If backend returns wishlist, use it directly
+        newWishlistProducts = data.wishlist;
+      } else {
+        // 🧹 Fallback to filtering locally
+        const updatedWishlistItems = wishlistProducts?.wishlist?.filter(
+          product => product._id !== currentId
+        );
+
+        newWishlistProducts = updatedWishlistItems?.length === 0
+          ? { wishlist: [] }
+          : { ...wishlistProducts, wishlist: updatedWishlistItems };
       }
-      else {
-        creteAlert("error", "Failed to delete item from backend.");
-      }
-      } catch (error) {
-      creteAlert("error", "An error occurred while deleting the item.");
-      console.error(error);
+
+      setWishlistProducts(newWishlistProducts);
+      addItemsToLocalstorage("wishlist", newWishlistProducts);
+      creteAlert("success", "Item successfully deleted from wishlist.");
+      setWishlistStatus("deleted");
+    } else {
+      creteAlert("error", data.error || "Failed to delete item from backend.");
     }
-  };
+  } catch (error) {
+    console.error("Delete from wishlist error:", error);
+    creteAlert(
+      "error", 
+      error.response?.data?.error || "An error occurred while deleting the item."
+    );
+  }
+};
+
   return (
     <wishlistContext.Provider
       value={{

@@ -1,26 +1,31 @@
+import axiosInstance from "./axiosInstance";
+
 export const getUserWishlist = async (token) => {
-    if (!token) return []; // Don't fetch anything if no token
-
-    const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/wishlist`, {
+  if (!token) return [];
+  
+  try {
+    const { data } = await axiosInstance.get('/wishlist', {
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        Authorization: `Bearer ${token}`
+      }
     });
-    // console.log(await res.json())
-    const data = await res.json();
-    if (!res.ok) throw new Error("Failed to fetch wishlist");
     return data;
-  };
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Failed to fetch wishlist");
+  }
+};
 
-export const getGuestWishlist = async (token) => {
-    if (!token) return []; // Don't fetch anything if no token
-
-    const res = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/wishlist`, {
+export const getGuestWishlist = async (tempId) => {
+  if (!tempId) return [];
+  
+  try {
+    const { data } = await axiosInstance.get('/wishlist', {
       headers: {
-        tempId: token,
-      },
+        tempId
+      }
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error("Failed to fetch wishlist");
     return data;
-  };
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Failed to fetch wishlist");
+  }
+};

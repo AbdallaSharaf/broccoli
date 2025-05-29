@@ -142,8 +142,6 @@ const handleAddressSubmit = async (e) => {
   setErrors({});
   setSuccessMessage('');
 
-  const token = localStorage.getItem('token');
-
   try {
     // Concatenate all address parts with commas
     const concatenatedAddress = [
@@ -156,26 +154,11 @@ const handleAddressSubmit = async (e) => {
     // Check if address has actually changed
     const currentAddress = userData?.address?.[0]?.street || '';
     if (concatenatedAddress !== currentAddress) {
-      const res = await fetch('https://fruits-heaven-api.onrender.com/api/v1/user/updateMyData', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          address: [
-            {
-              street: concatenatedAddress
-            }
-          ]
-        }),
+      await axiosInstance.patch('/user/updateMyData', {
+        address: [{
+          street: concatenatedAddress
+        }]
       });
-
-      const nameEmailData = await res.json();
-
-      if (!res.ok) {
-        throw new Error(nameEmailData.message || t('Update failed'));
-      }
     }
 
     setSuccessMessage(t('Account updated successfully'));
@@ -183,7 +166,9 @@ const handleAddressSubmit = async (e) => {
   } catch (error) {
     setErrors((prev) => ({
       ...prev,
-      serverError: error.message || t('An error occurred. Please try again.'),
+      serverError: error.response?.data?.message || 
+                 error.message || 
+                 t('An error occurred. Please try again.'),
     }));
   } finally {
     setIsSubmitting(false);
@@ -206,30 +191,17 @@ const cancelOrder = async (orderId) => {
   });
 
   if (result.isConfirmed) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
-  
     try {
-      const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order/cancelOrder/${orderId}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        creteAlert("error", t(data.message));
-      } else {
-        creteAlert("success", t("Success! order cancelled."));
-        // Optional: refetch orders or update local state
-      }
+      await axiosInstance.post(`/order/cancelOrder/${orderId}`);
+      
+      creteAlert("success", t("Success! order cancelled."));
+      // Optional: refetch orders or update local state
     } catch (error) {
       console.error("Error cancelling order:", error);
-      creteAlert("error", t(error.message));
+      creteAlert(
+        "error", 
+        t(error.response?.data?.message || error.message || "Failed to cancel order")
+      );
     }
   }
 };
@@ -241,33 +213,21 @@ const openNoteModal = (orderId) => {
 
 const handleAddNote = async () => {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
-
-    const response = await fetch(`https://fruits-heaven-api.onrender.com/api/v1/order/${selectedOrderId}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ note: noteText }),
-    });
+    await axiosInstance.put(
+      `/order/${selectedOrderId}`,
+      { note: noteText }
+    );
     
-    const data = await response.json();
-    if (!response.ok) {
-      creteAlert("error", t(data.message));
-    } else {
-      creteAlert("success", t("Note added successfully!"));
-      setNoteModalOpen(false);
-      setNoteText('');
-      // Optional: refetch orders or update local state
-    }
+    creteAlert("success", t("Note added successfully!"));
+    setNoteModalOpen(false);
+    setNoteText('');
+    // Optional: refetch orders or update local state
   } catch (error) {
     console.error("Error adding note:", error);
-    creteAlert("error", t(error.message));
+    creteAlert(
+      "error", 
+      t(error.response?.data?.message || error.message || "Failed to add note")
+    );
   }
 };
 
@@ -275,30 +235,23 @@ const handleAddNote = async () => {
     const fetchOrders = async () => {
       setLoading(true); // Start loading
       try {
-        const token = localStorage.getItem('token');
-        if (!token || !userData?._id) {
-          console.error("User not found in local storage");
+        if (!userData?._id) {
+          console.error("User ID not found");
           return;
         }
-  
-        const response = await fetch(
-          `https://fruits-heaven-api.onrender.com/api/v1/order?keyword=${userData?._id}&PageCount=1000`,
-          {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
+
+        const response = await axiosInstance.get('/order', {
+          params: {
+            keyword: userData._id,
+            PageCount: 1000
           }
-        );
-  
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-  
-        const data = await response.json();
-        setOrders(data.data || []);
+        });
+
+        setOrders(response.data.data || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
+        // Optional: show error to user
+        // creteAlert("error", t(error.response?.data?.message || "Failed to fetch orders"));
       } finally {
         setLoading(false); // End loading
       }

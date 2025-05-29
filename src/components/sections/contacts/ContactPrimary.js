@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const ContactPrimary = () => {
@@ -22,35 +23,28 @@ const ContactPrimary = () => {
     });
   };
   // handle submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("Sending...");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setStatus("Sending...");
 
-    try {
-      const response = await fetch("/api/sendEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        setStatus("Thanks! Your message has been sent.");
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          agree: false,
-          serviceType: "Select Service Type",
-          message: "",
-        });
-      } else {
-        setStatus("Failed to send email.");
-      }
-    } catch (error) {
-      setStatus("Failed to send email.");
-    }
-  };
+  try {
+    await axios.post("/api/sendEmail", formData);
+    
+    setStatus("Thanks! Your message has been sent.");
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      agree: false,
+      serviceType: "Select Service Type",
+      message: "",
+    });
+  } catch (error) {
+    console.error("Email sending error:", error);
+    setStatus("Failed to send email.");
+  }
+};
+
   useEffect(() => {
     let selectCurrent = document.querySelector(".nice-select .current");
     const currentServiceType = selectCurrent?.innerText;

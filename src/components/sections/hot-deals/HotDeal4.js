@@ -1,4 +1,5 @@
 "use client";
+import axiosInstance from "@/libs/axiosInstance";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -7,19 +8,23 @@ const HotDeal4 = () => {
   const [slides, setSlides] = useState([]);
 
   useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        const res = await fetch(
-          "https://fruits-heaven-api.onrender.com/api/v1/siteSettings/slider/offersFirstSlider"
-        );
-        const data = await res.json();
-        setSlides(data || []);
-      } catch (err) {
+  const fetchSlides = async () => {
+    try {
+      const { data } = await axiosInstance.get(
+        "/siteSettings/slider/offersFirstSlider",
+        { signal: controller.signal }
+      );
+      setSlides(data || []);
+    } catch (err) {
+      if (!axios.isCancel(err)) {
         console.error("Failed to fetch slides:", err);
+        // Optional: Set error state or show toast
+        // setError("Failed to load slides");
       }
-    };
+    }
+  };
 
-    fetchSlides();
+  fetchSlides();
   }, []); // <-- FIXED: Don't depend on slides!
 
   return (
