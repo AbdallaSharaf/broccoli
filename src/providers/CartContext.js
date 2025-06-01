@@ -105,7 +105,7 @@ const CartContextProvider = ({ children }) => {
   
       if (data.message === "Success" && data.cart) {
         const { cart } = data;
-  
+        console.log(cart)
         // Store guest ID if new
         if (cart?.guest && !guestId) {
           localStorage.setItem("guest", cart.guest);
@@ -131,7 +131,7 @@ const CartContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Add to cart error:", error);
-      creteAlert("error", "An error occurred while updating the cart.",error);
+      creteAlert("error", `An error occurred: ${error}`);
     }
   };
   
@@ -173,7 +173,7 @@ const CartContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Add to cart error:", error);
-      creteAlert("error", "An error occurred while updating the cart.",error);
+      creteAlert("error", `An error occurred: ${error}`);
     }
   };
 
@@ -278,7 +278,7 @@ const CartContextProvider = ({ children }) => {
         creteAlert("error", t("Failed to delete item from cart."));
       }
       } catch (error) {
-      creteAlert("error", t("An error occurred while deleting the item."));
+      creteAlert("error", `An error occurred: ${error}`);
       console.error(error);
     }
   };

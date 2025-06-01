@@ -14,6 +14,7 @@ const HeaderCart = () => {
   const { cartProducts, deleteProductFromCart } = useCartContext();
   const t = useTranslations("common");
   const threshold = "100";
+  console.log(cartProducts.items)
   if (!cartProducts?.items) return
   return (
     <div
@@ -38,7 +39,7 @@ const HeaderCart = () => {
                     <div className="mini-cart-img">
                       <Link href={`/products/${_id}`}>
                         <Image
-                          src={imgCover || "/img/product/1.png"}
+                          src={imgCover}
                           alt="Image"
                           width={1000}
                           height={1000}

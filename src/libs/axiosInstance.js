@@ -20,7 +20,9 @@ axiosInstance.interceptors.request.use(config => {
 axiosInstance.interceptors.response.use(
   response => response,
   error => {
-    const message = error.response?.data?.message || 'Request failed';
+    // console.log('error', error);
+    const message = error.response?.data?.error || 'Request failed';
+    console.log(message)
     return Promise.reject(new Error(message));
   }
 );

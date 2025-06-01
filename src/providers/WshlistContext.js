@@ -86,10 +86,8 @@ const addProductToWishlist = async (currentProduct) => {
     }
   } catch (error) {
     console.error("Add to wishlist error:", error);
-    creteAlert("error", 
-      error.response?.data?.error || 
-      "An error occurred while updating the wishlist."
-    );
+      creteAlert("error", `An error occurred: ${error}`);
+
   }
 };
 
@@ -136,10 +134,7 @@ const deleteProductFromWishlist = async (currentId) => {
     }
   } catch (error) {
     console.error("Delete from wishlist error:", error);
-    creteAlert(
-      "error", 
-      error.response?.data?.error || "An error occurred while deleting the item."
-    );
+    creteAlert("error", `An error occurred: ${error}`);
   }
 };
 

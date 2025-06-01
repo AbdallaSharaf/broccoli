@@ -249,7 +249,7 @@ const handlePlaceOrder = async () => {
     router.push(`/order-placed/${data.order.invoiceId}`);
 
   } catch (error) {
-    creteAlert("error", error.response?.data?.message || error.message || "Failed to place order");
+    creteAlert("error", error.response?.data?.message || error.message || error || "Failed to place order");
     setLoading(false);
   }
 };
