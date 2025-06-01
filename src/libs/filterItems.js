@@ -4,7 +4,7 @@ const filterItems = async (filters) => {
   try {
     // Prepare params object
     const params = {
-      ...filters,
+      // ...filters,
       PageCount: 10000,
       deleted: false,
       available: true
@@ -16,7 +16,8 @@ const filterItems = async (filters) => {
         delete params[key];
       }
     });
-
+console.log("filters.category",filters.category)
+console.log("params",params)
     // Make the request
     const { data } = filters.category
       ? await axiosInstance.get(`/product/category/${filters.category}`, { params })

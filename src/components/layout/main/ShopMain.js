@@ -49,7 +49,7 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
         return;
       }
       try {
-        const response = await axiosInstance.get(`/category/${category}?deleted=false&available=true`);
+        const response = await axiosInstance.get(`/category/${category}`);
         if (!response.ok) {
           throw new Error("Failed to fetch filtered items");
         }
