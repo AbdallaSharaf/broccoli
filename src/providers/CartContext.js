@@ -131,7 +131,7 @@ const CartContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Add to cart error:", error);
-      creteAlert("error", "An error occurred while updating the cart.");
+      creteAlert("error", "An error occurred while updating the cart.",error);
     }
   };
   
@@ -173,7 +173,7 @@ const CartContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Add to cart error:", error);
-      creteAlert("error", "An error occurred while updating the cart.");
+      creteAlert("error", "An error occurred while updating the cart.",error);
     }
   };
 
