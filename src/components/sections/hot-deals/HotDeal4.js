@@ -1,8 +1,10 @@
 "use client";
 import axiosInstance from "@/libs/axiosInstance";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { Controller } from "swiper/modules";
 
 const HotDeal4 = () => {
   const [slides, setSlides] = useState([]);
@@ -12,7 +14,7 @@ const HotDeal4 = () => {
     try {
       const { data } = await axiosInstance.get(
         "/siteSettings/slider/offersFirstSlider",
-        { signal: controller.signal }
+        { signal: Controller.signal }
       );
       setSlides(data || []);
     } catch (err) {
