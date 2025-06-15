@@ -138,6 +138,18 @@ const handlePlaceOrder = async () => {
     (field) => !formData[field]?.trim()
   );
 
+    // Validate phone number format
+  const phoneRegex = /^966\d{9}$/;
+  if (formData.phone && !phoneRegex.test(formData.phone.trim())) {
+    setFieldErrors({
+      ...fieldErrors,
+      phone: t("Phone must start with 966 followed by 9 digits (e.g., 966512345678)")
+    });
+    setLoading(false);
+    creteAlert("error", t("Invalid phone number format"));
+    return;
+  }
+  
   // Validate district and street are not the same
   if (formData.district?.trim() && formData.street?.trim() && 
       formData.district.trim().toLowerCase() === formData.street.trim().toLowerCase()) {
@@ -473,20 +485,40 @@ useEffect(() => {
               />
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="input-item input-item-phone ltn__custom-icon">
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder={t("phone number")}
-                required
-                className={fieldErrors.phone ? "input-error" : ""}
-
-              />
-            </div>
-          </div>
+<div className="col-md-6">
+  <div className="input-item input-item-phone ltn__custom-icon">
+    <input
+      type="tel"
+      name="phone"
+      value={formData.phone}
+      onChange={(e) => {
+        // Allow only numbers
+        const value = e.target.value.replace(/\D/g, '');
+        // Auto-insert 966 if not present
+        let formattedValue = value;
+        if (!value.startsWith('966') && value.length > 0) {
+          formattedValue = '966' + value;
+        }
+        // Limit to 12 characters (966 + 9 digits)
+        if (formattedValue.length <= 12) {
+          handleChange({
+            target: {
+              name: 'phone',
+              value: formattedValue
+            }
+          });
+        }
+      }}
+      placeholder={t("966512345678")}
+      required
+      className={fieldErrors.phone ? "input-error" : ""}
+      maxLength={12} // 966 + 9 digits
+    />
+    {fieldErrors.phone && (
+      <div className="error-message">{fieldErrors.phone}</div>
+    )}
+  </div>
+</div>
         </div>
 
         <div className="row mb-3">

@@ -46,7 +46,7 @@ const RegisterPrimary = () => {
     }
   
     // Phone number validation: digits only and minimum length (e.g., 10 digits)
-    const phoneRegex = /^[0-9]{10,15}$/;
+    const phoneRegex = /^966\d{9}$/;
     if (!phoneRegex.test(phone)) {
       return setError(t("Please enter a valid phone number."));
     }
@@ -109,13 +109,32 @@ const RegisterPrimary = () => {
                   value={formData.lastname}
                   onChange={handleChange}
                 />
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder={t("phone number")}
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={(e) => {
+                  // Allow only numbers
+                  const value = e.target.value.replace(/\D/g, '');
+                  // Auto-insert 966 if not present
+                  let formattedValue = value;
+                  if (!value.startsWith('966') && value.length > 0) {
+                    formattedValue = '966' + value;
+                  }
+                  // Limit to 12 characters (966 + 9 digits)
+                  if (formattedValue.length <= 12) {
+                    handleChange({
+                      target: {
+                        name: 'phone',
+                        value: formattedValue
+                      }
+                    });
+                  }
+                }}
+                placeholder={t("966512345678")}
+                required
+                maxLength={12} // 966 + 9 digits
+              />
                 <input
                   type="text"
                   name="email"
