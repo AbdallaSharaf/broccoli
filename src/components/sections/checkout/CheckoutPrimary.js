@@ -488,7 +488,7 @@ useEffect(() => {
 <div className="col-md-6">
   <div className="input-item input-item-phone ltn__custom-icon">
     <input
-      type="tel"
+      type="text"
       name="phone"
       value={formData.phone}
       onChange={(e) => {

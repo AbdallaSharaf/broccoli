@@ -110,7 +110,7 @@ const RegisterPrimary = () => {
                   onChange={handleChange}
                 />
               <input
-                type="tel"
+                type="text"
                 name="phone"
                 value={formData.phone}
                 onChange={(e) => {
