@@ -52,8 +52,11 @@ const CartContextProvider = ({ children }) => {
 
   // add  product = localstorage cart
   // console.log(cartProducts)
-  const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) => {
+const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) => {
     try {
+      // Set loading state
+      setCartStatus("loading");
+      
       const { _id: currentId, quantity: addedQuantity } = currentProduct;
       fbq("track", "AddToCart", {
         content_name: currentProduct.name.ar,
@@ -64,28 +67,25 @@ const CartContextProvider = ({ children }) => {
       });
 
       snaptr('track', 'ADD_CART', {'price': currentProduct.price, 'currency': 'SAR', 'item_ids': [currentId], 'number_items': addedQuantity})
+      
       const token = localStorage.getItem("token");
       const guestId = localStorage.getItem("guest");
-      // console.log("guestId", guestId)
-      // console.log("user", user._id)
+      
       // Check existing product in cart
       const existingItem = cartProducts?.items?.find(
         (item) => item.product._id === currentId
       );
       
       const currentQuantity = existingItem
-      ? existingItem.quantity + addedQuantity
-      : addedQuantity;
-      // console.log("existingItem", existingItem);
-      // console.log("existingItem", existingItem?.quantity);
-      // console.log("addedQuantity", addedQuantity);
-      // console.log("currentQuantity", currentQuantity);
+        ? existingItem.quantity + addedQuantity
+        : addedQuantity;
+
       // Construct headers
       const headers = {
-        // "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
         ...(!token && guestId && { tempId: guestId }),
       };
+      
       // Payload to backend
       const body = {
         items: [
@@ -97,15 +97,13 @@ const CartContextProvider = ({ children }) => {
       };
   
       const {data} = await axiosInstance.post("/cart", 
-      body,
+        body,
         {headers},
       );
   
-      // const data = await response.json();
-  
       if (data.message === "Success" && data.cart) {
         const { cart } = data;
-        console.log(cart)
+        
         // Store guest ID if new
         if (cart?.guest && !guestId) {
           localStorage.setItem("guest", cart.guest);
@@ -114,7 +112,7 @@ const CartContextProvider = ({ children }) => {
         setCartProducts(cart);
         addItemsToLocalstorage("cart", cart);
   
-        // Set status
+        // Set final status based on operation type
         if (isTotalQuantity) {
           setCartStatus("updated");
         } else if (isDecreament) {
@@ -127,10 +125,12 @@ const CartContextProvider = ({ children }) => {
   
         creteAlert("success", t("Success! Cart updated."));
       } else {
+        setCartStatus("error"); // Set error state if response isn't successful
         creteAlert("error", data.message || t("Failed to update cart."));
       }
     } catch (error) {
       console.error("Add to cart error:", error);
+      setCartStatus("error"); // Set error state on exception
       creteAlert("error", `An error occurred: ${error}`);
     }
   };
