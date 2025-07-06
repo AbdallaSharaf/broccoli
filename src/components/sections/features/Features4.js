@@ -62,7 +62,7 @@ const Features4 = ({ type, mb }) => {
                       />
                     </div>
                     <div className="ltn__feature-info">
-                      <h4>{t("Natural Food")}</h4>
+                      <h4>{t("Return Policy")}</h4>
                       <p>{t("Return product within 3 days for any product you buy")}</p>
                     </div>
                   </div>

@@ -56,7 +56,7 @@ const ProductDetailsRight = ({ product }) => {
   
       const handleInc = () => {
         setQuantity((prev) => {
-          const newVal = prev + 0.25;
+          const newVal = prev + 1;
           input.value = newVal;
           return newVal;
         });
@@ -64,7 +64,7 @@ const ProductDetailsRight = ({ product }) => {
   
       const handleDec = () => {
         setQuantity((prev) => {
-          const newVal = prev > 0.25 ? prev - 0.25 : 0.25;
+          const newVal = prev > 1 ? prev - 1 : 1;
           input.value = newVal;
           return newVal;
         });
@@ -187,10 +187,10 @@ const ProductDetailsRight = ({ product }) => {
               name="qtybutton"
               className="cart-plus-minus-box"
               onChange={(e) => {
-                const val = parseFloat(e.target.value);
+                const val = parseInt(e.target.value);
 
                 // Check if it's a number and a multiple of 0.25
-                if (!isNaN(val) && val > 0 && (val * 100) % 25 === 0) {
+                if (!isNaN(val) && val > 0) {
                   setQuantity(val);
                 }
               }}
