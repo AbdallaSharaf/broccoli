@@ -23,7 +23,7 @@ const Copyright2 = () => {
               </p>
             </div>
           </div>
-          <div className="col-md-6 col-12 align-self-center">
+          {/* <div className="col-md-6 col-12 align-self-center">
             <div className="ltn__copyright-menu text-end">
               <ul>
                 <li>
@@ -37,7 +37,7 @@ const Copyright2 = () => {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

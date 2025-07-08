@@ -6,8 +6,10 @@ import "@/assets/css/plugins.css";
 import "./globals.css";
 import "@/assets/css/responsive.css";
 import Script from "next/script";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useEffect } from "react";
+import { METADATA } from "../libs/metadata.js";
+import { useSearchParams } from "next/navigation.js";
 const open_sans = Open_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -28,8 +30,10 @@ const rajdhani = Rajdhani({
 const PIXEL_ID = "1359273798966268"; 
 const SNAP_ID = "602d4f35-2199-4ae7-98b8-dad32da111db"; 
 export default function RootLayout({ children }) {
-
-
+  const [metadata, setMetadata] = useState(METADATA['default']);
+  let desc=''
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
   useEffect(() => {
     if (!window.fbq) {
       window.fbq = function () {
@@ -42,7 +46,18 @@ export default function RootLayout({ children }) {
     }
     window.fbq("init", PIXEL_ID);
     window.fbq("track", "PageView");
+
   }, []);
+  useEffect(() => {
+    console.log("url", window.location.pathname);
+    console.log("url", METADATA[searchParams?.get("category")]);
+     setMetadata(searchParams?.get("category")
+  ? METADATA[searchParams?.get("category")]
+  : METADATA[window.location.pathname.split("/")[1]]);
+  console.log("metadata", metadata);
+  console.log("metadata", metadata.description);
+  desc=metadata.description
+  }, [category]);
 //   return (
 //     <html
 //       lang="en"
@@ -172,7 +187,7 @@ return (
         />
 
         <title>جنة الفواكه</title>
-        <meta name="description" content="Local & imported fruits, vegetables, and more — delivered across KSA. Fruits Heaven is your trusted AxisForTrading agent." />
+        <meta name="description" content={metadata?.description} />
         <meta name="keywords" content="الفواكه في المملكة العربية السعودية، الخضروات في المملكة العربية السعودية، الفواكه المستوردة، المنتجات المحلية، الأوراق الطازجة، توصيل الفاكهة، جنة الفواكه، وكيل AxisForTrading" />
         <meta name="author" content="IN marketing" />
         

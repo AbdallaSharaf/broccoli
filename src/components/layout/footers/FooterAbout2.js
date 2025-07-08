@@ -33,6 +33,9 @@ const FooterAbout2 = () => {
               </div>
             </li> */}
             <li>
+            متجر فواكه وخضروات إلكتروني متخصص في تقديم أجود المنتجات الطازجة، المحلية والمستوردة، المختارة بعناية من مصادر موثوقة، مع توصيل سريع داخل الرياض.
+            </li>
+            <li>
               <div className="footer-address-icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -68,26 +71,7 @@ const FooterAbout2 = () => {
         <div className="ltn__social-media mt-20">
           <ul>
           {" "}
-            <li>
-              <Link href="https://www.facebook.com/fruitsheaven.sa/" title="Facebook">
-                <i className="fab fa-facebook-f"></i>
-              </Link>
-            </li>{" "}
-            {/* <li>
-              <Link href="https://x.com" title="Twitter">
-                <i className="fab fa-twitter"></i>
-              </Link>
-            </li>{" "} */}
-            <li>
-              <Link href="https://instagram.com/fruitsheaven.sa" title="instagram">
-                <i className="fab fa-instagram"></i>
-              </Link>
-            </li>{" "}
-            <li>
-              <Link href="https://www.snapchat.com/add/fruitsheaven.sa" title="snapchat">
-                <i className="fab fa-snapchat"></i>
-              </Link>
-            </li>{" "}
+         {" "}
             <li>
               {/* <Link href="https://www.snapchat.com/add/fruitsheaven.sa" title="snapchat">
                 <i className="fab fa-snapchat"></i>

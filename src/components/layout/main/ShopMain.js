@@ -13,6 +13,9 @@ import getTranslatedName from "@/libs/getTranslatedName";
 import { useTranslations } from "@/hooks/useTranslate"; // ✅ import hook
 import axios from "axios";
 import axiosInstance from "../../../libs/axiosInstance.js";
+import Head from "next/head.js";
+
+
 
 const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   const t = useTranslations("header"); // ✅ use translation namespace
@@ -29,6 +32,24 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   const maxSize = 5000;
   const intLowerLimit = 50;
   const intUpperLimit = 1500;
+
+  const DESCRIPTIONS = {
+    default: "Explore our wide range of high-quality products...",
+    '681f58bfb225a8adafd9efbb': "استفد من أقوى العروض الأسبوعية من جنة الفواكه، أفضل متجر فواكه وخضروات في الرياض، يوفر لك منتجات طازجة بأسعار منافسة مميزة وتوصيل حتى باب منزلك.  ",
+    clothing: "Discover fashionable clothing for all seasons...",
+    furniture: "Find quality furniture for your home...",
+    search: (term) => `Search results for "${term}"...`
+  };
+  
+  const getMetaDescription = () => {
+    if (keyword) return DESCRIPTIONS.search(keyword);
+    if (category && DESCRIPTIONS[category.toLowerCase()]) {
+      // console.log(DESCRIPTIONS[category.toLowerCase()]);
+      // console.log(category.toLowerCase());
+      return DESCRIPTIONS[category.toLowerCase()];
+    }
+    return DESCRIPTIONS.default;
+  };
 
   useEffect(() => {
     const fetchFilteredProducts = async () => {
@@ -68,6 +89,24 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
   }, [intLowerLimit, intUpperLimit, maxSize]);
 
   return (
+    <>
+          <Head>
+        <title>
+          {category
+            ? `${makeText(categoryName)} Products`
+            : keyword
+            ? `Search: ${makeText(keyword)}`
+            : title || t("shop")}
+        </title>
+        <meta name="description" content={getMetaDescription()} />
+        <meta property="og:title" content={
+          category 
+            ? `${makeText(categoryName)} - Fruits Heaven` 
+            : "Our Products - Fruits Heaven"
+        } />
+        <meta property="og:description" content={getMetaDescription()} />
+
+      </Head>
     <main>
       <HeroPrimary
         title={
@@ -85,6 +124,7 @@ const ShopMain = ({ title, isSidebar, text, currentTapId }) => {
       </CommonContext>
       <Features4 />
     </main>
+    </>
   );
 };
 
