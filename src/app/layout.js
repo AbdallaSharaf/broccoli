@@ -49,13 +49,13 @@ export default function RootLayout({ children }) {
 
   }, []);
   useEffect(() => {
-    console.log("url", window.location.pathname);
-    console.log("url", METADATA[searchParams?.get("category")]);
+    // console.log("url", window.location.pathname);
+    // console.log("url", METADATA[searchParams?.get("category")]);
      setMetadata(searchParams?.get("category")
   ? METADATA[searchParams?.get("category")]
   : METADATA[window.location.pathname.split("/")[1]]);
-  console.log("metadata", metadata);
-  console.log("metadata", metadata.description);
+  // console.log("metadata", metadata);
+  // console.log("metadata", metadata.description);
   desc=metadata.description
   }, [category]);
 //   return (
