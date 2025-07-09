@@ -56,7 +56,7 @@ export default function RootLayout({ children }) {
   : METADATA[window.location.pathname.split("/")[1]]);
   // console.log("metadata", metadata);
   // console.log("metadata", metadata.description);
-  desc=metadata.description
+  desc=metadata?.description
   }, [category]);
 //   return (
 //     <html
