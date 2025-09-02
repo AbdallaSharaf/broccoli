@@ -1,4 +1,5 @@
 "use client"
+
 import { Open_Sans, Rajdhani } from "next/font/google";
 import "@/assets/css/font-icons.css";
 import "@/assets/css/plugins.css";
