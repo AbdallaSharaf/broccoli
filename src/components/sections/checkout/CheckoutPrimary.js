@@ -180,7 +180,7 @@ const handlePlaceOrder = async () => {
   const formattedPayload = {
     address: {
       name: `${formData.firstName} ${formData.lastName}`.trim(),
-      phone: formData.phone,
+      phone: formData.phone.replace("966", ""),
       email: formData.email,
       country: formData.state,
       city: formData.city,
@@ -509,7 +509,7 @@ useEffect(() => {
           });
         }
       }}
-      placeholder={t("966512345678")}
+      placeholder={t(" ")}
       required
       className={fieldErrors.phone ? "input-error" : ""}
       maxLength={12} // 966 + 9 digits

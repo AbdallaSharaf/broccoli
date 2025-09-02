@@ -17,12 +17,12 @@ axiosInstance.interceptors.request.use(config => {
   return config;
 });
 
-axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
-    // console.log('error', error);
-    const message = error.response?.data?.error || 'Request failed';
-    console.log(message)
-    return Promise.reject(new Error(message));
-  }
-);
+// axiosInstance.interceptors.response.use(
+//   response => response,
+//   error => {
+//     // console.log('error', error);
+//     const message = error.response?.data?.error || 'Request failed';
+//     console.log(message)
+//     return Promise.reject(new Error(message));
+//   }
+// );
