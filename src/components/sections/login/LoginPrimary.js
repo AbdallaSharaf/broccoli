@@ -34,7 +34,7 @@ const LoginPrimary = () => {
         setError(t(result.error));
       }
     } catch (err) {
-      setError(t("Something went wrong. Please try again."));
+      setError(t("Something went wrong. Please try again ."));
     }
   };
 
