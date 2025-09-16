@@ -131,7 +131,7 @@ const RegisterPrimary = () => {
                     });
                   }
                 }}
-                placeholder={t("966512345678")}
+                placeholder={t("رقم الهاتف*")}
                 required
                 maxLength={12} // 966 + 9 digits
               />
