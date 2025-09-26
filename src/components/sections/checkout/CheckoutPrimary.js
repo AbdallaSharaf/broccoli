@@ -139,7 +139,7 @@ const handlePlaceOrder = async () => {
   );
 
     // Validate phone number format
-  const phoneRegex = /^966\d{9}$/;
+  const phoneRegex = /^966\d{9,10}$/;
   if (formData.phone && !phoneRegex.test(formData.phone.trim())) {
     setFieldErrors({
       ...fieldErrors,
@@ -500,7 +500,7 @@ useEffect(() => {
           formattedValue = '966' + value;
         }
         // Limit to 12 characters (966 + 9 digits)
-        if (formattedValue.length <= 12) {
+        if (formattedValue.length <= 13) {
           handleChange({
             target: {
               name: 'phone',
@@ -512,7 +512,7 @@ useEffect(() => {
       placeholder={t(" ")}
       required
       className={fieldErrors.phone ? "input-error" : ""}
-      maxLength={12} // 966 + 9 digits
+      maxLength={13} // 966 + 9 digits
     />
     {fieldErrors.phone && (
       <div className="error-message">{fieldErrors.phone}</div>

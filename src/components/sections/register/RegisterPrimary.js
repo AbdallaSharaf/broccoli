@@ -46,7 +46,7 @@ const RegisterPrimary = () => {
     }
   
     // Phone number validation: digits only and minimum length (e.g., 10 digits)
-    const phoneRegex = /^966\d{9}$/;
+    const phoneRegex = /^966\d{9,10}$/;
     if (!phoneRegex.test(phone)) {
       return setError(t("Please enter a valid phone number."));
     }
@@ -122,7 +122,7 @@ const RegisterPrimary = () => {
                     formattedValue = '966' + value;
                   }
                   // Limit to 12 characters (966 + 9 digits)
-                  if (formattedValue.length <= 12) {
+                  if (formattedValue.length <= 13) {
                     handleChange({
                       target: {
                         name: 'phone',
@@ -133,7 +133,7 @@ const RegisterPrimary = () => {
                 }}
                 placeholder={t("رقم الهاتف*")}
                 required
-                maxLength={12} // 966 + 9 digits
+                maxLength={13} // 966 + 9 digits
               />
                 <input
                   type="text"
