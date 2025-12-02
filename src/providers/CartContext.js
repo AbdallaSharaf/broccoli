@@ -13,6 +13,7 @@ const CartContextProvider = ({ children }) => {
   const [cartStatus, setCartStatus] = useState(null);
   const [cartProducts, setCartProducts] = useState({_id:"", items:[]});
   const [cartLoading, setCartLoading] = useState(false);
+  const [cartTotal, setCartTotal] = useState(0);
   const creteAlert = useSweetAlert();
   const t = useTranslations("common");
 
@@ -28,6 +29,7 @@ const CartContextProvider = ({ children }) => {
   
           if (userCart && userCart.items) {
             setCartProducts(userCart);
+            setCartTotal(userCart.totalPrice);
           }
         } else {
           // Case 2: Guest user
@@ -36,6 +38,7 @@ const CartContextProvider = ({ children }) => {
             const guestCart = await getGuestCart(guestId);
             if (guestCart && guestCart.items) {
               setCartProducts(guestCart);
+              setCartTotal(guestCart.totalPrice);
             }
           }
         }
@@ -110,6 +113,7 @@ const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) =
         }
   
         setCartProducts(cart);
+        setCartTotal(cart.totalPrice);
         addItemsToLocalstorage("cart", cart);
   
         // Set final status based on operation type
@@ -167,6 +171,7 @@ const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) =
         }
   
         setCartProducts(cart);
+        setCartTotal(cart.totalPrice);
         creteAlert("success", t("Success! Cart updated."));
       } else {
         creteAlert("error", data.message || t("Failed to update cart."));
@@ -207,6 +212,7 @@ const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) =
         }
   
         setCartProducts(cart);
+        setCartTotal(cart.totalPrice);
         return { success: true, message: t("Success! Coupon applied.") };
       } else {
         const errorMessage = data.error;
@@ -269,6 +275,7 @@ const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) =
         }
 
         setCartProducts(newCartProducts);
+        setCartTotal(data.cart.totalPrice);
         addItemsToLocalstorage("cart", newCartProducts);
 
         creteAlert("success", t("Item successfully deleted from cart."));
@@ -294,7 +301,8 @@ const addProductToCart = async (currentProduct, isDecreament, isTotalQuantity) =
         cartStatus,
         updateCart,
         cartLoading,
-        applyCoupon
+        applyCoupon,
+        cartTotal
       }}
     >
       {children}
