@@ -152,9 +152,9 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
         </div>
       </div>
       <button
-        className='theme-btn-1 btn'
+        className="theme-btn-1 btn"
         style={{
-          width: "100%"
+          width: '100%',
         }}
         onClick={(e) => {
           e.preventDefault();
@@ -164,6 +164,8 @@ const ProductCardPrimary = ({ product, isShowDisc }) => {
             color: color ? color : '',
           });
         }}
+        data-bs-toggle="modal"
+        data-bs-target="#add_to_cart_modal"
       >
         {t('addToCart')}
       </button>
