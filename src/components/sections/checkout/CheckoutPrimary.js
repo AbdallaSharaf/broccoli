@@ -233,30 +233,6 @@ const handlePlaceOrder = async () => {
     creteAlert("success", "Order placed successfully!");
     setCartProducts({ _id: "", items: [] });
     setIsPlaceOrder(false);
-    
-    // Track purchase events
-    fbq("track", "Purchase", {
-      value: data.order.totalPrice,
-      currency: "SAR",
-    });
-    
-    snaptr('track', 'PURCHASE', {
-      'price': data.order.totalPrice,
-      'currency': 'SAR',
-      'transaction_id': data.order.invoiceId,
-      'item_ids': productIds,
-      'number_items': data.order.totalQuantity,
-      'payment_info_available': selectedPayment === 'paypal' ? 1 : 0,
-      'success': 1,
-      'user_email': data.order.shippingAddress.email,
-      'user_phone_number': data.order.shippingAddress.phone || data.order.user?.phone,
-      'firstname': data.order.shippingAddress.name.split(' ')[0] || data.order.user?.name.split(' ')[0],
-      'lastname': data.order.shippingAddress.name.split(' ')[1] || data.order.user?.name.split(' ')[1],
-      'geo_state': data.order.shippingAddress.street,
-      'geo_city': data.order.shippingAddress.city,
-      'geo_country': data.order.shippingAddress.country,
-      'geo_postal_code': data.order.shippingAddress.zipCode
-    });
     setLoading(false);
     router.push(`/order-placed/${data.order.invoiceId}`);
 
