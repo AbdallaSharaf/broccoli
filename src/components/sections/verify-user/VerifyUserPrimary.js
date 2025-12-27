@@ -1,75 +1,45 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from '@/hooks/useTranslate';
 import axios from 'axios';
 import axiosInstance from '../../../libs/axiosInstance.js';
-// import trackEvent from "@/hooks/usePixel";
 
 const VerifyUserPrimary = ({ type = 'loading', orderID }) => {
   const t = useTranslations('common');
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [orderData, setOrderData] = useState(null); // Add this state
 
-  const [totalPrice, setTotalPrice] = React.useState(0);
+  // Fetch order data
   const getOrderById = async (id) => {
     try {
       const response = await axiosInstance.get(`/order?keyword=${id}`);
-      setTotalPrice(response.data.data[0]?.totalPrice);
-      return response.data.order;
+      const order = response.data.data[0];
+      setTotalPrice(order?.totalPrice || 0);
+      setOrderData(order); // Set the order data
+      return order;
     } catch (error) {
       console.error('Error fetching order:', error);
       return null;
     }
   };
 
-  const renderContent = async () => {
-    switch (type) {
-      case 'loading':
-        return {
-          icon: '⏳',
-          title: t('Verifying Your Account...'),
-          showButton: false,
-        };
-      case 'success':
-        return {
-          icon: '✅',
-          title: t(
-            'Your account has been successfully verified. You can now proceed.'
-          ),
-          showButton: true,
-        };
-      case 'error':
-        return {
-          icon: '❌',
-          title: t('Verification could not be completed.'),
-          showButton: true,
-        };
-      case 'checkMail':
-        return {
-          icon: '📩',
-          title: t('Please check your email to verify your account.'),
-          showButton: false,
-        };
-      case 'orderPlaced':
-        let order = await getOrderById(orderID);
-        return {
-          icon: '🎉',
-          title: t('Your order has been placed successfully!'),
-          showButton: true,
-        };
-      default:
-        return {
-          icon: '❓',
-          title: t('Unknown status.'),
-          showButton: true,
-        };
+  // Fetch order when component mounts
+  useEffect(() => {
+    if (type === 'orderPlaced' && orderID) {
+      getOrderById(orderID);
     }
-  };
+  }, [type, orderID]);
 
-  const { icon, title, showButton } = renderContent();
-
+  // Track purchase when orderData is available
   useEffect(() => {
     const trackPurchase = async () => {
-      if (type === 'orderPlaced' && orderData && window && orderData.tracked === false) {
+      if (
+        type === 'orderPlaced' &&
+        orderData &&
+        window &&
+        orderData.tracked === false
+      ) {
         try {
           // First track on platforms
           if (window.fbq) {
@@ -112,17 +82,62 @@ const VerifyUserPrimary = ({ type = 'loading', orderID }) => {
 
           console.log('Purchase tracked for order:', orderData.invoiceId);
 
-          // Then mark as tracked in database (even if it fails, at least tracking happened)
+          // Then mark as tracked in database
           await axiosInstance.post(`/order/${orderData._id}/mark-tracked`);
         } catch (error) {
           console.error('Error marking order as tracked:', error);
-          // Tracking already happened, so it's OK if marking fails
         }
       }
     };
 
     trackPurchase();
   }, [orderData, type]);
+
+  // Update renderContent to use orderData
+  const renderContent = () => {
+    switch (type) {
+      case 'loading':
+        return {
+          icon: '⏳',
+          title: t('Verifying Your Account...'),
+          showButton: false,
+        };
+      case 'success':
+        return {
+          icon: '✅',
+          title: t(
+            'Your account has been successfully verified. You can now proceed.'
+          ),
+          showButton: true,
+        };
+      case 'error':
+        return {
+          icon: '❌',
+          title: t('Verification could not be completed.'),
+          showButton: true,
+        };
+      case 'checkMail':
+        return {
+          icon: '📩',
+          title: t('Please check your email to verify your account.'),
+          showButton: false,
+        };
+      case 'orderPlaced':
+        return {
+          icon: '🎉',
+          title: t('Your order has been placed successfully!'),
+          showButton: true,
+        };
+      default:
+        return {
+          icon: '❓',
+          title: t('Unknown status.'),
+          showButton: true,
+        };
+    }
+  };
+
+  const { icon, title, showButton } = renderContent();
 
   return (
     <div className="ltn__404-area ltn__404-area-1 mb-120">
