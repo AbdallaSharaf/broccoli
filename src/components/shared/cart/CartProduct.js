@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from '@/hooks/useTranslate';
@@ -11,131 +11,84 @@ import { useWishlistContext } from '@/providers/WshlistContext';
 import getTranslatedName from '@/libs/getTranslatedName';
 import sliceText from '@/libs/sliceText';
 
-const CartProduct = ({
-  product,
-  setUpdateProducts,
-  updateProducts,
-  isWishlist,
-}) => {
+const CartProduct = ({ product, isWishlist }) => {
   const { product: productData, quantity: quantity1 = 1, price } = product;
   const { _id, name, imgCover, priceAfterDiscount, priceAfterExpiresAt } =
     productData;
 
-  // dom reference
-  const inputRef = useRef(null);
-  // debounce timer reference
   const updateTimeoutRef = useRef(null);
 
-  // hooks
-  const { deleteProductFromCart, addProductToCart, updateCart } =
-    useCartContext();
+  const {
+    deleteProductFromCart,
+    addProductToCart,
+    updateProductQuantity,
+    cartProducts,
+  } = useCartContext();
   const { deleteProductFromWishlist } = useWishlistContext();
   const [quantity, setQuantity] = useState(Number(quantity1) ?? 1);
   const [isUpdating, setIsUpdating] = useState(false);
   const { setCurrentProduct } = useProductContext();
   const t = useTranslations('common');
 
-  // Function to update cart in the background (debounced)
-  const debouncedUpdateCart = useCallback(
-    async (newQuantity) => {
-      if (!isWishlist) {
-        // Clear any pending timeout
-        if (updateTimeoutRef.current) {
-          clearTimeout(updateTimeoutRef.current);
-        } // Set debounced update (500ms delay)
-        updateTimeoutRef.current = setTimeout(async () => {
-          setIsUpdating(true);
-
-          try {
-            // Use the newQuantity parameter directly
-            const updatedProducts = updateProducts.map((item) =>
-              _id === item?.product?._id
-                ? { ...item, quantity: newQuantity }
-                : item
-            );
-
-            // Call updateCart API
-            await updateCart(updatedProducts);
-
-            console.log('Cart updated successfully in background');
-          } catch (error) {
-            console.error('Failed to update cart:', error);
-            // On error, revert to the quantity from server
-            // You might want to trigger a refetch or show an error
-          } finally {
-            setIsUpdating(false);
-          }
-        }, 500); // 300ms debounce delay
-      }
-    },
-    [isWishlist, updateProducts, _id, updateCart]
-  );
-
-  // Handle immediate UI update and schedule background API call
-  const handleQuantityChange = (newQuantity) => {
+  // Handle quantity change with debounce
+  const handleQuantityChange = async (newQuantity) => {
     if (newQuantity < 1 || newQuantity > 999) return;
 
-    // Update local state immediately (optimistic update)
+    // Optimistic UI update
     setQuantity(newQuantity);
-
-    // Update parent component state immediately
-    const updatedProducts = updateProducts.map((item) =>
-      _id === item?.product?._id ? { ...item, quantity: newQuantity } : item
-    );
-    setUpdateProducts(updatedProducts);
-    // Schedule background API update
-    debouncedUpdateCart(newQuantity);
+    
+    // Clear any existing timeout
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
+    }
+    
+    // Set new timeout for API call
+    updateTimeoutRef.current = setTimeout(async () => {
+      try {
+        setIsUpdating(true);
+        const result = await updateProductQuantity(_id, newQuantity);
+        if (!result.success) {
+          // If API call fails, revert to original quantity
+          const currentProduct = cartProducts?.items?.find(
+            (item) => item.product._id === _id
+          );
+          setQuantity(currentProduct?.quantity || quantity1);
+        }
+      } catch (error) {
+        console.error('Failed to update quantity:', error);
+        // Revert on error
+        const currentProduct = cartProducts?.items?.find(
+          (item) => item.product._id === _id
+        );
+        setQuantity(currentProduct?.quantity || quantity1);
+      } finally {
+        setIsUpdating(false);
+      }
+    }, 500); // 500ms debounce
   };
 
-  useEffect(() => {
-    if (!isWishlist) {
-      const inputParent = inputRef.current;
-      if (!inputParent) return;
+  // Handle increment
+  const handleIncrement = () => {
+    if (isUpdating) return;
+    handleQuantityChange(quantity + 1);
+  };
 
-      const input = inputParent.querySelector('input');
-      const increament = inputParent.querySelector('.inc');
-      const decreament = inputParent.querySelector('.dec');
-
-      input.value = quantity;
-
-      const handleInc = () => {
-        if (isUpdating) return;
-        const newVal = quantity + 1;
-        input.value = newVal;
-        handleQuantityChange(newVal);
-      };
-
-      const handleDec = () => {
-        if (isUpdating) return;
-        const newVal = quantity > 1 ? quantity - 1 : 1;
-        input.value = newVal;
-        handleQuantityChange(newVal);
-      };
-
-      increament?.addEventListener('click', handleInc);
-      decreament?.addEventListener('click', handleDec);
-
-      return () => {
-        increament?.removeEventListener('click', handleInc);
-        decreament?.removeEventListener('click', handleDec);
-        // REMOVE THIS: Don't clear timeout here
-        // if (updateTimeoutRef.current) {
-        //   clearTimeout(updateTimeoutRef.current);
-        // }
-      };
-    }
-  }, [isWishlist, quantity, isUpdating]);
+  // Handle decrement
+  const handleDecrement = () => {
+    if (isUpdating) return;
+    const newVal = quantity > 1 ? quantity - 1 : 1;
+    handleQuantityChange(newVal);
+  };
 
   // Handle direct input changes
   const handleInputChange = (e) => {
     if (isUpdating) return;
     const val = parseInt(e.target.value);
-
-    // Check if it's a number and greater than 0
     if (!isNaN(val) && val > 0 && val <= 999) {
       handleQuantityChange(val);
     }
   };
+
   // Clean up on unmount
   useEffect(() => {
     return () => {
@@ -145,6 +98,11 @@ const CartProduct = ({
     };
   }, []);
 
+  // Update local quantity when product prop changes
+  useEffect(() => {
+    setQuantity(Number(quantity1) ?? 1);
+  }, [quantity1]);
+
   return (
     <tr
       onMouseEnter={() =>
@@ -152,7 +110,7 @@ const CartProduct = ({
           ? setCurrentProduct({ ...productData, quantity: 1 })
           : setCurrentProduct(product)
       }
-      className={isUpdating ? 'updating' : ''}
+      // className={isUpdating ? 'updating' : ''}
     >
       <td
         className="cart-product-remove"
@@ -161,7 +119,7 @@ const CartProduct = ({
             ? deleteProductFromWishlist(_id)
             : deleteProductFromCart(_id)
         }
-        style={isUpdating ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+        // style={isUpdating ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
       >
         x
       </td>
@@ -244,9 +202,10 @@ const CartProduct = ({
         <td className="cart-product-stock">{t('In Stock')}</td>
       ) : (
         <td className="cart-product-quantity">
-          <div className="cart-plus-minus" ref={inputRef}>
+          <div className="cart-plus-minus">
             <div
               className="dec qtybutton"
+              onClick={handleDecrement}
               style={isUpdating ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
             >
               -
@@ -262,6 +221,7 @@ const CartProduct = ({
             />
             <div
               className="inc qtybutton"
+              onClick={handleIncrement}
               style={isUpdating ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
             >
               +
