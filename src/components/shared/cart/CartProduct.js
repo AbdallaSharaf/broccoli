@@ -64,7 +64,7 @@ const CartProduct = ({ product, isWishlist }) => {
       } finally {
         setIsUpdating(false);
       }
-    }, 500); // 500ms debounce
+    }, 800); // 500ms debounce
   };
 
   // Handle increment
