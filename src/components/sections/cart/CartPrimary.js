@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "@/hooks/useTranslate"; // import translation hook
 
 const CartPrimary = () => {
-  const { cartProducts: currentProducts, updateCart, applyCoupon, cartLoading } = useCartContext();
+  const { cartProducts: currentProducts, applyCoupon, cartLoading } = useCartContext();
   const [couponCode, setCouponCode] = useState(currentProducts?.coupon?.code || "");
   const [couponResponse, setCouponResponse] = useState(null);
   const cartProducts = currentProducts?.items ?? [];
@@ -19,11 +19,6 @@ const CartPrimary = () => {
   const [isUpdate, setIsUpdate] = useState(false);
 
   const t = useTranslations("common"); // use "common" namespace
-
-  const handleUpdateCart = () => {
-    updateCart(updateProducts);
-    setIsUpdate(false);
-  };
 
   const handleApplyCoupon = async () => {
     if (!couponCode) return;
@@ -103,16 +98,6 @@ const CartPrimary = () => {
                                 </p>
                               )}
                             </div>
-                          </td>
-                          <td>
-                            <button
-                              onClick={handleUpdateCart}
-                              type="button"
-                              className={`btn theme-btn-2 ${isUpdate ? "" : "disabled"}`}
-                              disabled={!isUpdate}
-                            >
-                              {t("update cart")}
-                            </button>
                           </td>
                         </tr>
                       </>
