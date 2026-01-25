@@ -26,6 +26,7 @@ const rajdhani = Rajdhani({
 
 const PIXEL_ID = '1359273798966268';
 const SNAP_ID = '602d4f35-2199-4ae7-98b8-dad32da111db';
+const TIKTOK_PIXEL_ID = 'D5R3KOBC77UAR2VTSMSG';
 
 // Create a component that uses useSearchParams and wrap it in Suspense
 function MetadataHandler({ setMetadata }) {
@@ -70,6 +71,7 @@ export default function RootLayout({ children }) {
       className={`${rajdhani.variable} ${open_sans.variable}`}
     >
       <head>
+        {/* Facebook Pixel */}
         <Script
           id="fb-pixel"
           strategy="afterInteractive"
@@ -88,6 +90,8 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+
+        {/* Snapchat Pixel */}
         <Script
           id="snapchat-pixel"
           strategy="afterInteractive"
@@ -105,6 +109,8 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+
+        {/* Schema.org JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -131,25 +137,28 @@ export default function RootLayout({ children }) {
             }),
           }}
         />
-        // Inside your RootLayout component's head section, with your other
-        Script components:
+
+        {/* TikTok Pixel */}
         <Script
           id="tiktok-pixel"
-          strategy="afterInteractive" // or "lazyOnload"
+          strategy="afterInteractive"
+          onLoad={() => {
+            console.log('TikTok Pixel loaded successfully');
+          }}
           dangerouslySetInnerHTML={{
             __html: `
-      !function (w, d, t) {
-        w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
-      var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
-      ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+              !function (w, d, t) {
+                w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+              var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+              ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
 
-
-        ttq.load('D5R3KOBC77UAR2VTSMSG');
-        ttq.page();
-      }(window, document, 'ttq');
-    `,
+                ttq.load('${TIKTOK_PIXEL_ID}');
+                ttq.page();
+              }(window, document, 'ttq');
+            `,
           }}
         />
+
         <title>جنة الفواكه</title>
         <meta name="description" content={metadata?.description} />
         <meta
@@ -157,6 +166,7 @@ export default function RootLayout({ children }) {
           content="الفواكه في المملكة العربية السعودية، الخضروات في المملكة العربية السعودية، الفواكه المستوردة، المنتجات المحلية، الأوراق الطازجة، توصيل الفاكهة، جنة الفواكه، وكيل AxisForTrading"
         />
         <meta name="author" content="IN marketing" />
+
         {/* Open Graph for social media */}
         <meta property="og:title" content="جنة الفواكه" />
         <meta
@@ -169,6 +179,7 @@ export default function RootLayout({ children }) {
           property="og:image"
           content="https://www.fruits-heaven.com/og-image.jpg"
         />
+
         {/* Twitter Cards */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="جنة الفواكه" />
@@ -180,6 +191,7 @@ export default function RootLayout({ children }) {
           name="twitter:image"
           content="https://www.fruits-heaven.com/twitter-image.jpg"
         />
+
         <link rel="canonical" href="https://www.fruits-heaven.com/" />
       </head>
       <body className={open_sans.className}>
