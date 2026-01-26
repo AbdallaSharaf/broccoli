@@ -6,6 +6,7 @@ import { useUserContext } from './UserContext';
 import { getGuestCart, getUserCart } from '@/libs/cartApi';
 import { useTranslations } from '@/hooks/useTranslate';
 import axiosInstance from '../libs/axiosInstance.js';
+import { tiktokEvents } from '@/libs/tiktokPixel';
 
 const cartContext = createContext(null);
 const CartContextProvider = ({ children }) => {
@@ -138,6 +139,8 @@ const CartContextProvider = ({ children }) => {
       setCartStatus('loading');
 
       const { _id: currentId, quantity: addedQuantity } = currentProduct;
+
+      // FACEBOOK
       fbq('track', 'AddToCart', {
         content_name: currentProduct.name.ar,
         content_ids: [currentId],
@@ -146,12 +149,16 @@ const CartContextProvider = ({ children }) => {
         currency: 'SAR',
       });
 
+      // SNAPCHAT
       snaptr('track', 'ADD_CART', {
         price: currentProduct.price,
         currency: 'SAR',
         item_ids: [currentId],
         number_items: addedQuantity,
       });
+
+      // TIKTOK - Simple implementation like FB/Snapchat
+      tiktokEvents.trackAddToCart(currentProduct, addedQuantity);
 
       const token = localStorage.getItem('token');
       const guestId = localStorage.getItem('guest');
@@ -210,6 +217,44 @@ const CartContextProvider = ({ children }) => {
       console.error('Add to cart error:', error);
       setCartStatus('error');
       creteAlert('error', `An error occurred: ${error}`);
+    }
+  };
+
+  // Add this function to track checkout initiation
+  const trackCheckoutInitiation = (cartItems) => {
+    try {
+      const totalAmount = cartItems.reduce((total, item) => {
+        return total + item.quantity * item.product.price;
+      }, 0);
+
+      // TIKTOK InitiateCheckout
+      tiktokEvents.trackInitiateCheckout(cartItems, totalAmount);
+
+      // FACEBOOK InitiateCheckout (if you want consistency)
+      if (window.fbq) {
+        const contentIds = cartItems.map((item) => item.product._id);
+        window.fbq('track', 'InitiateCheckout', {
+          value: totalAmount,
+          currency: 'SAR',
+          content_ids: contentIds,
+          content_type: 'product',
+          num_items: cartItems.length,
+        });
+      }
+
+      // SNAPCHAT (optional)
+      if (window.snaptr) {
+        window.snaptr('track', 'START_CHECKOUT', {
+          price: totalAmount,
+          currency: 'SAR',
+          item_ids: cartItems.map((item) => item.product._id),
+          number_items: cartItems.reduce((sum, item) => sum + item.quantity, 0),
+        });
+      }
+
+      console.log('Checkout initiated tracked for:', cartItems.length, 'items');
+    } catch (error) {
+      console.error('Error tracking checkout initiation:', error);
     }
   };
 
@@ -381,6 +426,7 @@ const CartContextProvider = ({ children }) => {
         applyCoupon,
         cartTotal,
         updateProductQuantity, // Add the new function
+        trackCheckoutInitiation,
       }}
     >
       {children}

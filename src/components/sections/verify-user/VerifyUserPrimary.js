@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from '@/hooks/useTranslate';
 import axios from 'axios';
 import axiosInstance from '../../../libs/axiosInstance.js';
+import { tiktokEvents } from '@/libs/tiktokPixel.js';
 
 const VerifyUserPrimary = ({ type = 'loading', orderID }) => {
   const t = useTranslations('common');
@@ -79,6 +80,14 @@ const VerifyUserPrimary = ({ type = 'loading', orderID }) => {
               geo_postal_code: orderData.shippingAddress?.zipCode,
             });
           }
+
+          // TIKTOK Purchase - Simple implementation
+          tiktokEvents.trackPurchase({
+            totalPrice: orderData.totalPrice,
+            items: orderData.items,
+            invoiceId: orderData.invoiceId,
+            totalQuantity: orderData.totalQuantity,
+          });
 
           console.log('Purchase tracked for order:', orderData.invoiceId);
 
